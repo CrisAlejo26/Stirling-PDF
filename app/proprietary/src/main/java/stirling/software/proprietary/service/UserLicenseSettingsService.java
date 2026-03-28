@@ -306,6 +306,10 @@ public class UserLicenseSettingsService {
      * @return Maximum number of users allowed (Integer.MAX_VALUE for unlimited)
      */
     public int calculateMaxAllowedUsers() {
+        if (applicationProperties.getPremium().isUnlimitedUsers()) {
+            log.debug("Unlimited users enabled via config; no user limit");
+            return Integer.MAX_VALUE;
+        }
         validateSettingsIntegrity();
         UserLicenseSettings settings = getOrCreateSettings();
 

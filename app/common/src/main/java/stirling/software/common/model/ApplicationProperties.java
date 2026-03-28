@@ -611,6 +611,10 @@ public class ApplicationProperties {
         // 'https://app.example.com'). If not set, falls back to backendUrl.
         private boolean enableMobileScanner = false; // Enable mobile phone QR code upload feature
         private MobileScannerSettings mobileScannerSettings = new MobileScannerSettings();
+        private boolean ocrForFieldExtraction =
+                false; // Enable OCR pre-processing when a PDF has no text layer, used by the
+
+        // rename-pdfs and encrypt-pdfs endpoints to read field values from image-based PDFs
 
         @Data
         public static class MobileScannerSettings {
@@ -991,6 +995,13 @@ public class ApplicationProperties {
         private boolean enabled;
         @ToString.Exclude private String key;
         private int maxUsers;
+
+        /**
+         * When true, user limit is unlimited (self-hosted, no license required). Hides upgrade
+         * banner and allows unlimited users. Default true so local/dev runs avoid license alerts.
+         */
+        private boolean unlimitedUsers = true;
+
         private ProFeatures proFeatures = new ProFeatures();
         private EnterpriseFeatures enterpriseFeatures = new EnterpriseFeatures();
 

@@ -109,13 +109,13 @@ public class InviteLinkController {
                 }
             }
 
-            // Check license limits
-            if (applicationProperties.getPremium().isEnabled()) {
+            // Check license limits (uses same logic as user registration; unlimited when
+            // unlimitedUsers or SERVER license)
+            int maxAllowedUsers = userLicenseSettingsService.calculateMaxAllowedUsers();
+            if (maxAllowedUsers != Integer.MAX_VALUE) {
                 long currentUserCount = userService.getTotalUsersCount();
                 long activeInvites = inviteTokenRepository.countActiveInvites(LocalDateTime.now());
-                int maxUsers = userLicenseSettingsService.calculateMaxAllowedUsers();
-
-                if (currentUserCount + activeInvites >= maxUsers) {
+                if (currentUserCount + activeInvites >= maxAllowedUsers) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                             .body(
                                     Map.of(
@@ -123,7 +123,7 @@ public class InviteLinkController {
                                             "License limit reached ("
                                                     + (currentUserCount + activeInvites)
                                                     + "/"
-                                                    + maxUsers
+                                                    + maxAllowedUsers
                                                     + " users). Contact your administrator to"
                                                     + " upgrade your license."));
                 }

@@ -59,9 +59,11 @@ export default function PeopleSection() {
     grandfatheredUserCount: number;
     licenseMaxUsers: number;
     premiumEnabled: boolean;
+    unlimitedUsers?: boolean;
     totalUsers: number;
   } | null>(null);
-  const hasNoSlots = licenseInfo ? licenseInfo.availableSlots === 0 : false;
+  const isUnlimited = Boolean(licenseInfo?.unlimitedUsers) || (licenseInfo?.maxAllowedUsers ?? 0) >= 2_000_000_000;
+  const hasNoSlots = licenseInfo ? (isUnlimited ? false : licenseInfo.availableSlots === 0) : false;
   const handleAddMembersClick = () => {
     if (!loginEnabled) {
       return;
@@ -125,6 +127,7 @@ export default function PeopleSection() {
           grandfatheredUserCount: adminData.grandfatheredUserCount,
           licenseMaxUsers: adminData.licenseMaxUsers,
           premiumEnabled: adminData.premiumEnabled,
+          unlimitedUsers: adminData.unlimitedUsers,
           totalUsers: adminData.totalUsers,
         });
         setMailEnabled(adminData.mailEnabled);
@@ -361,11 +364,13 @@ export default function PeopleSection() {
           <Text size="sm" span c="dimmed">
             <Text component="span" fw={600} c="inherit">{licenseInfo.totalUsers}</Text>
             <Text component="span" c="dimmed"> / </Text>
-            <Text component="span" fw={600} c="inherit">{licenseInfo.maxAllowedUsers}</Text>
+            <Text component="span" fw={600} c="inherit">
+              {isUnlimited ? t('workspace.people.license.unlimited', 'Unlimited') : licenseInfo.maxAllowedUsers}
+            </Text>
             <Text component="span" c="dimmed"> {t('workspace.people.license.users', 'users')}</Text>
           </Text>
 
-          {licenseInfo.availableSlots === 0 && (
+          {!isUnlimited && licenseInfo.availableSlots === 0 && (
             <Group gap="xs" wrap="nowrap" align="center">
               <Badge color="red" variant="light" size="sm">
                 {t('workspace.people.license.noSlotsAvailable', 'No slots available')}

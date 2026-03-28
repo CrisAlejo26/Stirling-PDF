@@ -9,12 +9,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import stirling.software.common.model.ApplicationProperties;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class EndpointInterceptor implements HandlerInterceptor {
 
     private final EndpointConfiguration endpointConfiguration;
+    private final ApplicationProperties applicationProperties;
 
     @Override
     public boolean preHandle(
@@ -38,6 +41,20 @@ public class EndpointInterceptor implements HandlerInterceptor {
 
             log.debug("Request endpoint: {}", requestEndpoint);
             isEnabled = endpointConfiguration.isEndpointEnabled(requestEndpoint);
+            // When unlimitedUsers is set, allow these endpoints so the controller can run (or
+            // return
+            // a clear error if a dependency is missing)
+            if (!isEnabled
+                    && applicationProperties.getPremium() != null
+                    && applicationProperties.getPremium().isUnlimitedUsers()) {
+                isEnabled =
+                        "ocr-pdf".equals(requestEndpoint)
+                                || "repair".equals(requestEndpoint)
+                                || "extract-image-scans".equals(requestEndpoint)
+                                || "replace-invert-pdf".equals(requestEndpoint)
+                                || "scanner-effect".equals(requestEndpoint)
+                                || "adjust-contrast".equals(requestEndpoint);
+            }
             log.debug("Is endpoint enabled: {}", isEnabled);
         } else {
             isEnabled = endpointConfiguration.isEndpointEnabled(requestURI);

@@ -385,6 +385,7 @@ public class ProprietaryUIDataController {
         data.setGrandfatheredUserCount(grandfatheredCount);
         data.setLicenseMaxUsers(licenseMaxUsers);
         data.setPremiumEnabled(premiumEnabled);
+        data.setUnlimitedUsers(applicationProperties.getPremium().isUnlimitedUsers());
         data.setMailEnabled(applicationProperties.getMail().isEnabled());
         data.setUserSettings(userSettings);
 
@@ -603,6 +604,7 @@ public class ProprietaryUIDataController {
         private int grandfatheredUserCount;
         private int licenseMaxUsers;
         private boolean premiumEnabled;
+        private boolean unlimitedUsers;
         private boolean mailEnabled;
         private Map<String, Map<String, String>> userSettings;
     }

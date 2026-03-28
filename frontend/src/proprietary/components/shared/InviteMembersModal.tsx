@@ -47,9 +47,11 @@ export default function InviteMembersModal({ opened, onClose, onSuccess }: Invit
     grandfatheredUserCount: number;
     licenseMaxUsers: number;
     premiumEnabled: boolean;
+    unlimitedUsers?: boolean;
     totalUsers: number;
   } | null>(null);
-  const hasNoSlots = licenseInfo ? licenseInfo.availableSlots <= 0 : false;
+  const isUnlimited = Boolean(licenseInfo?.unlimitedUsers) || (licenseInfo?.maxAllowedUsers ?? 0) >= 2_000_000_000;
+  const hasNoSlots = licenseInfo ? (isUnlimited ? false : licenseInfo.availableSlots <= 0) : false;
 
   // Form state for direct invite
   const [inviteForm, setInviteForm] = useState({
@@ -96,6 +98,7 @@ export default function InviteMembersModal({ opened, onClose, onSuccess }: Invit
             grandfatheredUserCount: adminData.grandfatheredUserCount,
             licenseMaxUsers: adminData.licenseMaxUsers,
             premiumEnabled: adminData.premiumEnabled,
+            unlimitedUsers: adminData.unlimitedUsers,
             totalUsers: adminData.totalUsers,
           });
         } catch (error) {

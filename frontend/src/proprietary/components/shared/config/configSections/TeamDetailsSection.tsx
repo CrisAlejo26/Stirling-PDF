@@ -49,6 +49,7 @@ export default function TeamDetailsSection({ teamId, onBack }: TeamDetailsSectio
   // License information
   const [licenseInfo, setLicenseInfo] = useState<{
     availableSlots: number;
+    unlimitedUsers?: boolean;
   } | null>(null);
   const [mailEnabled, setMailEnabled] = useState(false);
 
@@ -73,6 +74,7 @@ export default function TeamDetailsSection({ teamId, onBack }: TeamDetailsSectio
       // Store license information
       setLicenseInfo({
         availableSlots: adminData.availableSlots,
+        unlimitedUsers: adminData.unlimitedUsers,
       });
       setMailEnabled(adminData.mailEnabled);
     } catch (error) {
@@ -258,7 +260,7 @@ export default function TeamDetailsSection({ teamId, onBack }: TeamDetailsSectio
       <Group justify="flex-end">
         <Tooltip
           label={t('workspace.people.license.noSlotsAvailable', 'No user slots available')}
-          disabled={!licenseInfo || licenseInfo.availableSlots > 0}
+          disabled={!licenseInfo || Boolean(licenseInfo.unlimitedUsers) || licenseInfo.availableSlots > 0}
           position="bottom"
           withArrow
           zIndex={Z_INDEX_OVER_CONFIG_MODAL}
@@ -266,7 +268,7 @@ export default function TeamDetailsSection({ teamId, onBack }: TeamDetailsSectio
           <Button
             leftSection={<LocalIcon icon="person-add" width="1rem" height="1rem" />}
             onClick={() => setAddMemberModalOpened(true)}
-            disabled={team.name === 'Internal' || (licenseInfo ? licenseInfo.availableSlots === 0 : false)}
+            disabled={team.name === 'Internal' || (licenseInfo ? (licenseInfo.unlimitedUsers ? false : licenseInfo.availableSlots === 0) : false)}
           >
             {t('workspace.teams.addMember')}
           </Button>

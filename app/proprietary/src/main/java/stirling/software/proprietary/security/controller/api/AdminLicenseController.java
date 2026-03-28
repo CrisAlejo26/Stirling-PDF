@@ -227,18 +227,27 @@ public class AdminLicenseController {
     public ResponseEntity<Map<String, Object>> getLicenseInfo() {
         try {
             Map<String, Object> response = new HashMap<>();
+            ApplicationProperties.Premium premium = applicationProperties.getPremium();
 
-            if (licenseKeyChecker != null) {
+            if (premium.isUnlimitedUsers()) {
+                response.put("licenseType", License.SERVER.name());
+                response.put("enabled", true);
+                response.put("maxUsers", 0); // 0 = unlimited for SERVER tier
+                response.put("hasKey", false);
+            } else if (licenseKeyChecker != null) {
                 License license = licenseKeyChecker.getPremiumLicenseEnabledResult();
                 response.put("licenseType", license.name());
+                response.put("enabled", premium.isEnabled());
+                response.put("maxUsers", premium.getMaxUsers());
+                response.put(
+                        "hasKey", premium.getKey() != null && !premium.getKey().trim().isEmpty());
             } else {
                 response.put("licenseType", License.NORMAL.name());
+                response.put("enabled", premium.isEnabled());
+                response.put("maxUsers", premium.getMaxUsers());
+                response.put(
+                        "hasKey", premium.getKey() != null && !premium.getKey().trim().isEmpty());
             }
-
-            ApplicationProperties.Premium premium = applicationProperties.getPremium();
-            response.put("enabled", premium.isEnabled());
-            response.put("maxUsers", premium.getMaxUsers());
-            response.put("hasKey", premium.getKey() != null && !premium.getKey().trim().isEmpty());
 
             // Include license key for upgrades (admin-only endpoint)
             if (premium.getKey() != null && !premium.getKey().trim().isEmpty()) {

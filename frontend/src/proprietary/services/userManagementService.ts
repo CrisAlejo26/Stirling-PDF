@@ -38,6 +38,7 @@ export interface AdminSettingsData {
   grandfatheredUserCount: number;
   licenseMaxUsers: number;
   premiumEnabled: boolean;
+  unlimitedUsers?: boolean;
   mailEnabled: boolean;
   userSettings?: Record<string, any>;
 }

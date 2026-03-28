@@ -49,6 +49,8 @@ export function extractAxiosErrorMessage(error: any): { title: string; body: str
       const ids = extractIds();
       if (ids && ids.length > 0) return `Failed files: ${ids.join(', ')}`;
       if (data?.message) return data.message as string;
+      // RFC 7807 Problem Detail uses "detail" for the main message
+      if (data?.detail) return data.detail as string;
       if (typeof raw === 'string') return raw;
       try { return JSON.stringify(data); } catch { return ''; }
     })();

@@ -1,0 +1,4 @@
+# Actualiza stirling-pdf-custom copiando el nuevo JAR compilado y el frontend.
+FROM stirling-pdf-custom:latest
+COPY --chown=1000:1000 app/core/build/libs/stirling-pdf-2.7.0.jar /app.jar
+COPY --chown=stirlingpdfuser:stirlingpdfgroup frontend/dist/ /usr/share/nginx/html/

@@ -307,6 +307,11 @@ public class ConfigController {
                     configData.put("license", licenseType);
                 }
 
+                // When unlimitedUsers is set, report as SERVER so frontend hides upgrade banner
+                if (applicationProperties.getPremium().isUnlimitedUsers()) {
+                    configData.put("license", "SERVER");
+                }
+
                 if (applicationContext.containsBean("SSOAutoLogin")) {
                     configData.put(
                             "SSOAutoLogin",
@@ -370,12 +375,25 @@ public class ConfigController {
                 (endpoints == null || endpoints.isEmpty())
                         ? endpointConfiguration.getAllEndpoints()
                         : endpoints;
+        boolean unlimitedUsers =
+                applicationProperties.getPremium() != null
+                        && applicationProperties.getPremium().isUnlimitedUsers();
         Map<String, EndpointAvailability> result = new HashMap<>();
         for (String endpoint : toCheck) {
             String trimmedEndpoint = endpoint.trim();
-            result.put(
-                    trimmedEndpoint,
-                    endpointConfiguration.getEndpointAvailability(trimmedEndpoint));
+            boolean allowWhenUnlimited =
+                    unlimitedUsers
+                            && (trimmedEndpoint.equals("ocr-pdf")
+                                    || trimmedEndpoint.equals("repair")
+                                    || trimmedEndpoint.equals("extract-image-scans")
+                                    || trimmedEndpoint.equals("replace-invert-pdf")
+                                    || trimmedEndpoint.equals("scanner-effect")
+                                    || trimmedEndpoint.equals("adjust-contrast"));
+            EndpointAvailability availability =
+                    allowWhenUnlimited
+                            ? new EndpointAvailability(true, null)
+                            : endpointConfiguration.getEndpointAvailability(trimmedEndpoint);
+            result.put(trimmedEndpoint, availability);
         }
         return ResponseEntity.ok(result);
     }

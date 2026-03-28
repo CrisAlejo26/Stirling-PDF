@@ -365,6 +365,7 @@ public class EndpointConfiguration {
         addEndpointToGroup("Security", "redact");
         addEndpointToGroup("Security", "verify-pdf");
         addEndpointToGroup("Security", "sign");
+        addEndpointToGroup("Security", "encrypt-pdfs");
 
         // Adding endpoints to "Other" group
         addEndpointToGroup("Other", "ocr-pdf");
@@ -387,6 +388,7 @@ public class EndpointConfiguration {
         addEndpointToGroup("Other", "modify-fields");
         addEndpointToGroup("Other", "delete-fields");
         addEndpointToGroup("Other", "fill");
+        addEndpointToGroup("Other", "rename-pdfs");
 
         // Adding endpoints to "Advance" group
         addEndpointToGroup("Advance", "compress-pdf");

@@ -1,0 +1,35 @@
+services:
+  stirling-pdf:
+    image: stirling-pdf-custom:latest
+    container_name: stirling-pdf
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./configs:/configs:rw
+      - ./logs:/logs:rw
+      - ./tessdata:/usr/share/tessdata:rw
+      - ./pipeline:/pipeline:rw
+    environment:
+      DISABLE_ADDITIONAL_FEATURES: "false"
+      SECURITY_ENABLELOGIN: "true"
+      SYSTEM_DEFAULTLOCALE: es-ES
+      UI_APPNAME: Stirling-PDF
+      SYSTEM_MAXFILESIZE: "100"
+      METRICS_ENABLED: "true"
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "America/Bogota"
+    privileged: true
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/v1/info/status | grep -q 'UP'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - stirling-network
+
+networks:
+  stirling-network:
+    driver: bridge
