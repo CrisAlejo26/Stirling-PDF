@@ -19,7 +19,7 @@ export const buildReportEntries = ({
 }: BuildReportEntriesOptions): SignatureValidationReportEntry[] => {
   return results.map((entry) => {
     const fileId = entry.fileId as FileId;
-    const stub = selectors.getStirlingFileStub(fileId);
+    const stub = selectors.getPDFoxFileStub(fileId);
     const file = selectors.getFile(fileId);
 
     let createdAtLabel: string | null = null;

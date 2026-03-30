@@ -12,7 +12,7 @@ import { createQuickKey } from '@app/types/fileContext';
  */
 export function useAppInitialization(): void {
   // Get file management actions
-  const { addFiles, updateStirlingFileStub } = useFileManagement();
+  const { addFiles, updatePDFoxFileStub } = useFileManagement();
 
   // Handle files opened with app (Tauri mode)
   const { openedFilePaths, loading: openedFileLoading, consumeOpenedFilePaths } = useOpenedFile();
@@ -63,7 +63,7 @@ export function useAppInitialization(): void {
           addedFiles.forEach(file => {
             const localFilePath = quickKeyToPath.get(file.quickKey);
             if (localFilePath) {
-              updateStirlingFileStub(file.fileId, { localFilePath });
+              updatePDFoxFileStub(file.fileId, { localFilePath });
             }
           });
 
@@ -75,7 +75,7 @@ export function useAppInitialization(): void {
     };
 
     loadOpenedFiles();
-  }, [openedFilePaths, openedFileLoading, addFiles, updateStirlingFileStub, consumeOpenedFilePaths]);
+  }, [openedFilePaths, openedFileLoading, addFiles, updatePDFoxFileStub, consumeOpenedFilePaths]);
 }
 
 export function useSetupCompletion(): (completed: boolean) => void {

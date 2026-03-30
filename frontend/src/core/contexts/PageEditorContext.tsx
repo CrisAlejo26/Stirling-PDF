@@ -305,7 +305,7 @@ export function PageEditorProvider({ children }: PageEditorProviderProps) {
       newFileIdsToProcess.forEach(fileId => {
         const stub = state.files.byId[fileId];
         if (stub?.insertAfterPageId) {
-          fileActions.updateStirlingFileStub(fileId, { insertAfterPageId: undefined });
+          fileActions.updatePDFoxFileStub(fileId, { insertAfterPageId: undefined });
         }
       });
     }, 100);

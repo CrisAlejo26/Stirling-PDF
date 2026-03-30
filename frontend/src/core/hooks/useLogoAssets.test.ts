@@ -16,11 +16,10 @@ describe('useLogoAssets - Logo Asset Files', () => {
     'logo-tooltip.svg',
     'Firstpage.png',
     'favicon.ico',
-    'logo192.png',
-    'logo512.png',
-    'StirlingPDFLogoWhiteText.svg',
-    'StirlingPDFLogoBlackText.svg',
-    'StirlingPDFLogoGreyText.svg',
+    'Logo_principal_light.png',
+    'Logo_principal_light.png',
+    'Logo_letter_dark.svg',
+    'Logo_letter_light.svg',
   ];
 
   const logoVariants: LogoVariant[] = ['modern', 'classic'];

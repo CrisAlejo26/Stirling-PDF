@@ -16,7 +16,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '@app/i18n/config';
 import { detectFileExtension } from '@app/utils/fileUtils';
 import { FIT_OPTIONS } from '@app/constants/convertConstants';
-import { createTestStirlingFile, createTestFilesWithId } from '@app/tests/utils/testFileHelpers';
+import { createTestPDFoxFile, createTestFilesWithId } from '@app/tests/utils/testFileHelpers';
 import { MantineProvider } from '@mantine/core';
 
 // Mock axios (for static methods like CancelToken, isCancel)
@@ -121,7 +121,7 @@ describe('Convert Tool - Smart Detection Integration Tests', () => {
       });
 
       // Create mock DOCX file
-      const docxFile = createTestStirlingFile('document.docx', 'docx content', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      const docxFile = createTestPDFoxFile('document.docx', 'docx content', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
 
       // Test auto-detection
       act(() => {
@@ -157,7 +157,7 @@ describe('Convert Tool - Smart Detection Integration Tests', () => {
       });
 
       // Create mock unknown file
-      const unknownFile = createTestStirlingFile('document.xyz', 'unknown content', 'application/octet-stream');
+      const unknownFile = createTestPDFoxFile('document.xyz', 'unknown content', 'application/octet-stream');
 
       // Test auto-detection
       act(() => {
@@ -328,7 +328,7 @@ describe('Convert Tool - Smart Detection Integration Tests', () => {
         wrapper: TestWrapper
       });
 
-      const htmlFile = createTestStirlingFile('page.html', '<html>content</html>', 'text/html');
+      const htmlFile = createTestPDFoxFile('page.html', '<html>content</html>', 'text/html');
 
       // Set up HTML conversion parameters
       act(() => {
@@ -358,7 +358,7 @@ describe('Convert Tool - Smart Detection Integration Tests', () => {
         wrapper: TestWrapper
       });
 
-      const emlFile = createTestStirlingFile('email.eml', 'email content', 'message/rfc822');
+      const emlFile = createTestPDFoxFile('email.eml', 'email content', 'message/rfc822');
 
       // Set up email conversion parameters
       act(() => {
@@ -395,7 +395,7 @@ describe('Convert Tool - Smart Detection Integration Tests', () => {
         wrapper: TestWrapper
       });
 
-      const pdfFile = createTestStirlingFile('document.pdf', 'pdf content', 'application/pdf');
+      const pdfFile = createTestPDFoxFile('document.pdf', 'pdf content', 'application/pdf');
 
       // Set up PDF/A conversion parameters
       act(() => {

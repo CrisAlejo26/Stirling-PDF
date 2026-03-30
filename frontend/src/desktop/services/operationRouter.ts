@@ -3,7 +3,7 @@ import { connectionModeService } from '@app/services/connectionModeService';
 import { tauriBackendService } from '@app/services/tauriBackendService';
 import { endpointAvailabilityService } from '@app/services/endpointAvailabilityService';
 import { selfHostedServerMonitor } from '@app/services/selfHostedServerMonitor';
-import { STIRLING_SAAS_BACKEND_API_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_BACKEND_API_URL } from '@app/constants/connection';
 import { CONVERSION_ENDPOINTS, ENDPOINT_NAMES } from '@app/constants/convertConstants';
 
 export type ExecutionTarget = 'local' | 'remote';
@@ -147,7 +147,7 @@ export class OperationRouter {
             throw new Error(
               i18n.t(
                 'localMode.toolUnavailable',
-                'This tool requires an account. Sign in to Stirling Cloud or connect to a self-hosted server to use it.'
+                'This tool requires an account. Sign in to PDFox Cloud or connect to a self-hosted server to use it.'
               )
             );
           }
@@ -162,11 +162,11 @@ export class OperationRouter {
 
     // Always route team endpoints to SaaS backend (existing logic)
     if (mode === 'saas' && this.isSaaSBackendEndpoint(operation)) {
-      if (!STIRLING_SAAS_BACKEND_API_URL) {
+      if (!PDFOX_SAAS_BACKEND_API_URL) {
         throw new Error('VITE_SAAS_BACKEND_API_URL not configured');
       }
       console.debug(`[operationRouter] Routing ${operation} to SaaS backend (team endpoint)`);
-      return STIRLING_SAAS_BACKEND_API_URL.replace(/\/$/, '');
+      return PDFOX_SAAS_BACKEND_API_URL.replace(/\/$/, '');
     }
 
     // NEW: Check if local backend supports this tool endpoint
@@ -202,7 +202,7 @@ export class OperationRouter {
           }
 
           // SaaS supports it - route to SaaS backend
-          if (!STIRLING_SAAS_BACKEND_API_URL) {
+          if (!PDFOX_SAAS_BACKEND_API_URL) {
             console.error('[operationRouter] VITE_SAAS_BACKEND_API_URL not configured');
             throw new Error(
               'Cloud processing is required for this tool but VITE_SAAS_BACKEND_API_URL is not configured. ' +
@@ -210,7 +210,7 @@ export class OperationRouter {
             );
           }
           console.debug(`[operationRouter] Routing ${operation} to SaaS backend (not supported locally, but supported on SaaS)`);
-          return STIRLING_SAAS_BACKEND_API_URL.replace(/\/$/, '');
+          return PDFOX_SAAS_BACKEND_API_URL.replace(/\/$/, '');
         }
 
         // Supported locally - continue with local backend
@@ -240,7 +240,7 @@ export class OperationRouter {
         throw new Error(
           i18n.t(
             'selfHosted.offline.toolNotAvailableLocally',
-            'Your Stirling-PDF server is offline and "{{endpoint}}" is not available on the local backend.',
+            'Your PDFox-PDF server is offline and "{{endpoint}}" is not available on the local backend.',
             { endpoint: endpointName }
           )
         );

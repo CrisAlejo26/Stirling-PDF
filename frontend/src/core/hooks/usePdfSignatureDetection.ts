@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { pdfWorkerManager } from '@app/services/pdfWorkerManager';
-import { StirlingFile } from '@app/types/fileContext';
+import { PDFoxFile } from '@app/types/fileContext';
 
 export interface PdfSignatureDetectionResult {
   hasDigitalSignatures: boolean;
   isChecking: boolean;
 }
 
-export const usePdfSignatureDetection = (files: StirlingFile[]): PdfSignatureDetectionResult => {
+export const usePdfSignatureDetection = (files: PDFoxFile[]): PdfSignatureDetectionResult => {
   const [hasDigitalSignatures, setHasDigitalSignatures] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
 

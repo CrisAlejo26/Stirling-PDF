@@ -1,5 +1,5 @@
 /**
- * FileContext - Manages PDF files for Stirling PDF multi-tool workflow
+ * FileContext - Manages PDF files for PDFox multi-tool workflow
  *
  * Handles file state, memory management, and resource cleanup for large PDFs (up to 100GB+).
  * Users upload PDFs once and chain tools (split → merge → compress → view) without reloading.
@@ -20,15 +20,15 @@ import {
   FileContextActionsValue,
   FileContextActions,
   FileId,
-  StirlingFileStub,
-  StirlingFile,
-  createStirlingFile,
+  PDFoxFileStub,
+  PDFoxFile,
+  createPDFoxFile,
 } from '@app/types/fileContext';
 
 // Import modular components
 import { fileContextReducer, initialFileContextState } from '@app/contexts/file/FileReducer';
 import { createFileSelectors } from '@app/contexts/file/fileSelectors';
-import { addFiles, addStirlingFileStubs, consumeFiles, undoConsumeFiles, createFileActions, createChildStub, generateProcessedFileMetadata } from '@app/contexts/file/fileActions';
+import { addFiles, addPDFoxFileStubs, consumeFiles, undoConsumeFiles, createFileActions, createChildStub, generateProcessedFileMetadata } from '@app/contexts/file/fileActions';
 import { FileLifecycleManager } from '@app/contexts/file/lifecycle';
 import { FileStateContext, FileActionsContext } from '@app/contexts/file/contexts';
 import { IndexedDBProvider, useIndexedDB } from '@app/contexts/IndexedDBContext';
@@ -181,15 +181,15 @@ function FileContextInner({
     dispatch({ type: 'SET_UNSAVED_CHANGES', payload: { hasChanges } });
   }, []);
 
-  const selectFiles = (stirlingFiles: StirlingFile[]) => {
+  const selectFiles = (pdfoxFiles: PDFoxFile[]) => {
     const currentSelection = stateRef.current.ui.selectedFileIds;
-    const newFileIds = stirlingFiles.map(stirlingFile => stirlingFile.fileId);
+    const newFileIds = pdfoxFiles.map(pdfoxFile => pdfoxFile.fileId);
     dispatch({ type: 'SET_SELECTED_FILES', payload: { fileIds: [...currentSelection, ...newFileIds] } });
   };
 
   // File operations using unified addFiles helper with persistence
-  const addRawFiles = useCallback(async (files: File[], options?: { insertAfterPageId?: string; selectFiles?: boolean; skipAutoUnzip?: boolean }): Promise<StirlingFile[]> => {
-    const stirlingFiles = await addFiles(
+  const addRawFiles = useCallback(async (files: File[], options?: { insertAfterPageId?: string; selectFiles?: boolean; skipAutoUnzip?: boolean }): Promise<PDFoxFile[]> => {
+    const pdfoxFiles = await addFiles(
       {
         files,
         ...options,
@@ -207,11 +207,11 @@ function FileContextInner({
     );
 
     // Auto-select the newly added files if requested
-    if (options?.selectFiles && stirlingFiles.length > 0) {
-      selectFiles(stirlingFiles);
+    if (options?.selectFiles && pdfoxFiles.length > 0) {
+      selectFiles(pdfoxFiles);
     }
 
-    return stirlingFiles;
+    return pdfoxFiles;
   }, [enablePersistence, requestConfirmation]);
 
   const addFilesWithOptions = useCallback(
@@ -226,8 +226,8 @@ function FileContextInner({
         confirmLargeExtraction?: (fileCount: number, fileName: string) => Promise<boolean>;
         allowDuplicates?: boolean;
       }
-    ): Promise<StirlingFile[]> => {
-      const stirlingFiles = await addFiles(
+    ): Promise<PDFoxFile[]> => {
+      const pdfoxFiles = await addFiles(
         {
           files,
           ...options,
@@ -239,18 +239,18 @@ function FileContextInner({
         enablePersistence
       );
 
-      if (options?.selectFiles && stirlingFiles.length > 0) {
-        selectFiles(stirlingFiles);
+      if (options?.selectFiles && pdfoxFiles.length > 0) {
+        selectFiles(pdfoxFiles);
       }
 
-      return stirlingFiles;
+      return pdfoxFiles;
     },
     [enablePersistence]
   );
 
-  const addStirlingFileStubsAction = useCallback(async (stirlingFileStubs: StirlingFileStub[], options?: { insertAfterPageId?: string; selectFiles?: boolean }): Promise<StirlingFile[]> => {
-    // StirlingFileStubs preserve all metadata - perfect for FileManager use case!
-    const result = await addStirlingFileStubs(stirlingFileStubs, options, stateRef, filesRef, dispatch, lifecycleManager);
+  const addPDFoxFileStubsAction = useCallback(async (pdfoxFileStubs: PDFoxFileStub[], options?: { insertAfterPageId?: string; selectFiles?: boolean }): Promise<PDFoxFile[]> => {
+    // PDFoxFileStubs preserve all metadata - perfect for FileManager use case!
+    const result = await addPDFoxFileStubs(pdfoxFileStubs, options, stateRef, filesRef, dispatch, lifecycleManager);
 
     // Auto-select the newly added files if requested
     if (options?.selectFiles && result.length > 0) {
@@ -265,8 +265,8 @@ function FileContextInner({
   const baseActions = useMemo(() => createFileActions(dispatch), []);
 
   // Helper functions for pinned files
-  const consumeFilesWrapper = useCallback(async (inputFileIds: FileId[], outputStirlingFiles: StirlingFile[], outputStirlingFileStubs: StirlingFileStub[]): Promise<FileId[]> => {
-    return consumeFiles(inputFileIds, outputStirlingFiles, outputStirlingFileStubs, filesRef, dispatch);
+  const consumeFilesWrapper = useCallback(async (inputFileIds: FileId[], outputPDFoxFiles: PDFoxFile[], outputPDFoxFileStubs: PDFoxFileStub[]): Promise<FileId[]> => {
+    return consumeFiles(inputFileIds, outputPDFoxFiles, outputPDFoxFileStubs, filesRef, dispatch);
   }, []);
 
   const runAutomaticPasswordRemoval = useCallback(async (fileId: FileId, password: string): Promise<void> => {
@@ -300,9 +300,9 @@ function FileContextInner({
     };
 
     const childStub = createChildStub(parentStub, operation, unlockedFile, thumbnail, processedMetadata);
-    const stirlingUnlockedFile = createStirlingFile(unlockedFile, childStub.id);
+    const pdfoxUnlockedFile = createPDFoxFile(unlockedFile, childStub.id);
 
-    await consumeFilesWrapper([fileId], [stirlingUnlockedFile], [childStub]);
+    await consumeFilesWrapper([fileId], [pdfoxUnlockedFile], [childStub]);
   }, [consumeFilesWrapper, t]);
 
   const handleUnlockSubmit = useCallback(async () => {
@@ -343,16 +343,16 @@ function FileContextInner({
     }
   }, [activeEncryptedFileId, unlockPassword, runAutomaticPasswordRemoval, t]);
 
-  const undoConsumeFilesWrapper = useCallback(async (inputFiles: File[], inputStirlingFileStubs: StirlingFileStub[], outputFileIds: FileId[]): Promise<void> => {
-    return undoConsumeFiles(inputFiles, inputStirlingFileStubs, outputFileIds, filesRef, dispatch, indexedDB);
+  const undoConsumeFilesWrapper = useCallback(async (inputFiles: File[], inputPDFoxFileStubs: PDFoxFileStub[], outputFileIds: FileId[]): Promise<void> => {
+    return undoConsumeFiles(inputFiles, inputPDFoxFileStubs, outputFileIds, filesRef, dispatch, indexedDB);
   }, [indexedDB]);
 
-  // File pinning functions - use StirlingFile directly
-  const pinFileWrapper = useCallback((file: StirlingFile) => {
+  // File pinning functions - use PDFoxFile directly
+  const pinFileWrapper = useCallback((file: PDFoxFile) => {
     baseActions.pinFile(file.fileId);
   }, [baseActions]);
 
-  const unpinFileWrapper = useCallback((file: StirlingFile) => {
+  const unpinFileWrapper = useCallback((file: PDFoxFile) => {
     baseActions.unpinFile(file.fileId);
   }, [baseActions]);
 
@@ -361,7 +361,7 @@ function FileContextInner({
     ...baseActions,
     addFiles: addRawFiles,
     addFilesWithOptions,
-    addStirlingFileStubs: addStirlingFileStubsAction,
+    addPDFoxFileStubs: addPDFoxFileStubsAction,
     removeFiles: async (fileIds: FileId[], deleteFromStorage?: boolean) => {
       // Remove from memory and cleanup resources
       lifecycleManager.removeFiles(fileIds, stateRef);
@@ -375,8 +375,8 @@ function FileContextInner({
         }
       }
     },
-    updateStirlingFileStub: (fileId: FileId, updates: Partial<StirlingFileStub>) =>
-      lifecycleManager.updateStirlingFileStub(fileId, updates, stateRef),
+    updatePDFoxFileStub: (fileId: FileId, updates: Partial<PDFoxFileStub>) =>
+      lifecycleManager.updatePDFoxFileStub(fileId, updates, stateRef),
     reorderFiles: (orderedFileIds: FileId[]) => {
       dispatch({ type: 'REORDER_FILES', payload: { orderedFileIds } });
     },
@@ -417,7 +417,7 @@ function FileContextInner({
   }), [
     baseActions,
     addRawFiles,
-    addStirlingFileStubsAction,
+    addPDFoxFileStubsAction,
     lifecycleManager,
     setHasUnsavedChanges,
     consumeFilesWrapper,
@@ -521,7 +521,7 @@ export {
   useFileSelection,
   useFileManagement,
   useFileUI,
-  useStirlingFileStub,
+  usePDFoxFileStub,
   useAllFiles,
   useSelectedFiles,
   // Primary API hooks for tools

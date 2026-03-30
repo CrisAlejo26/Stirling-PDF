@@ -1,11 +1,11 @@
 import React from 'react';
 import { Tooltip } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import { PrivateContent } from '@app/components/shared/PrivateContent';
 
 interface FileEditorFileNameProps {
-  file: StirlingFileStub;
+  file: PDFoxFileStub;
 }
 
 const FileEditorFileName = ({ file }: FileEditorFileNameProps) => {

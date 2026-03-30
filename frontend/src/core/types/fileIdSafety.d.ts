@@ -2,7 +2,7 @@
  * Type safety declarations to prevent file.name/UUID confusion
  */
 
-import { FileId, StirlingFile } from '@app/types/fileContext';
+import { FileId, PDFoxFile } from '@app/types/fileContext';
 
 declare global {
   namespace FileIdSafety {
@@ -13,15 +13,15 @@ declare global {
         : T
       : T;
 
-    // Mark functions that should only accept StirlingFile, not regular File
-    type StirlingFileOnlyFunction<T extends (...args: any[]) => any> = T extends (...args: infer P) => infer _R
+    // Mark functions that should only accept PDFoxFile, not regular File
+    type PDFoxFileOnlyFunction<T extends (...args: any[]) => any> = T extends (...args: infer P) => infer _R
       ? P extends readonly [File, ...any[]]
-        ? never // Reject File parameters in first position for StirlingFile functions
+        ? never // Reject File parameters in first position for PDFoxFile functions
         : T
       : T;
 
-    // Utility type to enforce StirlingFile usage
-    type RequireStirlingFile<T> = T extends File ? StirlingFile : T;
+    // Utility type to enforce PDFoxFile usage
+    type RequirePDFoxFile<T> = T extends File ? PDFoxFile : T;
   }
 
   // Extend Window interface for debugging
@@ -30,19 +30,19 @@ declare global {
   }
 }
 
-// Augment FileContext types to prevent bypassing StirlingFile
+// Augment FileContext types to prevent bypassing PDFoxFile
 declare module '../contexts/FileContext' {
   export interface StrictFileContextActions {
-    pinFile: (file: StirlingFile) => void; // Must be StirlingFile
-    unpinFile: (file: StirlingFile) => void; // Must be StirlingFile
-    addFiles: (files: File[], options?: { insertAfterPageId?: string }) => Promise<StirlingFile[]>; // Returns StirlingFile
-    consumeFiles: (inputFileIds: FileId[], outputFiles: File[]) => Promise<StirlingFile[]>; // Returns StirlingFile
+    pinFile: (file: PDFoxFile) => void; // Must be PDFoxFile
+    unpinFile: (file: PDFoxFile) => void; // Must be PDFoxFile
+    addFiles: (files: File[], options?: { insertAfterPageId?: string }) => Promise<PDFoxFile[]>; // Returns PDFoxFile
+    consumeFiles: (inputFileIds: FileId[], outputFiles: File[]) => Promise<PDFoxFile[]>; // Returns PDFoxFile
   }
 
   export interface StrictFileContextSelectors {
-    getFile: (id: FileId) => StirlingFile | undefined; // Returns StirlingFile
-    getFiles: (ids?: FileId[]) => StirlingFile[]; // Returns StirlingFile[]
-    isFilePinned: (file: StirlingFile) => boolean; // Must be StirlingFile
+    getFile: (id: FileId) => PDFoxFile | undefined; // Returns PDFoxFile
+    getFiles: (ids?: FileId[]) => PDFoxFile[]; // Returns PDFoxFile[]
+    isFilePinned: (file: PDFoxFile) => boolean; // Must be PDFoxFile
   }
 }
 

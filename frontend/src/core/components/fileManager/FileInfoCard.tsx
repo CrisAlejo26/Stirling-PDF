@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Stack, Card, Box, Text, Badge, Group, Divider, ScrollArea, Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { detectFileExtension, getFileSize } from '@app/utils/fileUtils';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import ToolChain from '@app/components/shared/ToolChain';
 import { PrivateContent } from '@app/components/shared/PrivateContent';
 import { useFileManagerContext } from '@app/contexts/FileManagerContext';
@@ -10,7 +10,7 @@ import ShareManagementModal from '@app/components/shared/ShareManagementModal';
 import { useAppConfig } from '@app/contexts/AppConfigContext';
 
 interface FileInfoCardProps {
-  currentFile: StirlingFileStub | null;
+  currentFile: PDFoxFileStub | null;
   modalHeight: string;
 }
 

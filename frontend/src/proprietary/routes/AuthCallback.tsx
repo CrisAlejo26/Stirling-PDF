@@ -35,7 +35,7 @@ export default function AuthCallback() {
       console.log(`[AuthCallback:${executionId}] Hash: ${window.location.hash}`);
       console.log(`[AuthCallback:${executionId}] Document readyState: ${document.readyState}`);
 
-      if (typeof window !== 'undefined' && window.sessionStorage.getItem('stirling_sso_auto_login_logged_out') === '1') {
+      if (typeof window !== 'undefined' && window.sessionStorage.getItem('pdfox_sso_auto_login_logged_out') === '1') {
         console.warn(`[AuthCallback:${executionId}] ⚠️  Logout block active, skipping token processing`);
         navigate('/login', {
           replace: true,
@@ -73,7 +73,7 @@ export default function AuthCallback() {
         console.log(`[AuthCallback:${executionId}] Step 2: Storing JWT in localStorage`);
 
         // Store JWT in localStorage
-        localStorage.setItem('stirling_jwt', token);
+        localStorage.setItem('pdfox_jwt', token);
         console.log(`[AuthCallback:${executionId}] ✓ JWT stored in localStorage`);
 
         console.log(`[AuthCallback:${executionId}] Step 3: Dispatching 'jwt-available' event`);
@@ -89,7 +89,7 @@ export default function AuthCallback() {
 
         if (error || !data.session) {
           console.error(`[AuthCallback:${executionId}] ❌ Failed to validate token:`, error);
-          localStorage.removeItem('stirling_jwt');
+          localStorage.removeItem('pdfox_jwt');
           navigate('/login', {
             replace: true,
             state: { error: 'OAuth login failed - invalid token.' }

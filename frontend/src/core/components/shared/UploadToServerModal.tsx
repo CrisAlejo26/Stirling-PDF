@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { alert } from '@app/components/toast';
 import { Z_INDEX_OVER_FILE_MANAGER_MODAL } from '@app/styles/zIndex';
-import type { StirlingFileStub } from '@app/types/fileContext';
+import type { PDFoxFileStub } from '@app/types/fileContext';
 import { uploadHistoryChain } from '@app/services/serverStorageUpload';
 import { fileStorage } from '@app/services/fileStorage';
 import { useFileActions } from '@app/contexts/FileContext';
@@ -14,7 +14,7 @@ import type { FileId } from '@app/types/file';
 interface UploadToServerModalProps {
   opened: boolean;
   onClose: () => void;
-  file: StirlingFileStub;
+  file: PDFoxFileStub;
   onUploaded?: () => Promise<void> | void;
 }
 
@@ -49,7 +49,7 @@ const UploadToServerModal: React.FC<UploadToServerModalProps> = ({
       );
 
       for (const stub of chain) {
-        actions.updateStirlingFileStub(stub.id, {
+        actions.updatePDFoxFileStub(stub.id, {
           remoteStorageId: storedId,
           remoteStorageUpdatedAt: updatedAt,
           remoteOwnedByCurrentUser: true,

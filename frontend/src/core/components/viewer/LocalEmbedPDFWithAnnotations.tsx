@@ -57,7 +57,7 @@ function InteractionPauseBridge({ bridgeRef }: {
   return null;
 }
 
-const DOCUMENT_NAME = 'stirling-pdf-signing-viewer';
+const DOCUMENT_NAME = 'pdfox-pdf-signing-viewer';
 
 export interface SignaturePreview {
   id: string;

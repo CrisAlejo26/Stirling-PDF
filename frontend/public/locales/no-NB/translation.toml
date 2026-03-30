@@ -594,7 +594,7 @@ description = "Konfigurer lagring og opprydding for midlertidige filer"
 label = "Håndtering av midlertidige filer"
 
 [admin.settings.advanced.tempFileManagement.baseTmpDir]
-description = "Basekatalog for midlertidige filer (la stå tomt for standard: java.io.tmpdir/stirling-pdf)"
+description = "Basekatalog for midlertidige filer (la stå tomt for standard: java.io.tmpdir/pdfox-pdf)"
 label = "Base temp-katalog"
 
 [admin.settings.advanced.tempFileManagement.cleanupIntervalMinutes]
@@ -874,11 +874,11 @@ description = "Konfigurer valgfrie funksjoner og funksjonalitet."
 title = "Funksjoner"
 
 [admin.settings.features.serverCertificate]
-description = "Konfigurer serverside-sertifikatgenerering for \"Signer med Stirling-PDF\"-funksjonalitet"
+description = "Konfigurer serverside-sertifikatgenerering for \"Signer med PDFox-PDF\"-funksjonalitet"
 label = "Serversertifikat"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Aktiver serverside-sertifikat for alternativet \"Signer med Stirling-PDF\""
+description = "Aktiver serverside-sertifikat for alternativet \"Signer med PDFox-PDF\""
 label = "Aktiver serversertifikat"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1026,7 +1026,7 @@ description = "URL eller filnavn til retningslinjer for informasjonskapsler"
 label = "Retningslinjer for informasjonskapsler"
 
 [admin.settings.legal.disclaimer]
-message = "Ved å tilpasse disse juridiske dokumentene påtar du deg fullt ansvar for å sikre samsvar med alle gjeldende lover og regler, inkludert, men ikke begrenset til, GDPR og andre EU-krav til databeskyttelse. Endre kun disse innstillingene hvis: (1) du driver en personlig/privat instans, (2) du er utenfor EU-jurisdiksjon og forstår dine lokale juridiske forpliktelser, eller (3) du har innhentet riktig juridisk rådgivning og aksepterer eneansvar for all brukerdata og juridisk etterlevelse. Stirling-PDF og dets utviklere påtar seg intet ansvar for dine juridiske forpliktelser."
+message = "Ved å tilpasse disse juridiske dokumentene påtar du deg fullt ansvar for å sikre samsvar med alle gjeldende lover og regler, inkludert, men ikke begrenset til, GDPR og andre EU-krav til databeskyttelse. Endre kun disse innstillingene hvis: (1) du driver en personlig/privat instans, (2) du er utenfor EU-jurisdiksjon og forstår dine lokale juridiske forpliktelser, eller (3) du har innhentet riktig juridisk rådgivning og aksepterer eneansvar for all brukerdata og juridisk etterlevelse. PDFox-PDF og dets utviklere påtar seg intet ansvar for dine juridiske forpliktelser."
 title = "Advarsel om juridisk ansvar"
 
 [admin.settings.legal.impressum]
@@ -1370,7 +1370,7 @@ description = "Når aktivert, kan kun listede bruker-ID-er bruke boten."
 label = "Tillat spesifikke bruker-ID-er"
 
 [admin.settings.telegram.enabled]
-description = "La brukere samhandle med Stirling PDF via din konfigurerte Telegram-bot."
+description = "La brukere samhandle med PDFox via din konfigurerte Telegram-bot."
 label = "Aktiver Telegram-bot"
 
 [admin.settings.telegram.feedback]
@@ -1447,7 +1447,7 @@ settingsOverview = "Dette er <strong>Innstillingspanelet</strong>. Admin-innstil
 systemCustomization = "Vi har omfattende måter å tilpasse UI-et på: <strong>System Settings</strong> lar deg endre appnavn og språk, <strong>Features</strong> muliggjør administrasjon av serversertifikater, og <strong>Endpoints</strong> lar deg aktivere eller deaktivere spesifikke verktøy for brukerne dine."
 teamsAndUsers = "Administrer <strong>Team</strong> og individuelle brukere her. Du kan invitere nye brukere via e-post, delbare lenker, eller opprette egendefinerte kontoer for dem selv."
 welcome = "Velkommen til <strong>Administrator-omvisningen</strong>! La oss utforske de kraftige bedriftsfunksjonene og innstillingene som er tilgjengelige for systemadministratorer."
-wrapUp = "Det var admin-omvisningen! Du har sett bedriftsfunksjonene som gjør Stirling PDF til en kraftig, tilpassbar løsning for organisasjoner. Åpne denne omvisningen når som helst fra <strong>Hjelp</strong>-menyen."
+wrapUp = "Det var admin-omvisningen! Du har sett bedriftsfunksjonene som gjør PDFox til en kraftig, tilpassbar løsning for organisasjoner. Åpne denne omvisningen når som helst fra <strong>Hjelp</strong>-menyen."
 
 [adminUserSettings]
 actions = "Handlinger"
@@ -1484,11 +1484,11 @@ webOnlyUser = "Kun Web Bruker"
 disable = "Deaktiver analyse"
 enable = "Aktiver analyse"
 learnMore = "Lær mer"
-paragraph1 = "Stirling PDF har valgfri analyse for å hjelpe oss med å forbedre produktet. Vi sporer ikke personlig informasjon eller filinnhold."
-paragraph2 = "Vennligst vurder å aktivere analyse for å hjelpe Stirling-PDF å vokse og for å la oss forstå brukerne våre bedre."
+paragraph1 = "PDFox har valgfri analyse for å hjelpe oss med å forbedre produktet. Vi sporer ikke personlig informasjon eller filinnhold."
+paragraph2 = "Vennligst vurder å aktivere analyse for å hjelpe PDFox-PDF å vokse og for å la oss forstå brukerne våre bedre."
 privacyAssurance = "Vi sporer ikke personopplysninger eller innholdet i filene dine."
 settings = "Du kan endre innstillingene for analyse i config/settings.yml filen"
-title = "Vill du gjøre Stirling PDF bedre?"
+title = "Vill du gjøre PDFox bedre?"
 
 [annotation]
 applyChanges = "Bruk endringer"
@@ -1867,7 +1867,7 @@ tags = "pdf,del,dokument,organisering"
 description = "Skriv ut, Sett inn, Skann, last opp, og la oss automatisk separere dokumentene dine. Ingen manuell sortering nødvendig."
 dividerDownload2 = "Last ned 'Auto Splitter Divider (med instruksjoner).pdf'"
 duplexMode = "Dupleksmodus (Front- og bakskanning)"
-formPrompt = "Send inn PDF som inneholder Stirling-PDF-sideskillere:"
+formPrompt = "Send inn PDF som inneholder PDFox-PDF-sideskillere:"
 header = "Automatisk Del PDF"
 submit = "Send inn"
 tags = "QR-basert,separere,skann-segment,organisere"
@@ -1876,7 +1876,7 @@ title = "Automatisk Del PDF"
 [autoSplitPDF.selectText]
 1 = "Skriv ut noen delingssider fra alternativene nedenfor (Svart-hvitt er greit)."
 2 = "Skann alle dokumentene samtidig ved å sette inn delingssiden mellom dem."
-3 = "Last opp den enkelte store skannede PDF-filen og la Stirling PDF håndtere resten."
+3 = "Last opp den enkelte store skannede PDF-filen og la PDFox håndtere resten."
 4 = "Delingssidene blir automatisk oppdaget og fjernet, og garanterer et pent endelig dokument."
 
 [backendHealth]
@@ -2176,7 +2176,7 @@ bullet1 = "Støtter PEM, PKCS12, JKS og serversertifikat-formater"
 bullet2 = "Valg for å vise eller skjule signaturen på PDF-en"
 bullet3 = "Legg til årsak, sted og underskrivers navn"
 bullet4 = "Velg hvilken side du vil plassere synlige signaturer på"
-bullet5 = "Bruk serversertifikat for enkel «Signer med Stirling-PDF»-mulighet"
+bullet5 = "Bruk serversertifikat for enkel «Signer med PDFox-PDF»-mulighet"
 text = "For å signere en PDF, trenger du et digitalt sertifikat (som PEM, PKCS12 eller JKS). Du kan velge å gjøre signaturen synlig på dokumentet eller holde den usynlig kun for sikkerhet."
 title = "Legge til signaturer"
 
@@ -2645,15 +2645,15 @@ upgradeButton = "Oppgrader konto"
 chartAriaLabel = "Kredittbruk: inkludert {{includedUsed}} av {{includedTotal}}, kjøpt {{purchasedUsed}} av {{purchasedTotal}}"
 copyKeyAriaLabel = "Kopier API-nøkkel"
 creditsRemaining = "Gjenstående kreditter"
-description = "API-nøkkelen din for tilgang til Stirlings pakke med PDF-verktøy. Kopier den til prosjektet ditt eller oppdater for å generere en ny."
-docsDescription = "Lær mer om integrasjon med Stirling PDF:"
+description = "API-nøkkelen din for tilgang til PDFoxs pakke med PDF-verktøy. Kopier den til prosjektet ditt eller oppdater for å generere en ny."
+docsDescription = "Lær mer om integrasjon med PDFox:"
 docsLink = "API-dokumentasjon"
 docsTitle = "API-dokumentasjon"
 generateError = "Vi kunne ikke generere API-nøkkelen din."
 goToAccount = "Gå til konto"
 guestInfo = "Gjestebrukere mottar ikke API-nøkler. Opprett en konto for å få en API-nøkkel du kan bruke i applikasjonene dine."
 includedCredits = "Inkluderte kreditter"
-intro = "Bruk API-nøkkelen din for programmatisk tilgang til Stirling PDF sine prosesseringsmuligheter."
+intro = "Bruk API-nøkkelen din for programmatisk tilgang til PDFox sine prosesseringsmuligheter."
 label = "API-nøkkel"
 lastApiUse = "Siste API-bruk"
 nextReset = "Neste tilbakestilling"
@@ -2697,7 +2697,7 @@ system = "Systemkonfigurasjon"
 [connectionMode.status]
 localOffline = "Frakoblet modus aktiv"
 localOnline = "Frakoblet modus aktiv"
-saas = "Tilkoblet Stirling Cloud"
+saas = "Tilkoblet PDFox Cloud"
 selfhostedChecking = "Tilkoblet selvhostet server (sjekker...)"
 selfhostedOffline = "Selvhostet server kan ikke nås"
 selfhostedOnline = "Tilkoblet selvhostet server"
@@ -2827,7 +2827,7 @@ showPreferencesBtn = "Administrer innstillinger"
 title = "Hvordan vi bruker informasjonskapsler"
 
 [cookieBanner.popUp.description]
-1 = "Vi bruker informasjonskapsler og andre teknologier for å gjøre Stirling PDF bedre for deg—som hjelper oss å forbedre verktøyene våre og fortsette å bygge funksjoner du vil like."
+1 = "Vi bruker informasjonskapsler og andre teknologier for å gjøre PDFox bedre for deg—som hjelper oss å forbedre verktøyene våre og fortsette å bygge funksjoner du vil like."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -2840,12 +2840,12 @@ subtitle = "Bruk av informasjonskapsler"
 title = "Senter for samtykkeinnstillinger"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Disse informasjonskapslene hjelper oss å forstå hvordan verktøyene våre brukes, slik at vi kan fokusere på å bygge funksjonene fellesskapet vårt verdsetter mest. Vær trygg—Stirling PDF kan ikke og vil aldri spore innholdet i dokumentene du jobber med."
+description = "Disse informasjonskapslene hjelper oss å forstå hvordan verktøyene våre brukes, slik at vi kan fokusere på å bygge funksjonene fellesskapet vårt verdsetter mest. Vær trygg—PDFox kan ikke og vil aldri spore innholdet i dokumentene du jobber med."
 title = "Analyse"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF bruker informasjonskapsler og lignende teknologier for å forbedre opplevelsen din og forstå hvordan verktøyene våre brukes. Dette hjelper oss å forbedre ytelsen, utvikle funksjonene du bryr deg om, og gi løpende støtte til brukerne våre."
-2 = "Stirling PDF kan ikke—og vil aldri—spore eller få tilgang til innholdet i dokumentene du bruker."
+1 = "PDFox bruker informasjonskapsler og lignende teknologier for å forbedre opplevelsen din og forstå hvordan verktøyene våre brukes. Dette hjelper oss å forbedre ytelsen, utvikle funksjonene du bryr deg om, og gi løpende støtte til brukerne våre."
+2 = "PDFox kan ikke—og vil aldri—spore eller få tilgang til innholdet i dokumentene du bruker."
 3 = "Personvernet ditt og tilliten din står i sentrum av det vi gjør."
 
 [cookieBanner.preferencesModal.necessary]
@@ -2943,7 +2943,7 @@ unexpectedError = "Det oppstod en feil under behandling av filen. Vennligst prø
 [defaultApp]
 description = "Du kan endre dette senere i systeminnstillingene."
 dismiss = "Avvis"
-message = "Vil du sette Stirling PDF som standard PDF-redigerer?"
+message = "Vil du sette PDFox som standard PDF-redigerer?"
 notNow = "Ikke nå"
 setDefault = "Sett som standard"
 title = "Sett som standard PDF-app"
@@ -2953,15 +2953,15 @@ message = "Kunne ikke angi standard PDF-behandler"
 title = "Feil"
 
 [defaultApp.prompt]
-message = "Gjør Stirling PDF til standardappen for å åpne PDF-filer."
+message = "Gjør PDFox til standardappen for å åpne PDF-filer."
 title = "Sett som standard PDF-redigerer"
 
 [defaultApp.settingsOpened]
-message = "Velg Stirling PDF i systeminnstillingene"
+message = "Velg PDFox i systeminnstillingene"
 title = "Innstillinger åpnet"
 
 [defaultApp.success]
-message = "Stirling PDF er nå din standard PDF-redigerer"
+message = "PDFox er nå din standard PDF-redigerer"
 title = "Standardapp satt"
 
 [editTableOfContents]
@@ -3098,9 +3098,9 @@ visitsTooltip = "Besøk: {0} ({1}% av totalen)"
 
 [enterpriseEdition]
 button = "Oppgrader til Pro"
-ssoAdvert = "Søker du etter flere administrerings funksjoner? Sjekk ut Stirling PDF Pro"
+ssoAdvert = "Søker du etter flere administrerings funksjoner? Sjekk ut PDFox Pro"
 warning = "Denne funksjonen er kun tilgjengelig for Pro-brukere."
-yamlAdvert = "Stirling PDF Pro støtter YAML-konfigurasjons filer og andre SSO funksjoner."
+yamlAdvert = "PDFox Pro støtter YAML-konfigurasjons filer og andre SSO funksjoner."
 
 [error]
 _value = "Feil"
@@ -3477,7 +3477,7 @@ multimedia = "Multimedia"
 dismiss = "Lukk banner"
 message = "Opprett en gratis konto for å lagre arbeidet ditt, få tilgang til flere funksjoner og støtte prosjektet."
 signUp = "Registrer deg gratis"
-title = "Du bruker Stirling PDF som gjest!"
+title = "Du bruker PDFox som gjest!"
 
 [home]
 alphabetical = "Alfabetisk"
@@ -3651,7 +3651,7 @@ tags = "kombiner,slå sammen,forene"
 title = "Slå sammen"
 
 [home.mobile]
-brandAlt = "Stirling PDF-logo"
+brandAlt = "PDFox-logo"
 openFiles = "Åpne filer"
 swipeHint = "Sveip til venstre eller høyre for å bytte visning"
 tools = "Verktøy"
@@ -3686,7 +3686,7 @@ tags = "organiser,omorganiser,endre rekkefølge"
 title = "Organiser"
 
 [home.pdfTextEditor]
-desc = "Gå gjennom og rediger Stirling PDF JSON-eksporter med gruppert tekstredigering og regenerering av PDF"
+desc = "Gå gjennom og rediger PDFox JSON-eksporter med gruppert tekstredigering og regenerering av PDF"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "PDF-tekstredigerer"
 
@@ -3892,7 +3892,7 @@ passwordTooShort = "Passordet må være minst 6 tegn"
 signIn = "Logg inn"
 validating = "Validerer invitasjon..."
 validationError = "Kunne ikke validere invitasjonslenken"
-welcome = "Velkommen til Stirling PDF"
+welcome = "Velkommen til PDFox"
 welcomeSubtitle = "Fullfør kontooppsettet for å komme i gang"
 welcomeTitle = "Du er invitert!"
 
@@ -3982,7 +3982,7 @@ sendResetLink = "Send tilbakestillingslenke"
 sessionExpired = "Økten din har utløpt. Logg inn på nytt."
 signin = "Logg inn"
 signInAnonymously = "Registrer deg som gjest"
-subtitle = "Logg inn igjen på Stirling PDF"
+subtitle = "Logg inn igjen på PDFox"
 signingIn = "Logger inn..."
 signinTitle = "Vennligst logg inn"
 signInWith = "Logg inn med"
@@ -4006,7 +4006,7 @@ subtitle = "Med over et dusin verktøy for å sladde, signere, lese og manipuler
 title = "Rediger PDF-er for å vise/sikre informasjonen du ønsker"
 
 [login.slides.overview]
-alt = "Stirling PDF-oversikt"
+alt = "PDFox-oversikt"
 subtitle = "En skyløsning for PDF med personvern i fokus som lar deg konvertere, signere, sladde og administrere dokumenter, samt 50+ andre kraftige verktøy."
 title = "Alt du trenger for PDF på ett sted."
 
@@ -4170,7 +4170,7 @@ message = "Autentiseringen var ikke vellykket. Du kan lukke dette vinduet og pr�
 title = "Autentisering mislyktes"
 
 [oauth.success]
-message = "Du kan lukke dette vinduet og gå tilbake til Stirling PDF."
+message = "Du kan lukke dette vinduet og gå tilbake til PDFox."
 title = "Autentisering vellykket"
 
 [ocr]
@@ -4294,7 +4294,7 @@ runButton = "Når verktøyet er konfigurert, lar denne knappen deg kjøre verkt�
 selectControls = "<strong>Høyrepanelet</strong> inneholder knapper for raskt å velge/fravelge alle aktive PDF-er, sammen med knapper for å endre appens tema eller språk."
 selectCropTool = "La oss velge <strong>Beskjær</strong>-verktøyet for å demonstrere hvordan du bruker et av verktøyene."
 startTour = "Start omvisning"
-startTourDescription = "Ta en guidet tur gjennom Stirling PDF sine nøkkelfunksjoner"
+startTourDescription = "Ta en guidet tur gjennom PDFox sine nøkkelfunksjoner"
 toolInterface = "Dette er <strong>Beskjær</strong>-verktøyets grensesnitt. Som du ser, er det ikke mye der fordi vi ikke har lagt til noen PDF-filer å jobbe med ennå."
 viewer = "<strong>Visning</strong> lar deg lese og kommentere PDF-ene dine."
 viewSwitcher = "Bruk disse kontrollene for å velge hvordan du vil vise PDF-ene dine."
@@ -4304,7 +4304,7 @@ wrapUp = "Da er du klar! Du har lært om hovedområdene i appen og hvordan du br
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "Når prøveperioden avsluttes, fortsetter du med gratisnivået vårt. Legg til en betalingsmetode for å beholde Pro-tilgang."
 afterTrialWithPayment = "Pro-abonnementet ditt begynner automatisk når prøveperioden slutter."
-body = "Du har full tilgang til Stirling PDF Pro-funksjoner under prøveperioden. Nyt ubegrensede konverteringer, større filstørrelser og prioritert behandling."
+body = "Du har full tilgang til PDFox Pro-funksjoner under prøveperioden. Nyt ubegrensede konverteringer, større filstørrelser og prioritert behandling."
 daysRemaining = "{{days}} dager igjen"
 daysRemainingSingular = "{{days}} dag igjen"
 title = "Din 30-dagers Pro-prøveperiode"
@@ -4319,13 +4319,13 @@ skipForNow = "Hopp over nå"
 skipTheTour = "Hopp over omvisningen"
 
 [onboarding.desktopInstall]
-body = "Stirling fungerer best som en skrivebordsapp. Du kan bruke den offline, få raskere tilgang til dokumenter og gjøre redigeringer lokalt på datamaskinen."
+body = "PDFox fungerer best som en skrivebordsapp. Du kan bruke den offline, få raskere tilgang til dokumenter og gjøre redigeringer lokalt på datamaskinen."
 title = "Last ned"
 titleWithOs = "Last ned for {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Når du aktiverer innloggingsmodus, kan du administrere brukere, konfigurere innstillinger og overvåke serverstatus. De første <strong>{{freeTierLimit}}</strong> på serveren din kan bruke Stirling gratis."
-adminBodyLoginEnabled = "Som admin kan du administrere brukere, konfigurere innstillinger og overvåke serverstatus. De første <strong>{{freeTierLimit}}</strong> på serveren din kan bruke Stirling gratis."
+adminBodyLoginDisabled = "Når du aktiverer innloggingsmodus, kan du administrere brukere, konfigurere innstillinger og overvåke serverstatus. De første <strong>{{freeTierLimit}}</strong> på serveren din kan bruke PDFox gratis."
+adminBodyLoginEnabled = "Som admin kan du administrere brukere, konfigurere innstillinger og overvåke serverstatus. De første <strong>{{freeTierLimit}}</strong> på serveren din kan bruke PDFox gratis."
 adminTitle = "Admin-oversikt"
 userBody = "Inviter teammedlemmer, tildel roller og hold dokumentene organiserte i et sikkert arbeidsområde. Aktiver innloggingsmodus når du er klar til å vokse utover solobruk."
 userTitle = "Planoversikt"
@@ -4334,16 +4334,16 @@ userTitle = "Planoversikt"
 message = "Applikasjonen har nylig gjennomgått betydelige endringer. Serveradministratorens oppmerksomhet kan være nødvendig. Bekreft rollen din for å fortsette."
 
 [onboarding.serverLicense]
-freeBody = "Vår <strong>Open-Core</strong>-lisensiering tillater opptil <strong>{{freeTierLimit}}</strong> brukere gratis per server. For å skalere uten avbrudd og få tidlig tilgang til vårt nye <strong>PDF-tekstredigeringsverktøy</strong>, anbefaler vi Stirling Server-planen – full redigering og <strong>ubegrensede plasser</strong> for $99/server/mnd."
+freeBody = "Vår <strong>Open-Core</strong>-lisensiering tillater opptil <strong>{{freeTierLimit}}</strong> brukere gratis per server. For å skalere uten avbrudd og få tidlig tilgang til vårt nye <strong>PDF-tekstredigeringsverktøy</strong>, anbefaler vi PDFox Server-planen – full redigering og <strong>ubegrensede plasser</strong> for $99/server/mnd."
 freeTitle = "Serverlisens"
-overLimitBody = "Lisensieringen vår tillater opptil <strong>{{freeTierLimit}}</strong> brukere gratis per server. Du har <strong>{{overLimitUserCopy}}</strong> Stirling-brukere. For å fortsette uten avbrudd, oppgrader til Stirling Server-planen – <strong>ubegrensede plasser</strong>, PDF-tekstredigering og full admin-kontroll for $99/server/mnd."
+overLimitBody = "Lisensieringen vår tillater opptil <strong>{{freeTierLimit}}</strong> brukere gratis per server. Du har <strong>{{overLimitUserCopy}}</strong> PDFox-brukere. For å fortsette uten avbrudd, oppgrader til PDFox Server-planen – <strong>ubegrensede plasser</strong>, PDF-tekstredigering og full admin-kontroll for $99/server/mnd."
 overLimitTitle = "Serverlisens kreves"
 seePlans = "Se planer →"
 skip = "Hopp over nå"
 upgrade = "Oppgrader nå →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 leveres med dusinvis av verktøy og et fornyet grensesnitt. Ta en rask omvisning for å se hva som er endret og hvor du finner funksjonene du trenger."
+body = "PDFox V2 leveres med dusinvis av verktøy og et fornyet grensesnitt. Ta en rask omvisning for å se hva som er endret og hvor du finner funksjonene du trenger."
 title = "Omvisningsoversikt"
 
 [onboarding.welcomeModal]
@@ -4352,11 +4352,11 @@ dontShowAgain = "Ikke vis igjen"
 helpHint = "Du kan alltid åpne denne omvisningen senere fra <strong>Hjelp</strong>-knappen nederst til venstre."
 maybeLater = "Kanskje senere"
 startTour = "Start omvisning"
-title = "Velkommen til Stirling PDF!"
+title = "Velkommen til PDFox!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF er nå klart for team i alle størrelser. Denne oppdateringen inkluderer et nytt oppsett, kraftige nye admin-funksjoner og vår mest etterspurte funksjon – <strong>Rediger tekst</strong>."
-title = "Velkommen til Stirling"
+body = "PDFox er nå klart for team i alle størrelser. Denne oppdateringen inkluderer et nytt oppsett, kraftige nye admin-funksjoner og vår mest etterspurte funksjon – <strong>Rediger tekst</strong>."
+title = "Velkommen til PDFox"
 
 [onboarding.whatsNew]
 activeFilesView = "Bruk Aktive filer for å se alt du har åpent og velge hva du vil jobbe med."
@@ -5250,7 +5250,7 @@ included = "Inkludert"
 name = "Gratis"
 
 [plan.licenseWarning]
-body = "Du har {{total}} brukere, men gratistier støtter bare {{limit}} per server. Oppgrader for å holde Stirling PDF i gang uten problemer."
+body = "Du har {{total}} brukere, men gratistier støtter bare {{limit}} per server. Oppgrader for å holde PDFox i gang uten problemer."
 cta = "Se planer"
 overLimit = "mer enn {{limit}}"
 title = "Grense for gratis selvhostet nådd"
@@ -6043,8 +6043,8 @@ hideTools = "Skjul utilgjengelige verktøy ▴"
 messageNoFallback = "Verktøy er utilgjengelige til serveren din er tilbake på nett."
 messageWithFallback = "Noen verktøy krever servertilkobling."
 showTools = "Vis utilgjengelige verktøy ▾"
-title = "Stirling-PDF-serveren din kan ikke nås"
-toolNotAvailableLocally = "Stirling-PDF-serveren din er frakoblet og \"{{endpoint}}\" er ikke tilgjengelig på det lokale backend."
+title = "PDFox-PDF-serveren din kan ikke nås"
+toolNotAvailableLocally = "PDFox-PDF-serveren din er frakoblet og \"{{endpoint}}\" er ikke tilgjengelig på det lokale backend."
 
 [session]
 expired = "Økten din har utløpt. Vennligst oppdater siden og prøv igjen."
@@ -6068,13 +6068,13 @@ user = "Logget inn som"
 
 [settings.connection.mode]
 local = "Kun lokalt"
-saas = "Stirling Cloud"
+saas = "PDFox Cloud"
 selfhosted = "Selvhostet"
 
 [settings.planBilling]
 currentPlan = "Gjeldende plan"
 loading = "Laster faktureringsinformasjon..."
-notAvailable = "Plan og fakturering er bare tilgjengelig når du er koblet til Stirling Cloud (SaaS-modus)."
+notAvailable = "Plan og fakturering er bare tilgjengelig når du er koblet til PDFox Cloud (SaaS-modus)."
 title = "Plan og fakturering"
 
 [settings.planBilling.billing]
@@ -6147,7 +6147,7 @@ autoUnzipFileLimitDescription = "Maksimalt antall filer å pakke ut fra ZIP"
 autoUnzipFileLimitTooltip = "Pakk bare ut hvis ZIP-en inneholder så mange filer eller færre. Sett høyere for å pakke ut større ZIP-er."
 autoUnzipTooltip = "Pakk automatisk ut ZIP-filer returnert fra API-operasjoner. Deaktiver for å beholde ZIP-filer intakte. Dette påvirker ikke automatiseringsarbeidsflyter."
 defaultPdfEditor = "Standard PDF-redigerer"
-defaultPdfEditorActive = "Stirling PDF er din standard PDF-redigerer"
+defaultPdfEditorActive = "PDFox er din standard PDF-redigerer"
 defaultPdfEditorChecking = "Sjekker..."
 defaultPdfEditorInactive = "En annen app er satt som standard"
 defaultPdfEditorSet = "Allerede standard"
@@ -6266,7 +6266,7 @@ title = "Arbeidsområde"
 title = "Team"
 
 [localMode]
-toolUnavailable = "Dette verktøyet krever en konto. Logg inn på Stirling Cloud eller koble til en selvhostet server for å bruke det."
+toolUnavailable = "Dette verktøyet krever en konto. Logg inn på PDFox Cloud eller koble til en selvhostet server for å bruke det."
 
 [localMode.banner]
 message = "Logg inn for å låse opp alle verktøy."
@@ -6278,14 +6278,14 @@ message = "Logg inn for å låse opp alle verktøy."
 signIn = "Logg inn"
 
 [setup]
-description = "Kom i gang ved å velge hvordan du vil bruke Stirling PDF"
-welcome = "Velkommen til Stirling PDF"
+description = "Kom i gang ved å velge hvordan du vil bruke PDFox"
+welcome = "Velkommen til PDFox"
 
 [setup.login]
 connectingTo = "Kobler til:"
 hideInstructions = "Skjul instruksjoner"
 skipSignIn = "Fortsett uten å logge inn"
-instructions = "Slik aktiverer du pålogging på din Stirling PDF-server:"
+instructions = "Slik aktiverer du pålogging på din PDFox-server:"
 instructionsEnvVar = "Sett miljøvariabelen:"
 instructionsOrYml = "Eller i settings.yml:"
 instructionsRestart = "Start deretter serveren på nytt for at endringene skal tre i kraft."
@@ -6318,16 +6318,16 @@ label = "Brukernavn"
 placeholder = "Skriv inn brukernavnet ditt"
 
 [setup.mode.saas]
-description = "Logg inn med Stirling-kontoen din"
-title = "Stirling Cloud"
+description = "Logg inn med PDFox-kontoen din"
+title = "PDFox Cloud"
 
 [setup.mode.selfhosted]
-description = "Koble til din egen Stirling PDF-server"
+description = "Koble til din egen PDFox-server"
 title = "Selvhostet server"
 
 [setup.saas]
-subtitle = "Logg inn med Stirling-kontoen din"
-title = "Logg inn i Stirling"
+subtitle = "Logg inn med PDFox-kontoen din"
+title = "Logg inn i PDFox"
 
 [setup.selfhosted]
 link = "eller koble til en selvhostet konto"
@@ -6363,11 +6363,11 @@ step3 = "Start serveren på nytt"
 title = "Innlogging ikke aktivert"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "PDFox SaaS"
 selfhosted = "Selvhostet server"
 
 [setup.server.url]
-description = "Skriv inn full URL til din selvhostede Stirling PDF-server"
+description = "Skriv inn full URL til din selvhostede PDFox-server"
 label = "Server-URL"
 
 [setup.step1]
@@ -6552,7 +6552,7 @@ passwordsDoNotMatch = "Passordene samsvarer ikke"
 passwordTooShort = "Passordet må være minst 6 tegn langt"
 pleaseFillAllFields = "Vennligst fyll inn alle feltene"
 signUp = "Registrer deg"
-subtitle = "Bli med i Stirling PDF for å komme i gang"
+subtitle = "Bli med i PDFox for å komme i gang"
 title = "Opprett en konto"
 unexpectedError = "Uventet feil: {{message}}"
 useEmailInstead = "Bruk e-post i stedet"
@@ -6830,28 +6830,28 @@ trialing = "Prøve"
 
 [survey]
 button = "Ta undersøkelsen"
-changes = "Stirling-PDF har endret seg siden forrige undersøkelse! For å finne ut mer, se blogginnlegget vårt her:"
+changes = "PDFox-PDF har endret seg siden forrige undersøkelse! For å finne ut mer, se blogginnlegget vårt her:"
 changes2 = "Med disse endringene får vi betalt forretningsstøtte og finansiering"
-description = "Stirling-PDF har ingen sporing, så vi vil høre fra brukerne våre for å forbedre Stirling-PDF!"
+description = "PDFox-PDF har ingen sporing, så vi vil høre fra brukerne våre for å forbedre PDFox-PDF!"
 disabled = "(Undersøkelses-popup vil bli deaktivert i kommende oppdateringer, men tilgjengelig nederst på siden)"
 dontShowAgain = "Ikke vis igjen"
 nav = "Undersøkelse"
 please = "Please consider taking our survey!"
-title = "Stirling-PDF-undersøkelse"
+title = "PDFox-PDF-undersøkelse"
 
 [survey.meeting]
-1 = "Hvis du bruker Stirling PDF på jobb, vil vi gjerne snakke med deg. Vi tilbyr tekniske støttesesjoner i bytte mot en 15-minutters brukerinnsiktssamtale."
+1 = "Hvis du bruker PDFox på jobb, vil vi gjerne snakke med deg. Vi tilbyr tekniske støttesesjoner i bytte mot en 15-minutters brukerinnsiktssamtale."
 2 = "Dette er en mulighet til å:"
 3 = "Få hjelp med utrulling, integrasjoner eller feilsøking"
 4 = "Gi direkte tilbakemelding på ytelse, randtilfeller og funksjonsmangler"
-5 = "Hjelpe oss med å forbedre Stirling PDF for bruk i virkelige virksomheter"
+5 = "Hjelpe oss med å forbedre PDFox for bruk i virkelige virksomheter"
 6 = "Hvis du er interessert, kan du booke tid direkte med teamet vårt. (Kun engelskspråklig)"
-7 = "Vi ser frem til å lære mer om dine brukstilfeller og gjøre Stirling PDF enda bedre!"
+7 = "Vi ser frem til å lære mer om dine brukstilfeller og gjøre PDFox enda bedre!"
 button = "Book møte"
 notInterested = "Ikke en bedrift og/eller interessert i et møte?"
 
 [swagger]
-desc = "Vis og test Stirling PDF API-endepunkter"
+desc = "Vis og test PDFox API-endepunkter"
 header = "API-dokumentasjon"
 tags = "api,dokumentasjon,swagger,endepunkter,utvikling"
 title = "API-dokumentasjon"
@@ -6875,7 +6875,7 @@ favorites = "Favoritter"
 heading = "Alle verktøy (fullskjermsvisning)"
 noResults = "Prøv å justere søket eller slå av/på beskrivelser for å finne det du trenger."
 recommended = "Anbefalt"
-selfHostedOffline = "Krever Stirling-PDF-serveren din (for øyeblikket frakoblet):"
+selfHostedOffline = "Krever PDFox-PDF-serveren din (for øyeblikket frakoblet):"
 showDetails = "Vis detaljer"
 unavailable = "Deaktivert av serveradministrator:"
 unavailableDependency = "Utilgjengelig – nødvendig verktøy mangler på serveren:"
@@ -6884,7 +6884,7 @@ unfavorite = "Fjern fra favoritter"
 [toolPanel.modePrompt]
 chooseFullscreen = "Bruk fullskjerm-modus"
 chooseSidebar = "Bruk sidepanel-modus"
-description = "Forhåndsvis begge oppsett og bestem hvordan du vil utforske Stirling PDF-verktøyene."
+description = "Forhåndsvis begge oppsett og bestem hvordan du vil utforske PDFox-verktøyene."
 dismiss = "Kanskje senere"
 fullscreenDescription = "Bla gjennom alle verktøy i en katalog som dekker arbeidsområdet til du velger ett."
 fullscreenTitle = "Fullskjerm-modus - (eldre)"
@@ -6984,7 +6984,7 @@ attentionBody = "Adminen din må logge inn for å se mer info. Kontakt dem umidd
 attentionBodyAdmin = "Gå gjennom lisenskravene for å holde denne serveren i samsvar."
 attentionTitle = "Denne serveren trenger admin-oppmerksomhet"
 dismiss = "Avvis banner"
-message = "Få mest mulig ut av Stirling PDF med ubegrensede brukere og avanserte funksjoner"
+message = "Få mest mulig ut av PDFox med ubegrensede brukere og avanserte funksjoner"
 seeInfo = "Se info"
 title = "Oppgrader til Server-planen"
 upgradeButton = "Oppgrader nå"
@@ -7106,7 +7106,7 @@ continued = "Fortsatt"
 downloads = "Nedlastinger"
 entryLabel = "Signaturoppsummering"
 filesEvaluated = "{{count}} filer evaluert"
-footer = "Validert via Stirling PDF"
+footer = "Validert via PDFox"
 generatedAt = "Generert"
 noPdf = "PDF-rapport vil være tilgjengelig etter en vellykket validering."
 page = "Side"

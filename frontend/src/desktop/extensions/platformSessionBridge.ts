@@ -1,4 +1,4 @@
-import { STIRLING_SAAS_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_URL } from '@app/constants/connection';
 import { connectionModeService } from '@app/services/connectionModeService';
 import { authService } from '@app/services/authService';
 import type { PlatformSessionUser } from '@proprietary/extensions/platformSessionBridge';
@@ -34,7 +34,7 @@ export async function refreshPlatformSession(): Promise<boolean> {
   try {
     const mode = await connectionModeService.getCurrentMode();
     if (mode === 'saas') {
-      return await authService.refreshSupabaseToken(STIRLING_SAAS_URL);
+      return await authService.refreshSupabaseToken(PDFOX_SAAS_URL);
     } else if (mode === 'selfhosted') {
       const serverConfig = await connectionModeService.getServerConfig();
       if (!serverConfig) {

@@ -1,5 +1,5 @@
 import type { FileId } from '@app/types/file';
-import type { StirlingFile } from '@app/types/fileContext';
+import type { PDFoxFile } from '@app/types/fileContext';
 
 export type CompareDiffTokenType = 'unchanged' | 'removed' | 'added';
 
@@ -303,8 +303,8 @@ export interface CompareWorkbenchData {
   onSelectBase?: (fileId: FileId | null) => void;
   onSelectComparison?: (fileId: FileId | null) => void;
   isLoading?: boolean;
-  baseLocalFile?: StirlingFile | null;
-  comparisonLocalFile?: StirlingFile | null;
+  baseLocalFile?: PDFoxFile | null;
+  comparisonLocalFile?: PDFoxFile | null;
 }
 
 export interface CompareChangeOption {

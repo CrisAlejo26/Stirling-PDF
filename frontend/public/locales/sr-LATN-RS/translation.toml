@@ -594,7 +594,7 @@ description = "Podesite skladištenje privremenih datoteka i ponašanje čišće
 label = "Upravljanje privremenim datotekama"
 
 [admin.settings.advanced.tempFileManagement.baseTmpDir]
-description = "Osnovni direktorijum za privremene datoteke (ostavite prazno za podrazumevano: java.io.tmpdir/stirling-pdf)"
+description = "Osnovni direktorijum za privremene datoteke (ostavite prazno za podrazumevano: java.io.tmpdir/pdfox-pdf)"
 label = "Osnovni direktorijum za privremene datoteke"
 
 [admin.settings.advanced.tempFileManagement.cleanupIntervalMinutes]
@@ -874,11 +874,11 @@ description = "Podesite opcione funkcije i funkcionalnosti."
 title = "Funkcije"
 
 [admin.settings.features.serverCertificate]
-description = "Podesite generisanje serverskog sertifikata za funkcionalnost \"Sign with Stirling-PDF\""
+description = "Podesite generisanje serverskog sertifikata za funkcionalnost \"Sign with PDFox-PDF\""
 label = "Serverski sertifikat"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Omogući serverski sertifikat za opciju \"Sign with Stirling-PDF\""
+description = "Omogući serverski sertifikat za opciju \"Sign with PDFox-PDF\""
 label = "Omogući serverski sertifikat"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1026,7 +1026,7 @@ description = "URL ili naziv datoteke do politike kolačića"
 label = "Politika kolačića"
 
 [admin.settings.legal.disclaimer]
-message = "Prilagođavanjem ovih pravnih dokumenata preuzimate punu odgovornost za obezbeđivanje usklađenosti sa svim primenjivim zakonima i propisima, uključujući, ali ne ograničavajući se na GDPR i druge EU zahteve zaštite podataka. Menjajte ova podešavanja samo ako: (1) upravljate ličnom/privatnom instancom, (2) nalazite se van jurisdikcije EU i razumete svoje lokalne pravne obaveze, ili (3) ste pribavili odgovarajući pravni savet i prihvatate punu odgovornost za sve korisničke podatke i pravnu usklađenost. Stirling-PDF i njegovi developeri ne snose odgovornost za vaše pravne obaveze."
+message = "Prilagođavanjem ovih pravnih dokumenata preuzimate punu odgovornost za obezbeđivanje usklađenosti sa svim primenjivim zakonima i propisima, uključujući, ali ne ograničavajući se na GDPR i druge EU zahteve zaštite podataka. Menjajte ova podešavanja samo ako: (1) upravljate ličnom/privatnom instancom, (2) nalazite se van jurisdikcije EU i razumete svoje lokalne pravne obaveze, ili (3) ste pribavili odgovarajući pravni savet i prihvatate punu odgovornost za sve korisničke podatke i pravnu usklađenost. PDFox-PDF i njegovi developeri ne snose odgovornost za vaše pravne obaveze."
 title = "Upozorenje o pravnoj odgovornosti"
 
 [admin.settings.legal.impressum]
@@ -1370,7 +1370,7 @@ description = "Kada je omogućeno, samo navedeni ID-jevi korisnika mogu koristit
 label = "Dozvoli određene ID-jeve korisnika"
 
 [admin.settings.telegram.enabled]
-description = "Omogućava korisnicima interakciju sa Stirling PDF putem vašeg podešenog Telegram bota."
+description = "Omogućava korisnicima interakciju sa PDFox putem vašeg podešenog Telegram bota."
 label = "Omogući Telegram bot"
 
 [admin.settings.telegram.feedback]
@@ -1447,7 +1447,7 @@ settingsOverview = "Ovo je <strong>Panel podešavanja</strong>. Admin podešavan
 systemCustomization = "Postoje široke mogućnosti prilagođavanja UI-ja: <strong>System Settings</strong> vam omogućavaju promenu imena aplikacije i jezika, <strong>Features</strong> omogućava upravljanje sertifikatima servera, a <strong>Endpoints</strong> omogućava uključivanje ili isključivanje pojedinačnih alata za vaše korisnike."
 teamsAndUsers = "Ovde upravljajte <strong>timovima</strong> i pojedinačnim korisnicima. Možete pozvati nove korisnike emailom, deljivim linkovima ili im sami kreirati naloge."
 welcome = "Dobrodošli u <strong>Admin turu</strong>! Hajde da istražimo moćne enterprise funkcije i podešavanja dostupna sistemskim administratorima."
-wrapUp = "To je bila admin tura! Videli ste enterprise funkcije koje čine Stirling PDF moćnim, prilagodljivim rešenjem za organizacije. Ovoj turi možete pristupiti uvek preko menija <strong>Pomoć</strong>."
+wrapUp = "To je bila admin tura! Videli ste enterprise funkcije koje čine PDFox moćnim, prilagodljivim rešenjem za organizacije. Ovoj turi možete pristupiti uvek preko menija <strong>Pomoć</strong>."
 
 [adminUserSettings]
 actions = "Akcije"
@@ -1484,11 +1484,11 @@ webOnlyUser = "Korisnik samo za web"
 disable = "Onemogući analitiku"
 enable = "Omogući analitiku"
 learnMore = "Saznaj više"
-paragraph1 = "Stirling PDF ima opcioni sistem analitike koji nam pomaže da unapredimo proizvod. Ne pratimo nikakve lične podatke niti sadržaj fajlova."
-paragraph2 = "Molimo te da razmotriš uključivanje analitike kako bi pomogao Stirling PDF-u da raste i omogućio nam bolje razumevanje naših korisnika."
+paragraph1 = "PDFox ima opcioni sistem analitike koji nam pomaže da unapredimo proizvod. Ne pratimo nikakve lične podatke niti sadržaj fajlova."
+paragraph2 = "Molimo te da razmotriš uključivanje analitike kako bi pomogao PDFox-u da raste i omogućio nam bolje razumevanje naših korisnika."
 privacyAssurance = "Ne pratimo nikakve lične podatke niti sadržaj vaših fajlova."
 settings = "Možeš da promeniš podešavanja za analitiku u config/settings.yml datoteci"
-title = "Želiš li da učiniš Stirling PDF boljim?"
+title = "Želiš li da učiniš PDFox boljim?"
 
 [annotation]
 applyChanges = "Primeni izmene"
@@ -1867,7 +1867,7 @@ tags = "pdf,delenje,dokumenti,organizacija"
 description = "Štampajte, umetnite, skenirajte, učitajte i dozvolite nam da automatski razdvojimo vaše dokumente. Nije potrebno ručno sortiranje."
 dividerDownload2 = "Preuzmi 'Auto Splitter Divider (sa uputstvima).pdf'"
 duplexMode = "Dupleks režim (skeniranje prednje i zadnje strane)"
-formPrompt = "Potvrdite PDF koji sadrži Stirling-PDF listove razdeljivača:"
+formPrompt = "Potvrdite PDF koji sadrži PDFox-PDF listove razdeljivača:"
 header = "Automatsko Deljenje PDF-a"
 submit = "Potvrdi"
 tags = "QR-bazirano,razdvoji,segment-skeniranja,organizacija"
@@ -1876,7 +1876,7 @@ title = "Automatsko Deljenje PDF-a"
 [autoSplitPDF.selectText]
 1 = "Odštampajte nekoliko listova razdeljivača ispod (Crno-belo je u redu)."
 2 = "Skenirajte sve vaše dokumente odjednom, ubacivanjem lista razdeljivača između njih."
-3 = "Učitajte jedan veliki skenirani PDF fajl i dozvolite Stirling PDF-u da obavi ostalo."
+3 = "Učitajte jedan veliki skenirani PDF fajl i dozvolite PDFox-u da obavi ostalo."
 4 = "Listovi razdeljivača se automatski detektuju i uklanjaju, obezbeđujući uredan konačni dokument."
 
 [backendHealth]
@@ -2176,7 +2176,7 @@ bullet1 = "Podržava PEM, PKCS12, JKS i formate serverskog sertifikata"
 bullet2 = "Opcija da prikažete ili sakrijete potpis na PDF-u"
 bullet3 = "Dodajte razlog, lokaciju i ime potpisnika"
 bullet4 = "Izaberite na kojoj strani da postavite vidljive potpise"
-bullet5 = "Koristite serverski sertifikat za jednostavnu opciju 'Potpiši sa Stirling-PDF'"
+bullet5 = "Koristite serverski sertifikat za jednostavnu opciju 'Potpiši sa PDFox-PDF'"
 text = "Za potpisivanje PDF-a potreban je digitalni sertifikat (kao PEM, PKCS12 ili JKS). Možete izabrati da potpis bude vidljiv na dokumentu ili da bude nevidljiv samo radi bezbednosti."
 title = "Dodavanje potpisa"
 
@@ -2645,15 +2645,15 @@ upgradeButton = "Nadogradi nalog"
 chartAriaLabel = "Upotreba kredita: uključeno {{includedUsed}} od {{includedTotal}}, kupljeno {{purchasedUsed}} od {{purchasedTotal}}"
 copyKeyAriaLabel = "Kopiraj API ključ"
 creditsRemaining = "Preostali krediti"
-description = "Vaš API ključ za pristup Stirlingovom paketu PDF alata. Kopirajte ga u svoj projekat ili osvežite da generišete novi."
-docsDescription = "Saznajte više o integraciji sa Stirling PDF:"
+description = "Vaš API ključ za pristup PDFoxovom paketu PDF alata. Kopirajte ga u svoj projekat ili osvežite da generišete novi."
+docsDescription = "Saznajte više o integraciji sa PDFox:"
 docsLink = "API dokumentacija"
 docsTitle = "API dokumentacija"
 generateError = "Nismo mogli da generišemo vaš API ključ."
 goToAccount = "Idi na nalog"
 guestInfo = "Gosti ne dobijaju API ključeve. Napravite nalog da biste dobili API ključ koji možete koristiti u svojim aplikacijama."
 includedCredits = "Uključeni krediti"
-intro = "Koristite svoj API ključ za programski pristup mogućnostima obrade koje nudi Stirling PDF."
+intro = "Koristite svoj API ključ za programski pristup mogućnostima obrade koje nudi PDFox."
 label = "API ključ"
 lastApiUse = "Poslednja upotreba API-ja"
 nextReset = "Sledeći reset"
@@ -2697,7 +2697,7 @@ system = "Sistemska konfiguracija"
 [connectionMode.status]
 localOffline = "Režim van mreže je aktivan"
 localOnline = "Režim van mreže je aktivan"
-saas = "Povezano sa Stirling Cloud"
+saas = "Povezano sa PDFox Cloud"
 selfhostedChecking = "Povezano na samohostovani server (provera...)"
 selfhostedOffline = "Samohostovani server je nedostupan"
 selfhostedOnline = "Povezano na samohostovani server"
@@ -2827,7 +2827,7 @@ showPreferencesBtn = "Upravljaj podešavanjima"
 title = "Kako koristimo kolačiće"
 
 [cookieBanner.popUp.description]
-1 = "Koristimo kolačiće i druge tehnologije kako bismo poboljšali rad Stirling PDF-a — pomažući nam da unapredimo naše alate i nastavimo da razvijamo funkcije koje ćete voleti."
+1 = "Koristimo kolačiće i druge tehnologije kako bismo poboljšali rad PDFox-a — pomažući nam da unapredimo naše alate i nastavimo da razvijamo funkcije koje ćete voleti."
 2 = "If you’d rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -2840,12 +2840,12 @@ subtitle = "Korišćenje kolačića"
 title = "Centar za podešavanja saglasnoti"
 
 [cookieBanner.preferencesModal.analytics]
-description = "Ovi kolačići nam pomažu da razumemo kako se naši alati koriste, kako bismo mogli da se fokusiramo na razvoj funkcija koje naša zajednica najviše ceni. Budite sigurni — Stirling PDF ne može i nikada neće pratiti sadržaj dokumenata sa kojima radite."
+description = "Ovi kolačići nam pomažu da razumemo kako se naši alati koriste, kako bismo mogli da se fokusiramo na razvoj funkcija koje naša zajednica najviše ceni. Budite sigurni — PDFox ne može i nikada neće pratiti sadržaj dokumenata sa kojima radite."
 title = "Analitika"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF koristi kolačiće i slične tehnologije kako bi poboljšao vaše iskustvo i razumeo kako se naši alati koriste. Ovo nam pomaže da unapredimo performanse, razvijamo funkcije koje su vam važne i pružimo kontinuiranu podršku našim korisnicima."
-2 = "Stirling PDF ne može — i nikada neće — pratiti ili pristupati sadržaju dokumenata koje koristite."
+1 = "PDFox koristi kolačiće i slične tehnologije kako bi poboljšao vaše iskustvo i razumeo kako se naši alati koriste. Ovo nam pomaže da unapredimo performanse, razvijamo funkcije koje su vam važne i pružimo kontinuiranu podršku našim korisnicima."
+2 = "PDFox ne može — i nikada neće — pratiti ili pristupati sadržaju dokumenata koje koristite."
 3 = "Vaša privatnost i poverenje su osnovni principi našeg rada."
 
 [cookieBanner.preferencesModal.necessary]
@@ -2943,7 +2943,7 @@ unexpectedError = "Došle je do greške prilikom obrade datoteke. Pokušaj ponov
 [defaultApp]
 description = "Kasnije možete promeniti u podešavanjima sistema."
 dismiss = "Odbaci"
-message = "Želite li da postavite Stirling PDF kao podrazumevani PDF uređivač?"
+message = "Želite li da postavite PDFox kao podrazumevani PDF uređivač?"
 notNow = "Ne sada"
 setDefault = "Postavi podrazumevano"
 title = "Postavi kao podrazumevanu PDF aplikaciju"
@@ -2953,15 +2953,15 @@ message = "Neuspešno postavljanje podrazumevanog PDF rukovaoca"
 title = "Greška"
 
 [defaultApp.prompt]
-message = "Postavite Stirling PDF kao podrazumevanu aplikaciju za otvaranje PDF fajlova."
+message = "Postavite PDFox kao podrazumevanu aplikaciju za otvaranje PDF fajlova."
 title = "Postavi kao podrazumevani PDF uređivač"
 
 [defaultApp.settingsOpened]
-message = "Molimo izaberite Stirling PDF u podešavanjima sistema"
+message = "Molimo izaberite PDFox u podešavanjima sistema"
 title = "Podešavanja otvorena"
 
 [defaultApp.success]
-message = "Stirling PDF je sada vaš podrazumevani PDF uređivač"
+message = "PDFox je sada vaš podrazumevani PDF uređivač"
 title = "Podrazumevana aplikacija postavljena"
 
 [editTableOfContents]
@@ -3098,9 +3098,9 @@ visitsTooltip = "Poseta: {0} ({1}% od ukupno)"
 
 [enterpriseEdition]
 button = "Nadogradi na Pro verziju"
-ssoAdvert = "Tražiš još funkcija za upravljanje korisnicima? Razmotri Stirling PDF Pro"
+ssoAdvert = "Tražiš još funkcija za upravljanje korisnicima? Razmotri PDFox Pro"
 warning = "Ova funkcija je dostupna samo Pro korisnicima."
-yamlAdvert = "Stirling PDF Pro podržava YAML konfiguracione datoteke i druge SSO funkcionalnosti."
+yamlAdvert = "PDFox Pro podržava YAML konfiguracione datoteke i druge SSO funkcionalnosti."
 
 [error]
 _value = "Greška"
@@ -3477,7 +3477,7 @@ multimedia = "Multimedija"
 dismiss = "Zatvori baner"
 message = "Kreirajte besplatan nalog da sačuvate svoj rad, pristupite dodatnim funkcijama i podržite projekat."
 signUp = "Registruj se besplatno"
-title = "Koristite Stirling PDF kao gost!"
+title = "Koristite PDFox kao gost!"
 
 [home]
 alphabetical = "Abecedno"
@@ -3651,7 +3651,7 @@ tags = "spoji,pridruži,ujedini"
 title = "Spajanje"
 
 [home.mobile]
-brandAlt = "logo Stirling PDF"
+brandAlt = "logo PDFox"
 openFiles = "Otvori datoteke"
 swipeHint = "Prevucite levo ili desno da biste promenili prikaz"
 tools = "Alati"
@@ -3686,7 +3686,7 @@ tags = "organizuj,preuredi,redosled"
 title = "Organizacija"
 
 [home.pdfTextEditor]
-desc = "Pregledajte i uređujte Stirling PDF JSON izvoze uz grupisano uređivanje teksta i ponovno generisanje PDF-a"
+desc = "Pregledajte i uređujte PDFox JSON izvoze uz grupisano uređivanje teksta i ponovno generisanje PDF-a"
 tags = "edit text,modify text,change text,edit content,update text,rewrite,correct,amend,redline,revise,text editor,content editor"
 title = "PDF uređivač teksta"
 
@@ -3892,7 +3892,7 @@ passwordTooShort = "Lozinka mora imati najmanje 6 karaktera"
 signIn = "Prijavite se"
 validating = "Validacija poziva..."
 validationError = "Nije uspela validacija pozivnog linka"
-welcome = "Dobrodošli u Stirling PDF"
+welcome = "Dobrodošli u PDFox"
 welcomeSubtitle = "Dovršite podešavanje naloga da biste počeli"
 welcomeTitle = "Pozvani ste!"
 
@@ -3982,7 +3982,7 @@ sendResetLink = "Pošalji link za resetovanje"
 sessionExpired = "Vaša sesija je istekla. Prijavite se ponovo."
 signin = "Prijavite se"
 signInAnonymously = "Prijava kao gost"
-subtitle = "Ponovo se prijavite na Stirling PDF"
+subtitle = "Ponovo se prijavite na PDFox"
 signingIn = "Prijavljivanje..."
 signinTitle = "Molimo vas da se prijavite"
 signInWith = "Prijavite se pomoću"
@@ -4006,7 +4006,7 @@ subtitle = "Uz više od desetak alata za zatamnjivanje, potpisivanje, čitanje i
 title = "Uredite PDF dokumente da prikažete/zaštitite informacije koje želite"
 
 [login.slides.overview]
-alt = "Pregled Stirling PDF"
+alt = "Pregled PDFox"
 subtitle = "Cloud paket sa privatnošću na prvom mestu za PDF dokumente koji omogućava konvertovanje, potpisivanje, zatamnjivanje i upravljanje dokumentima, uz 50+ drugih moćnih alata."
 title = "Sve na jednom mestu za sve vaše PDF potrebe."
 
@@ -4170,7 +4170,7 @@ message = "Autentikacija nije uspela. Možete zatvoriti ovaj prozor i pokušati 
 title = "Autentikacija neuspešna"
 
 [oauth.success]
-message = "Možete zatvoriti ovaj prozor i vratiti se u Stirling PDF."
+message = "Možete zatvoriti ovaj prozor i vratiti se u PDFox."
 title = "Autentikacija uspešna"
 
 [ocr]
@@ -4294,7 +4294,7 @@ runButton = "Kada je alat podešen, ovo dugme omogućava pokretanje alata na svi
 selectControls = "<strong>Right Rail</strong> sadrži dugmad za brzo označavanje/poništavanje svih aktivnih PDF-ova, kao i dugmad za promenu teme ili jezika aplikacije."
 selectCropTool = "Hajde da izaberemo alat <strong>Crop</strong> da pokažemo kako se koristi jedan od alata."
 startTour = "Započni turu"
-startTourDescription = "Krenite u vođenu turu kroz ključne funkcije Stirling PDF-a"
+startTourDescription = "Krenite u vođenu turu kroz ključne funkcije PDFox-a"
 toolInterface = "Ovo je interfejs alata <strong>Crop</strong>. Kao što vidite, nema mnogo toga jer još nismo dodali nijedan PDF fajl za rad."
 viewer = "<strong>Viewer</strong> vam omogućava da čitate i pravite beleške na svojim PDF-ovima."
 viewSwitcher = "Koristite ove kontrole da izaberete kako želite da pregledate svoje PDF-ove."
@@ -4304,7 +4304,7 @@ wrapUp = "Spremni ste! Naučili ste o glavnim delovima aplikacije i kako da ih k
 [onboarding.freeTrial]
 afterTrialWithoutPayment = "Nakon isteka probe, nastavićete sa besplatnim nivoom. Dodajte način plaćanja da biste zadržali Pro pristup."
 afterTrialWithPayment = "Vaša Pro pretplata će automatski početi po završetku probe."
-body = "Tokom probnog perioda imate potpuni pristup Stirling PDF Pro funkcijama. Uživajte u neograničenim konverzijama, većim veličinama datoteka i prioritetnoj obradi."
+body = "Tokom probnog perioda imate potpuni pristup PDFox Pro funkcijama. Uživajte u neograničenim konverzijama, većim veličinama datoteka i prioritetnoj obradi."
 daysRemaining = "{{days}} dana preostalo"
 daysRemainingSingular = "{{days}} dan preostao"
 title = "Vaš 30-dnevni Pro probni period"
@@ -4319,13 +4319,13 @@ skipForNow = "Preskoči za sada"
 skipTheTour = "Preskoči obilazak"
 
 [onboarding.desktopInstall]
-body = "Stirling najbolje radi kao desktop aplikacija. Možete je koristiti offline, brže pristupati dokumentima i praviti izmene lokalno na računaru."
+body = "PDFox najbolje radi kao desktop aplikacija. Možete je koristiti offline, brže pristupati dokumentima i praviti izmene lokalno na računaru."
 title = "Preuzmi"
 titleWithOs = "Preuzmi za {{osLabel}}"
 
 [onboarding.planOverview]
-adminBodyLoginDisabled = "Kada omogućite režim prijave, možete upravljati korisnicima, podešavati opcije i pratiti stanje servera. Prvih <strong>{{freeTierLimit}}</strong> ljudi na vašem serveru koristi Stirling besplatno."
-adminBodyLoginEnabled = "Kao admin, možete upravljati korisnicima, podešavati opcije i pratiti stanje servera. Prvih <strong>{{freeTierLimit}}</strong> ljudi na vašem serveru koristi Stirling besplatno."
+adminBodyLoginDisabled = "Kada omogućite režim prijave, možete upravljati korisnicima, podešavati opcije i pratiti stanje servera. Prvih <strong>{{freeTierLimit}}</strong> ljudi na vašem serveru koristi PDFox besplatno."
+adminBodyLoginEnabled = "Kao admin, možete upravljati korisnicima, podešavati opcije i pratiti stanje servera. Prvih <strong>{{freeTierLimit}}</strong> ljudi na vašem serveru koristi PDFox besplatno."
 adminTitle = "Admin pregled"
 userBody = "Pozovite kolege, dodeljujte uloge i držite dokumente organizovanim u jednom bezbednom prostoru. Omogućite režim prijave kad god ste spremni da pređete preko solo upotrebe."
 userTitle = "Pregled plana"
@@ -4334,16 +4334,16 @@ userTitle = "Pregled plana"
 message = "Aplikacija je nedavno značajno promenjena. Možda je potrebna pažnja administratora servera. Potvrdite svoju ulogu da nastavite."
 
 [onboarding.serverLicense]
-freeBody = "Naše <strong>Open-Core</strong> licenciranje dozvoljava do <strong>{{freeTierLimit}}</strong> korisnika besplatno po serveru. Da se bez prekida skalirate i dobijete rani pristup našem novom <strong>alatu za uređivanje PDF teksta</strong>, preporučujemo Stirling Server plan - puno uređivanje i <strong>neograničena mesta</strong> za $99/server/mes."
+freeBody = "Naše <strong>Open-Core</strong> licenciranje dozvoljava do <strong>{{freeTierLimit}}</strong> korisnika besplatno po serveru. Da se bez prekida skalirate i dobijete rani pristup našem novom <strong>alatu za uređivanje PDF teksta</strong>, preporučujemo PDFox Server plan - puno uređivanje i <strong>neograničena mesta</strong> za $99/server/mes."
 freeTitle = "Serverska licenca"
-overLimitBody = "Naše licenciranje dozvoljava do <strong>{{freeTierLimit}}</strong> korisnika besplatno po serveru. Imate <strong>{{overLimitUserCopy}}</strong> Stirling korisnika. Da nastavite bez prekida, pređite na Stirling Server plan - <strong>neograničena mesta</strong>, uređivanje PDF teksta i puna admin kontrola za $99/server/mes."
+overLimitBody = "Naše licenciranje dozvoljava do <strong>{{freeTierLimit}}</strong> korisnika besplatno po serveru. Imate <strong>{{overLimitUserCopy}}</strong> PDFox korisnika. Da nastavite bez prekida, pređite na PDFox Server plan - <strong>neograničena mesta</strong>, uređivanje PDF teksta i puna admin kontrola za $99/server/mes."
 overLimitTitle = "Potrebna serverska licenca"
 seePlans = "Pogledajte planove →"
 skip = "Preskoči za sada"
 upgrade = "Nadogradite sada →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 dolazi sa desetinama alata i osveženim rasporedom. Pođite na kratki obilazak da vidite šta se promenilo i gde da pronađete funkcije koje su vam potrebne."
+body = "PDFox V2 dolazi sa desetinama alata i osveženim rasporedom. Pođite na kratki obilazak da vidite šta se promenilo i gde da pronađete funkcije koje su vam potrebne."
 title = "Pregled obilaska"
 
 [onboarding.welcomeModal]
@@ -4352,11 +4352,11 @@ dontShowAgain = "Ne prikazuj ponovo"
 helpHint = "Uvek možete pristupiti ovoj turi kasnije preko dugmeta <strong>Pomoć</strong> dole levo."
 maybeLater = "Možda kasnije"
 startTour = "Započni turu"
-title = "Dobrodošli u Stirling PDF!"
+title = "Dobrodošli u PDFox!"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF je sada spreman za timove svih veličina. Ovo ažuriranje donosi novi raspored, moćne admin mogućnosti i našu najtraženiju funkciju - <strong>Uredi tekst</strong>."
-title = "Dobrodošli u Stirling"
+body = "PDFox je sada spreman za timove svih veličina. Ovo ažuriranje donosi novi raspored, moćne admin mogućnosti i našu najtraženiju funkciju - <strong>Uredi tekst</strong>."
+title = "Dobrodošli u PDFox"
 
 [onboarding.whatsNew]
 activeFilesView = "Koristite Aktivne fajlove da vidite sve što je otvoreno i izaberete na čemu ćete raditi."
@@ -5250,7 +5250,7 @@ included = "Uključeno"
 name = "Besplatno"
 
 [plan.licenseWarning]
-body = "Imate {{total}} korisnika, ali besplatni nivo podržava samo {{limit}} po serveru. Nadogradite da bi Stirling PDF radio neometano."
+body = "Imate {{total}} korisnika, ali besplatni nivo podržava samo {{limit}} po serveru. Nadogradite da bi PDFox radio neometano."
 cta = "Pogledajte planove"
 overLimit = "više od {{limit}}"
 title = "Dostignuto ograničenje za besplatno samohostovanje"
@@ -6043,8 +6043,8 @@ hideTools = "Sakrij nedostupne alate ▴"
 messageNoFallback = "Alati nisu dostupni dok se vaš server ne vrati na mrežu."
 messageWithFallback = "Neki alati zahtevaju vezu sa serverom."
 showTools = "Prikaži nedostupne alate ▾"
-title = "Vaš Stirling-PDF server je nedostupan"
-toolNotAvailableLocally = "Vaš Stirling-PDF server je van mreže i \"{{endpoint}}\" nije dostupan na lokalnom pozadinskom servisu."
+title = "Vaš PDFox-PDF server je nedostupan"
+toolNotAvailableLocally = "Vaš PDFox-PDF server je van mreže i \"{{endpoint}}\" nije dostupan na lokalnom pozadinskom servisu."
 
 [session]
 expired = "Istekla ti je sesija. Osveži stranicu i pokušaj ponovo."
@@ -6068,13 +6068,13 @@ user = "Prijavljeni kao"
 
 [settings.connection.mode]
 local = "Samo lokalno"
-saas = "Stirling Cloud"
+saas = "PDFox Cloud"
 selfhosted = "Samohostovano"
 
 [settings.planBilling]
 currentPlan = "Trenutni plan"
 loading = "Učitavanje informacija o naplati..."
-notAvailable = "Plan i naplata su dostupni samo kada ste povezani na Stirling Cloud (SaaS režim)."
+notAvailable = "Plan i naplata su dostupni samo kada ste povezani na PDFox Cloud (SaaS režim)."
 title = "Plan i naplata"
 
 [settings.planBilling.billing]
@@ -6147,7 +6147,7 @@ autoUnzipFileLimitDescription = "Maksimalan broj datoteka za izdvajanje iz ZIP-a
 autoUnzipFileLimitTooltip = "Raspakuj samo ako ZIP sadrži ovoliko ili manje datoteka. Povećajte vrednost da biste izdvojili veće ZIP-ove."
 autoUnzipTooltip = "Automatski raspakuj ZIP datoteke vraćene iz API operacija. Isključite da biste zadržali ZIP datoteke netaknute. Ovo ne utiče na automatizovane tokove rada."
 defaultPdfEditor = "Podrazumevani PDF uređivač"
-defaultPdfEditorActive = "Stirling PDF je vaš podrazumevani PDF uređivač"
+defaultPdfEditorActive = "PDFox je vaš podrazumevani PDF uređivač"
 defaultPdfEditorChecking = "Provera..."
 defaultPdfEditorInactive = "Druga aplikacija je postavljena kao podrazumevana"
 defaultPdfEditorSet = "Već podrazumevano"
@@ -6266,7 +6266,7 @@ title = "Radni prostor"
 title = "Tim"
 
 [localMode]
-toolUnavailable = "Ovaj alat zahteva nalog. Prijavite se na Stirling Cloud ili se povežite na samohostovani server da biste ga koristili."
+toolUnavailable = "Ovaj alat zahteva nalog. Prijavite se na PDFox Cloud ili se povežite na samohostovani server da biste ga koristili."
 
 [localMode.banner]
 message = "Prijavite se da otključate sve alate."
@@ -6278,14 +6278,14 @@ message = "Prijavite se da otključate sve alate."
 signIn = "Prijava"
 
 [setup]
-description = "Započnite izborom načina na koji želite da koristite Stirling PDF"
-welcome = "Dobrodošli u Stirling PDF"
+description = "Započnite izborom načina na koji želite da koristite PDFox"
+welcome = "Dobrodošli u PDFox"
 
 [setup.login]
 connectingTo = "Povezivanje na:"
 hideInstructions = "Sakrij uputstva"
 skipSignIn = "Nastavite bez prijave"
-instructions = "Da biste omogućili prijavu na svom Stirling PDF serveru:"
+instructions = "Da biste omogućili prijavu na svom PDFox serveru:"
 instructionsEnvVar = "Podesite promenljivu okruženja:"
 instructionsOrYml = "Ili u settings.yml:"
 instructionsRestart = "Zatim restartujte server da bi izmene stupile na snagu."
@@ -6318,16 +6318,16 @@ label = "Korisničko ime"
 placeholder = "Unesite korisničko ime"
 
 [setup.mode.saas]
-description = "Prijavite se svojim Stirling nalogom"
-title = "Stirling Cloud"
+description = "Prijavite se svojim PDFox nalogom"
+title = "PDFox Cloud"
 
 [setup.mode.selfhosted]
-description = "Povežite se na svoj Stirling PDF server"
+description = "Povežite se na svoj PDFox server"
 title = "Samohostovani server"
 
 [setup.saas]
-subtitle = "Prijavite se svojim Stirling nalogom"
-title = "Prijavite se u Stirling"
+subtitle = "Prijavite se svojim PDFox nalogom"
+title = "Prijavite se u PDFox"
 
 [setup.selfhosted]
 link = "ili se povežite na samohostovani nalog"
@@ -6363,11 +6363,11 @@ step3 = "Restartujte server"
 title = "Prijavljivanje nije omogućeno"
 
 [setup.server.type]
-saas = "Stirling PDF SaaS"
+saas = "PDFox SaaS"
 selfhosted = "Samohostovani server"
 
 [setup.server.url]
-description = "Unesite puni URL vašeg samohostovanog Stirling PDF servera"
+description = "Unesite puni URL vašeg samohostovanog PDFox servera"
 label = "URL servera"
 
 [setup.step1]
@@ -6552,7 +6552,7 @@ passwordsDoNotMatch = "Lozinke se ne poklapaju"
 passwordTooShort = "Lozinka mora imati najmanje 6 znakova"
 pleaseFillAllFields = "Popunite sva polja"
 signUp = "Registruj se"
-subtitle = "Pridružite se Stirling PDF da biste započeli"
+subtitle = "Pridružite se PDFox da biste započeli"
 title = "Kreirajte nalog"
 unexpectedError = "Neočekivana greška: {{message}}"
 useEmailInstead = "Umesto toga koristite e-mail"
@@ -6830,28 +6830,28 @@ trialing = "Probni period"
 
 [survey]
 button = "Popuni anketu"
-changes = "Stirling-PDF se promenio od poslednje ankete! Za više informacija, pogledaj naš blog post ovde:"
+changes = "PDFox-PDF se promenio od poslednje ankete! Za više informacija, pogledaj naš blog post ovde:"
 changes2 = "Sa ovim promenama dobijamo plaćenu poslovnu podršku i finansiranje"
-description = "Stirling-PDF ne prati korisnike, zato želimo da čujemo tvoje utiske kako bismo unapredili Stirling-PDF!"
+description = "PDFox-PDF ne prati korisnike, zato želimo da čujemo tvoje utiske kako bismo unapredili PDFox-PDF!"
 disabled = "(Popup za anketu će biti onemogućen u narednim ažuriranjima, ali će ostati dostupan na dnu stranice)"
 dontShowAgain = "Ne prikazuj ponovo"
 nav = "Anketa"
 please = "Please consider taking our survey!"
-title = "Stirling-PDF anketa"
+title = "PDFox-PDF anketa"
 
 [survey.meeting]
-1 = "Ako koristiš Stirling PDF na poslu, voleli bismo da razgovaramo sa tobom. Nudimo tehničke sesije podrške u zamenu za 15-minutni korisnički intervju."
+1 = "Ako koristiš PDFox na poslu, voleli bismo da razgovaramo sa tobom. Nudimo tehničke sesije podrške u zamenu za 15-minutni korisnički intervju."
 2 = "Ovo je prilika da:"
 3 = "Dobiješ pomoć oko postavljanja, integracije ili rešavanja problema"
 4 = "Pružiš direktne povratne informacije o performansama, specifičnim slučajevima i nedostacima funkcionalnosti"
-5 = "Pomozi nam da unapredimo Stirling PDF za praktičnu upotrebu u preduzećima"
+5 = "Pomozi nam da unapredimo PDFox za praktičnu upotrebu u preduzećima"
 6 = "Ukoliko si zainteresov, možeš zakazati direktni termin sa našim timom. (Samo na engleskom jeziku)"
-7 = "Radujemo se što ćemo detaljnije istražiti tvoje slučajeve korišćenja i učiniti Stirling PDF još boljim!"
+7 = "Radujemo se što ćemo detaljnije istražiti tvoje slučajeve korišćenja i učiniti PDFox još boljim!"
 button = "Zakaži sastanak"
 notInterested = "Nisi poslovni korisnik i/ili nisi zainteresovan za sastanak?"
 
 [swagger]
-desc = "Pregledajte i testirajte Stirling PDF API endpoints"
+desc = "Pregledajte i testirajte PDFox API endpoints"
 header = "API dokumentacija"
 tags = "api,documentation,swagger,endpoints,development"
 title = "API dokumentacija"
@@ -6875,7 +6875,7 @@ favorites = "Omiljeno"
 heading = "Svi alati (prikaz preko celog ekrana)"
 noResults = "Pokušajte da prilagodite pretragu ili uključite opise da biste našli šta vam treba."
 recommended = "Preporučeno"
-selfHostedOffline = "Zahteva vaš Stirling-PDF server (trenutno van mreže):"
+selfHostedOffline = "Zahteva vaš PDFox-PDF server (trenutno van mreže):"
 showDetails = "Prikaži detalje"
 unavailable = "Onemogućio administrator servera:"
 unavailableDependency = "Nedostupno - potreban alat nedostaje na serveru:"
@@ -6884,7 +6884,7 @@ unfavorite = "Ukloni iz omiljenog"
 [toolPanel.modePrompt]
 chooseFullscreen = "Koristi režim celog ekrana"
 chooseSidebar = "Koristi režim bočne trake"
-description = "Pregledajte oba rasporeda i odlučite kako želite da istražujete Stirling PDF alate."
+description = "Pregledajte oba rasporeda i odlučite kako želite da istražujete PDFox alate."
 dismiss = "Možda kasnije"
 fullscreenDescription = "Pregledajte svaki alat u katalogu koji prekriva radni prostor dok ne izaberete jedan."
 fullscreenTitle = "Režim celog ekrana - (zastarelo)"
@@ -6984,7 +6984,7 @@ attentionBody = "Vaš admin treba da se prijavi da vidi više informacija. Odmah
 attentionBodyAdmin = "Pregledajte zahteve licence da ovaj server ostane usklađen."
 attentionTitle = "Ovaj server zahteva pažnju admina"
 dismiss = "Odbaci baner"
-message = "Iskoristite maksimum iz Stirling PDF uz neograničene korisnike i napredne funkcije"
+message = "Iskoristite maksimum iz PDFox uz neograničene korisnike i napredne funkcije"
 seeInfo = "Pogledajte info"
 title = "Nadogradite na Server plan"
 upgradeButton = "Nadogradite sada"
@@ -7106,7 +7106,7 @@ continued = "Nastavak"
 downloads = "Preuzimanja"
 entryLabel = "Rezime potpisa"
 filesEvaluated = "{{count}} fajlova provereno"
-footer = "Validirano preko Stirling PDF"
+footer = "Validirano preko PDFox"
 generatedAt = "Generisano"
 noPdf = "PDF izveštaj će biti dostupan nakon uspešne validacije."
 page = "Stranica"

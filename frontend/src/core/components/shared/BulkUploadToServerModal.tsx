@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { alert } from '@app/components/toast';
 import { Z_INDEX_OVER_FILE_MANAGER_MODAL } from '@app/styles/zIndex';
-import type { StirlingFileStub } from '@app/types/fileContext';
+import type { PDFoxFileStub } from '@app/types/fileContext';
 import { uploadHistoryChains } from '@app/services/serverStorageUpload';
 import { fileStorage } from '@app/services/fileStorage';
 import { useFileActions } from '@app/contexts/FileContext';
@@ -14,7 +14,7 @@ import type { FileId } from '@app/types/file';
 interface BulkUploadToServerModalProps {
   opened: boolean;
   onClose: () => void;
-  files: StirlingFileStub[];
+  files: PDFoxFileStub[];
   onUploaded?: () => Promise<void> | void;
 }
 
@@ -58,7 +58,7 @@ const BulkUploadToServerModal: React.FC<BulkUploadToServerModalProps> = ({
       );
 
       for (const stub of chain) {
-        actions.updateStirlingFileStub(stub.id, {
+        actions.updatePDFoxFileStub(stub.id, {
           remoteStorageId: remoteId,
           remoteStorageUpdatedAt: updatedAt,
           remoteOwnedByCurrentUser: true,

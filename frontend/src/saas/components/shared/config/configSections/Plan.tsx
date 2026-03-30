@@ -32,7 +32,7 @@ const Plan: React.FC = () => {
 
     if (plan.isContactOnly) {
       // Open contact form or redirect to contact page
-      window.open('mailto:contact@stirlingpdf.com?subject=Enterprise Plan Inquiry', '_blank');
+      window.open('mailto:contact@pdfoxpdf.com?subject=Enterprise Plan Inquiry', '_blank');
       return;
     }
 

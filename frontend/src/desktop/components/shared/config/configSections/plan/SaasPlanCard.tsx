@@ -178,7 +178,7 @@ export const SaasPlanCard: React.FC<SaasPlanCardProps> = ({
             }),
           }}
           component={plan.isContactOnly ? 'a' : undefined}
-          href={plan.isContactOnly ? `mailto:contact@stirlingpdf.com?subject=${plan.name} Plan Inquiry` : undefined}
+          href={plan.isContactOnly ? `mailto:contact@pdfoxpdf.com?subject=${plan.name} Plan Inquiry` : undefined}
         >
           {isCurrentPlan
             ? t('plan.current', 'Current Plan')

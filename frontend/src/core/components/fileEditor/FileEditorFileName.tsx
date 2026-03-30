@@ -1,9 +1,9 @@
 import React from 'react';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import { PrivateContent } from '@app/components/shared/PrivateContent';
 
 interface FileEditorFileNameProps {
-  file: StirlingFileStub;
+  file: PDFoxFileStub;
 }
 
 const FileEditorFileName = ({ file }: FileEditorFileNameProps) => (

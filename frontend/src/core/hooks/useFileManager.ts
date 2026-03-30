@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useIndexedDB } from '@app/contexts/IndexedDBContext';
 import { fileStorage } from '@app/services/fileStorage';
-import { StirlingFileStub, StirlingFile } from '@app/types/fileContext';
+import { PDFoxFileStub, PDFoxFile } from '@app/types/fileContext';
 import { FileId } from '@app/types/fileContext';
 import apiClient from '@app/services/apiClient';
 import { useAppConfig } from '@app/contexts/AppConfigContext';
@@ -72,7 +72,7 @@ export const useFileManager = () => {
     return fallback;
   }, []);
 
-  const convertToFile = useCallback(async (fileStub: StirlingFileStub): Promise<File> => {
+  const convertToFile = useCallback(async (fileStub: PDFoxFileStub): Promise<File> => {
     if (!indexedDB) {
       throw new Error('IndexedDB context not available');
     }
@@ -87,7 +87,7 @@ export const useFileManager = () => {
     throw new Error(`File not found in storage: ${fileStub.name} (ID: ${fileStub.id})`);
   }, [indexedDB]);
 
-  const loadRecentFiles = useCallback(async (): Promise<StirlingFileStub[]> => {
+  const loadRecentFiles = useCallback(async (): Promise<PDFoxFileStub[]> => {
     setLoading(true);
     try {
       if (!indexedDB) {
@@ -95,13 +95,13 @@ export const useFileManager = () => {
       }
 
       // Load only leaf files metadata (processed files that haven't been used as input for other tools)
-      const stirlingFileStubs = await fileStorage.getLeafStirlingFileStubs();
+      const pdfoxFileStubs = await fileStorage.getLeafPDFoxFileStubs();
       const remoteIdSet = new Set(
-        stirlingFileStubs
+        pdfoxFileStubs
           .map((stub) => stub.remoteStorageId)
           .filter((id): id is number => typeof id === 'number')
       );
-      let combinedStubs = stirlingFileStubs;
+      let combinedStubs = pdfoxFileStubs;
 
       const shouldFetchServerFiles = config?.storageEnabled === true;
 
@@ -112,7 +112,7 @@ export const useFileManager = () => {
             { suppressErrorToast: true, skipAuthRedirect: true } as any
           );
           const serverFiles = Array.isArray(response.data) ? response.data : [];
-          const serverStubs: StirlingFileStub[] = [];
+          const serverStubs: PDFoxFileStub[] = [];
           const serverMap = new Map<number, StoredFileResponse>();
           serverFiles.forEach((file) => {
             if (file && typeof file.id === 'number') {
@@ -120,7 +120,7 @@ export const useFileManager = () => {
             }
           });
 
-          const updatedLocalStubs = stirlingFileStubs.map((stub) => {
+          const updatedLocalStubs = pdfoxFileStubs.map((stub) => {
             if (!stub.remoteStorageId) {
               return stub;
             }
@@ -279,7 +279,7 @@ export const useFileManager = () => {
               .map((stub) => stub.remoteShareToken)
               .filter((token): token is string => Boolean(token))
           );
-          const sharedStubs: StirlingFileStub[] = [];
+          const sharedStubs: PDFoxFileStub[] = [];
 
           for (const link of sharedLinks) {
             if (!link || !link.shareToken) {
@@ -337,7 +337,7 @@ export const useFileManager = () => {
     }
   }, [indexedDB, config?.enableLogin, config?.storageEnabled, config?.storageShareLinksEnabled, normalizeServerFileName]);
 
-  const handleRemoveFile = useCallback(async (index: number, files: StirlingFileStub[], setFiles: (files: StirlingFileStub[]) => void) => {
+  const handleRemoveFile = useCallback(async (index: number, files: PDFoxFileStub[], setFiles: (files: PDFoxFileStub[]) => void) => {
     const file = files[index];
     if (!file.id) {
       throw new Error('File ID is required for removal');
@@ -397,24 +397,24 @@ export const useFileManager = () => {
       setSelectedFiles([]);
     };
 
-    const selectMultipleFiles = async (files: StirlingFileStub[], onStirlingFilesSelect: (stirlingFiles: StirlingFile[]) => void) => {
+    const selectMultipleFiles = async (files: PDFoxFileStub[], onPDFoxFilesSelect: (pdfoxFiles: PDFoxFile[]) => void) => {
       if (selectedFiles.length === 0) return;
 
       try {
-        // Filter by UUID and load full StirlingFile objects directly
+        // Filter by UUID and load full PDFoxFile objects directly
         const selectedFileObjects = files.filter(f => selectedFiles.includes(f.id));
 
-        const stirlingFiles = await Promise.all(
+        const pdfoxFiles = await Promise.all(
           selectedFileObjects.map(async (stub) => {
-            const stirlingFile = await fileStorage.getStirlingFile(stub.id);
-            if (!stirlingFile) {
+            const pdfoxFile = await fileStorage.getPDFoxFile(stub.id);
+            if (!pdfoxFile) {
               throw new Error(`File not found in storage: ${stub.name}`);
             }
-            return stirlingFile;
+            return pdfoxFile;
           })
         );
 
-        onStirlingFilesSelect(stirlingFiles);
+        onPDFoxFilesSelect(pdfoxFiles);
         clearSelection();
       } catch (error) {
         console.error('Failed to load selected files:', error);

@@ -83,7 +83,7 @@ export default function ApiKeys() {
         apiKeyLoading ? (
           <>
             <Text size="sm" c="dimmed" style={{ marginBottom: 8 }}>
-              {t('config.apiKeys.description', "Your API key for accessing Stirling's suite of PDF tools. Copy it to your project or refresh to generate a new one.")}
+              {t('config.apiKeys.description', "Your API key for accessing PDFox's suite of PDF tools. Copy it to your project or refresh to generate a new one.")}
             </Text>
             <div style={{ padding: 18, borderRadius: 12, background: "var(--api-keys-card-bg)", border: "1px solid var(--api-keys-card-border)", boxShadow: "0 2px 8px var(--api-keys-card-shadow)" }}>
               <Group align="center" gap={12} wrap="nowrap">

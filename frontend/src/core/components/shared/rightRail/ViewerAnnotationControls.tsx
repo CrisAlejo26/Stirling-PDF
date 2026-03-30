@@ -6,7 +6,7 @@ import { Tooltip } from '@app/components/shared/Tooltip';
 import { ViewerContext } from '@app/contexts/ViewerContext';
 import { useSignature } from '@app/contexts/SignatureContext';
 import { useFileState, useFileContext } from '@app/contexts/FileContext';
-import { createStirlingFilesAndStubs } from '@app/services/fileStubHelpers';
+import { createPDFoxFilesAndStubs } from '@app/services/fileStubHelpers';
 import { useNavigationState, useNavigationGuard, useNavigationActions } from '@app/contexts/NavigationContext';
 import { useSidebarContext } from '@app/contexts/SidebarContext';
 import { useToolWorkflow } from '@app/contexts/ToolWorkflowContext';
@@ -66,11 +66,11 @@ export default function ViewerAnnotationControls({ currentView, disabled = false
       if (!arrayBuffer) return;
 
       const file = new File([new Blob([arrayBuffer])], activeFiles[0].name, { type: 'application/pdf' });
-      const parentStub = selectors.getStirlingFileStub(state.files.ids[0]);
+      const parentStub = selectors.getPDFoxFileStub(state.files.ids[0]);
       if (!parentStub) return;
 
-      const { stirlingFiles, stubs } = await createStirlingFilesAndStubs([file], parentStub, 'redact');
-      await fileActions.consumeFiles([state.files.ids[0]], stirlingFiles, stubs);
+      const { pdfoxFiles, stubs } = await createPDFoxFilesAndStubs([file], parentStub, 'redact');
+      await fileActions.consumeFiles([state.files.ids[0]], pdfoxFiles, stubs);
 
       // Clear unsaved changes flags after successful save
       setHasUnsavedChanges(false);

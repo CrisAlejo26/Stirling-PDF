@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { NavKey } from '@app/components/shared/config/types';
 import HotkeysSection from '@app/components/shared/config/configSections/HotkeysSection';
 import GeneralSection from '@app/components/shared/config/configSections/GeneralSection';
+import UsersSection from '@app/components/shared/config/configSections/UsersSection';
+import { useAuth } from '@app/auth/UseSession';
 
 export interface ConfigNavItem {
   key: NavKey;
@@ -34,6 +36,8 @@ export const useConfigNavSections = (
   _loginEnabled: boolean = false
 ): ConfigNavSection[] => {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'ADMIN';
 
   const sections: ConfigNavSection[] = [
     {
@@ -53,6 +57,17 @@ export const useConfigNavSections = (
         },
       ],
     },
+    ...(isAdmin ? [{
+      title: 'Administración',
+      items: [
+        {
+          key: 'adminUsers' as NavKey,
+          label: 'Usuarios',
+          icon: 'group-rounded',
+          component: <UsersSection />
+        },
+      ],
+    }] : []),
   ];
 
   return sections;

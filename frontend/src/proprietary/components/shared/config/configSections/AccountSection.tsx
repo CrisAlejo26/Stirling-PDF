@@ -38,7 +38,7 @@ const AccountSection: React.FC = () => {
   const [mfaLoading, setMfaLoading] = useState(false);
   const [changeButtonDisabled, setChangeButtonDisabled] = useState(false);
   const normalizeMfaCode = useCallback((value: string) => value.replace(/\D/g, '').slice(0, 6), []);
-  const qrLogoSrc = `${BASE_PATH}/modern-logo/StirlingPDFLogoNoTextDark.svg`;
+  const qrLogoSrc = `${BASE_PATH}/modern-logo/Logo_principal_dark.svg`;
 
   const authTypeFromMetadata = useMemo(() => {
     const metadata = user?.app_metadata as { authType?: string; authenticationType?: string } | undefined;

@@ -14,18 +14,18 @@ interface AnalyticsChoiceSlideProps {
 export default function AnalyticsChoiceSlide({ analyticsError }: AnalyticsChoiceSlideProps): SlideConfig {
   return {
     key: 'analytics-choice',
-    title: i18n.t('analytics.title', 'Do you want to help make Stirling PDF better?'),
+    title: i18n.t('analytics.title', 'Do you want to help make PDFox better?'),
     body: (
       <div className={styles.bodyCopyInner}>
         <Trans
           i18nKey="analytics.paragraph1"
-          defaults="Stirling PDF has opt-in analytics to help us improve the product. We do not track any personal information or file contents."
+          defaults="PDFox has opt-in analytics to help us improve the product. We do not track any personal information or file contents."
           components={{ strong: <strong /> }}
         />
         <br />
         <Trans
           i18nKey="analytics.paragraph2"
-          defaults="Please consider enabling analytics to help Stirling-PDF grow and to allow us to understand our users better."
+          defaults="Please consider enabling analytics to help PDFox-PDF grow and to allow us to understand our users better."
           components={{ strong: <strong /> }}
         />
         <br />
@@ -33,7 +33,7 @@ export default function AnalyticsChoiceSlide({ analyticsError }: AnalyticsChoice
           <Button
             variant="default"
             size="sm"
-            onClick={() => window.open('https://docs.stirlingpdf.com/analytics-telemetry/', '_blank')}
+            onClick={() => window.open('https://docs.pdfoxpdf.com/analytics-telemetry/', '_blank')}
             rightSection={<OpenInNewIcon style={{ fontSize: 16 }} />}
           >
             {i18n.t('analytics.learnMore', 'Learn more about our analytics')}

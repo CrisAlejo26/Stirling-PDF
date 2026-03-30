@@ -65,10 +65,10 @@ function ReviewStepContent<TParams = unknown>({
         downloadLocalPath: operation.downloadLocalPath,
         outputFileIds: operation.outputFileIds,
         getFile: (fileId) => selectors.getFile(fileId as FileId),
-        getStub: (fileId) => selectors.getStirlingFileStub(fileId as FileId),
+        getStub: (fileId) => selectors.getPDFoxFileStub(fileId as FileId),
         markSaved: (fileId, savedPath) => {
-          const stub = selectors.getStirlingFileStub(fileId as FileId);
-          fileActions.updateStirlingFileStub(fileId as FileId, {
+          const stub = selectors.getPDFoxFileStub(fileId as FileId);
+          fileActions.updatePDFoxFileStub(fileId as FileId, {
             localFilePath: stub?.localFilePath ?? savedPath,
             isDirty: false
           });

@@ -91,7 +91,7 @@ export default function AdminAdvancedSection() {
           baseTmpDir: '',
           libreofficeDir: '',
           systemTempDir: '',
-          prefix: 'stirling-pdf-',
+          prefix: 'pdfox-pdf-',
           maxAgeHours: 24,
           cleanupIntervalMinutes: 30,
           startupCleanup: true,
@@ -568,13 +568,13 @@ export default function AdminAdvancedSection() {
           <div>
             <TextInput
               label={t('admin.settings.advanced.tempFileManagement.baseTmpDir.label', 'Base Temp Directory')}
-              description={t('admin.settings.advanced.tempFileManagement.baseTmpDir.description', 'Base directory for temporary files (leave empty for default: java.io.tmpdir/stirling-pdf)')}
+              description={t('admin.settings.advanced.tempFileManagement.baseTmpDir.description', 'Base directory for temporary files (leave empty for default: java.io.tmpdir/pdfox-pdf)')}
               value={settings.tempFileManagement?.baseTmpDir || ''}
               onChange={(e) => setSettings({
                 ...settings,
                 tempFileManagement: { ...settings.tempFileManagement, baseTmpDir: e.target.value }
               })}
-              placeholder="Default: java.io.tmpdir/stirling-pdf"
+              placeholder="Default: java.io.tmpdir/pdfox-pdf"
               disabled={!loginEnabled}
             />
           </div>
@@ -611,12 +611,12 @@ export default function AdminAdvancedSection() {
             <TextInput
               label={t('admin.settings.advanced.tempFileManagement.prefix.label', 'Temp File Prefix')}
               description={t('admin.settings.advanced.tempFileManagement.prefix.description', 'Prefix for temp file names')}
-              value={settings.tempFileManagement?.prefix || 'stirling-pdf-'}
+              value={settings.tempFileManagement?.prefix || 'pdfox-pdf-'}
               onChange={(e) => setSettings({
                 ...settings,
                 tempFileManagement: { ...settings.tempFileManagement, prefix: e.target.value }
               })}
-              placeholder="stirling-pdf-"
+              placeholder="pdfox-pdf-"
               disabled={!loginEnabled}
             />
           </div>

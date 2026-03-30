@@ -1,5 +1,5 @@
 import { fetch } from '@tauri-apps/plugin-http';
-import { STIRLING_SAAS_BACKEND_API_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_BACKEND_API_URL } from '@app/constants/connection';
 
 /**
  * Service for checking endpoint availability on the local bundled backend.
@@ -89,11 +89,11 @@ export class EndpointAvailabilityService {
 
     // Fetch from SaaS backend
     try {
-      if (!STIRLING_SAAS_BACKEND_API_URL) {
+      if (!PDFOX_SAAS_BACKEND_API_URL) {
         return false;
       }
 
-      const saasUrl = STIRLING_SAAS_BACKEND_API_URL.replace(/\/$/, '');
+      const saasUrl = PDFOX_SAAS_BACKEND_API_URL.replace(/\/$/, '');
       const url = `${saasUrl}/api/v1/config/endpoints-availability?endpoints=${encodeURIComponent(endpoint)}`;
 
       const response = await fetch(url, {

@@ -24,7 +24,7 @@ import { absoluteWithBasePath } from '@app/constants/app';
 import { alert } from '@app/components/toast';
 import { Z_INDEX_OVER_FILE_MANAGER_MODAL } from '@app/styles/zIndex';
 import { useAppConfig } from '@app/contexts/AppConfigContext';
-import type { StirlingFileStub } from '@app/types/fileContext';
+import type { PDFoxFileStub } from '@app/types/fileContext';
 import { fileStorage } from '@app/services/fileStorage';
 import { useFileActions } from '@app/contexts/FileContext';
 
@@ -50,7 +50,7 @@ interface StoredFileResponse {
 interface ShareManagementModalProps {
   opened: boolean;
   onClose: () => void;
-  file: StirlingFileStub;
+  file: PDFoxFileStub;
 }
 
 const ShareManagementModal: React.FC<ShareManagementModalProps> = ({
@@ -178,7 +178,7 @@ const ShareManagementModal: React.FC<ShareManagementModalProps> = ({
               createdAt: new Date().toISOString(),
             },
           ]);
-          actions.updateStirlingFileStub(file.id, { remoteHasShareLinks: true });
+          actions.updatePDFoxFileStub(file.id, { remoteHasShareLinks: true });
           await fileStorage.updateFileMetadata(file.id, { remoteHasShareLinks: true });
           alert({
             alertType: 'success',
@@ -234,7 +234,7 @@ const ShareManagementModal: React.FC<ShareManagementModalProps> = ({
         return updated;
       });
       setSelectedActivityToken((prev) => (prev === token ? null : prev));
-      actions.updateStirlingFileStub(file.id, { remoteHasShareLinks: nextHasLinks });
+      actions.updatePDFoxFileStub(file.id, { remoteHasShareLinks: nextHasLinks });
       await fileStorage.updateFileMetadata(file.id, { remoteHasShareLinks: nextHasLinks });
       alert({
         alertType: 'success',
@@ -497,7 +497,7 @@ const ShareManagementModal: React.FC<ShareManagementModalProps> = ({
                       <Text size="sm">
                         {t(
                           'storageShare.emailWarningBody',
-                          'This looks like an email address. If this person is not already a Stirling PDF user, they will not be able to access the file.'
+                          'This looks like an email address. If this person is not already a PDFox user, they will not be able to access the file.'
                         )}
                       </Text>
                       <Group justify="flex-end" gap="sm">

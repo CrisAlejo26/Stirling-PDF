@@ -7,11 +7,11 @@ import { useToolState } from '@app/hooks/tools/shared/useToolState';
 import { useToolApiCalls, type ApiCallsConfig } from '@app/hooks/tools/shared/useToolApiCalls';
 import { useToolResources } from '@app/hooks/tools/shared/useToolResources';
 import { extractErrorMessage, handle422Error } from '@app/utils/toolErrorHandler';
-import { StirlingFile, extractFiles, FileId, StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFile, extractFiles, FileId, PDFoxFileStub } from '@app/types/fileContext';
 import { FILE_EVENTS } from '@app/services/errorUtils';
 import { getFilenameWithoutExtension } from '@app/utils/fileUtils';
 import { createChildStub, generateProcessedFileMetadata } from '@app/contexts/file/fileActions';
-import { createNewStirlingFileStub } from '@app/types/fileContext';
+import { createNewPDFoxFileStub } from '@app/types/fileContext';
 import { ToolOperation } from '@app/types/file';
 import { ensureBackendReady } from '@app/services/backendReadinessGuard';
 import { useWillUseCloud } from '@app/hooks/useWillUseCloud';
@@ -84,13 +84,13 @@ export const useToolOperation = <TParams>(
   // Track last operation for undo functionality
   const lastOperationRef = useRef<{
     inputFiles: File[];
-    inputStirlingFileStubs: StirlingFileStub[];
+    inputPDFoxFileStubs: PDFoxFileStub[];
     outputFileIds: FileId[];
   } | null>(null);
 
   const executeOperation = useCallback(async (
     params: TParams,
-    selectedFiles: StirlingFile[]
+    selectedFiles: PDFoxFile[]
   ): Promise<void> => {
     // Validation
     if (selectedFiles.length === 0) {
@@ -109,7 +109,7 @@ export const useToolOperation = <TParams>(
         console.log('markFileError', e);
       }
     }
-    const validFiles: StirlingFile[] = selectedFiles.filter(file => file.size > 0);
+    const validFiles: PDFoxFile[] = selectedFiles.filter(file => file.size > 0);
     if (validFiles.length === 0) {
       actions.setError(t('noValidFiles', 'No valid files to process'));
       return;
@@ -312,13 +312,13 @@ export const useToolOperation = <TParams>(
           processedFiles.map(file => generateProcessedFileMetadata(file))
         );
 
-        const { inputFileIds, inputStirlingFileStubs } = buildInputTracking(validFiles, selectors);
+        const { inputFileIds, inputPDFoxFileStubs } = buildInputTracking(validFiles, selectors);
 
         if (isVersionOp) {
           // Output is a modified version of the input — link it to the input's version chain.
           // The input is removed from the workbench and replaced in-place by the output.
           const downloadLocalPath =
-            selectors.getStirlingFileStub(validFiles[0].fileId)?.localFilePath ?? null;
+            selectors.getPDFoxFileStub(validFiles[0].fileId)?.localFilePath ?? null;
 
           const newToolOperation: ToolOperation = {
             toolId: config.operationType,
@@ -326,8 +326,8 @@ export const useToolOperation = <TParams>(
           };
 
           const successInputStubs = successSourceIds
-            .map((id) => selectors.getStirlingFileStub(id))
-            .filter(Boolean) as StirlingFileStub[];
+            .map((id) => selectors.getPDFoxFileStub(id))
+            .filter(Boolean) as PDFoxFileStub[];
 
           if (successInputStubs.length !== processedFiles.length) {
             console.warn('[useToolOperation] Mismatch successInputStubs vs outputs', {
@@ -336,10 +336,10 @@ export const useToolOperation = <TParams>(
             });
           }
 
-          const { outputStirlingFileStubs, outputStirlingFiles } = buildOutputPairs(
+          const { outputPDFoxFileStubs, outputPDFoxFiles } = buildOutputPairs(
             processedFiles, thumbnails, processedFileMetadataArray,
             (file, thumbnail, metadata, index) => createChildStub(
-              successInputStubs[index] || inputStirlingFileStubs[index] || inputStirlingFileStubs[0],
+              successInputStubs[index] || inputPDFoxFileStubs[index] || inputPDFoxFileStubs[0],
               newToolOperation, file, thumbnail, metadata
             )
           );
@@ -347,16 +347,16 @@ export const useToolOperation = <TParams>(
           // Only consume inputs that successfully produced outputs
           const toConsumeInputIds = successSourceIds.filter((id) => inputFileIds.includes(id));
           console.debug('[useToolOperation] Consuming files (version)', { inputCount: inputFileIds.length, toConsume: toConsumeInputIds.length });
-          const outputFileIds = await consumeFiles(toConsumeInputIds, outputStirlingFiles, outputStirlingFileStubs);
+          const outputFileIds = await consumeFiles(toConsumeInputIds, outputPDFoxFiles, outputPDFoxFileStubs);
 
           // Notify on desktop when processing completes
           await notifyPdfProcessingComplete(outputFileIds.length);
 
           // Carry the desktop save path forward so the output can be saved back to the same file
           if (toConsumeInputIds.length === 1 && outputFileIds.length === 1) {
-            const inputStub = selectors.getStirlingFileStub(toConsumeInputIds[0]);
+            const inputStub = selectors.getPDFoxFileStub(toConsumeInputIds[0]);
             if (inputStub?.localFilePath) {
-              fileActions.updateStirlingFileStub(outputFileIds[0], {
+              fileActions.updatePDFoxFileStub(outputFileIds[0], {
                 localFilePath: inputStub.localFilePath
               });
             }
@@ -366,7 +366,7 @@ export const useToolOperation = <TParams>(
 
           lastOperationRef.current = {
             inputFiles: extractFiles(validFiles),
-            inputStirlingFileStubs: inputStirlingFileStubs.map(record => ({ ...record })),
+            inputPDFoxFileStubs: inputPDFoxFileStubs.map(record => ({ ...record })),
             outputFileIds
           };
 
@@ -374,14 +374,14 @@ export const useToolOperation = <TParams>(
           // Outputs are independent artifacts (format conversion, merge, split).
           // Create fresh root stubs with no parent chain, then swap out only the inputs
           // that successfully produced outputs — other workbench files are untouched.
-          const { outputStirlingFileStubs, outputStirlingFiles } = buildOutputPairs(
+          const { outputPDFoxFileStubs, outputPDFoxFiles } = buildOutputPairs(
             processedFiles, thumbnails, processedFileMetadataArray,
-            (file, thumbnail, metadata) => createNewStirlingFileStub(file, undefined, thumbnail, metadata)
+            (file, thumbnail, metadata) => createNewPDFoxFileStub(file, undefined, thumbnail, metadata)
           );
 
           const toConsumeInputIds = successSourceIds.filter((id) => inputFileIds.includes(id));
           console.debug('[useToolOperation] Consuming files (independent)', { inputCount: inputFileIds.length, toConsume: toConsumeInputIds.length });
-          const outputFileIds = await consumeFiles(toConsumeInputIds, outputStirlingFiles, outputStirlingFileStubs);
+          const outputFileIds = await consumeFiles(toConsumeInputIds, outputPDFoxFiles, outputPDFoxFileStubs);
 
           // Notify on desktop when processing completes
           await notifyPdfProcessingComplete(outputFileIds.length);
@@ -395,7 +395,7 @@ export const useToolOperation = <TParams>(
 
           lastOperationRef.current = {
             inputFiles: extractFiles(validFiles),
-            inputStirlingFileStubs: inputStirlingFileStubs.map(record => ({ ...record })),
+            inputPDFoxFileStubs: inputPDFoxFileStubs.map(record => ({ ...record })),
             outputFileIds
           };
         }
@@ -448,10 +448,10 @@ export const useToolOperation = <TParams>(
       return;
     }
 
-    const { inputFiles, inputStirlingFileStubs, outputFileIds } = lastOperationRef.current;
+    const { inputFiles, inputPDFoxFileStubs, outputFileIds } = lastOperationRef.current;
 
     // Validate that we have data to undo
-    if (inputFiles.length === 0 || inputStirlingFileStubs.length === 0) {
+    if (inputFiles.length === 0 || inputPDFoxFileStubs.length === 0) {
       actions.setError(t('invalidUndoData', 'Cannot undo: invalid operation data'));
       return;
     }
@@ -463,7 +463,7 @@ export const useToolOperation = <TParams>(
 
     try {
       // Undo the consume operation
-      await undoConsumeFiles(inputFiles, inputStirlingFileStubs, outputFileIds);
+      await undoConsumeFiles(inputFiles, inputPDFoxFileStubs, outputFileIds);
 
       // Clear results and operation tracking
       resetResults();

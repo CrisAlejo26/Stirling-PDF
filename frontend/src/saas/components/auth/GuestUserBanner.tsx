@@ -58,7 +58,7 @@ export function GuestUserBanner({ className = '' }: GuestUserBannerProps) {
       <div className="guest-banner-content">
         <div className="guest-banner-text">
           <div className="guest-banner-title">
-            {t('guestBanner.title', "You're using Stirling PDF as a guest!")}
+            {t('guestBanner.title', "You're using PDFox as a guest!")}
           </div>
           <div className="guest-banner-message">
             {t('guestBanner.message', 'Create a free account to save your work, access more features, and support the project.')}

@@ -34,7 +34,7 @@ function ConnectionStatusDot() {
   const { label, color } = useMemo(() => {
     if (connectionMode === 'saas') {
       return {
-        label: t('connectionMode.status.saas', 'Connected to Stirling Cloud'),
+        label: t('connectionMode.status.saas', 'Connected to PDFox Cloud'),
         color: '#3b82f6',
       };
     }

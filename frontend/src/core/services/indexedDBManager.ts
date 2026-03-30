@@ -140,7 +140,7 @@ class IndexedDBManager {
           }
 
           // Perform data migration for files database
-          if (config.name === 'stirling-pdf-files' && storeConfig.name === 'files' && store) {
+          if (config.name === 'pdfox-pdf-files' && storeConfig.name === 'files' && store) {
             this.migrateFileHistoryFields(store, oldVersion);
           }
         });
@@ -290,7 +290,7 @@ class IndexedDBManager {
 // Pre-defined database configurations
 export const DATABASE_CONFIGS = {
   FILES: {
-    name: 'stirling-pdf-files',
+    name: 'pdfox-pdf-files',
     version: 3,
     stores: [{
       name: 'files',
@@ -306,7 +306,7 @@ export const DATABASE_CONFIGS = {
   } as DatabaseConfig,
 
   DRAFTS: {
-    name: 'stirling-pdf-drafts',
+    name: 'pdfox-pdf-drafts',
     version: 1,
     stores: [{
       name: 'drafts',
@@ -315,7 +315,7 @@ export const DATABASE_CONFIGS = {
   } as DatabaseConfig,
 
   PREFERENCES: {
-    name: 'stirling-pdf-preferences',
+    name: 'pdfox-pdf-preferences',
     version: 1,
     stores: [{
       name: 'preferences',

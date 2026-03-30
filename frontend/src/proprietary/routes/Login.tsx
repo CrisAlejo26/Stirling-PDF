@@ -51,9 +51,9 @@ export default function Login() {
   const isSsoOnlyMode = loginMethod !== 'all' && loginMethod !== 'normal';
   const isSingleSsoOnly = !isUserPassAllowed && enabledProviders.length === 1;
 
-  const AUTO_LOGIN_ATTEMPTS_KEY = 'stirling_sso_auto_login_attempts';
-  const AUTO_LOGIN_ERRORS_KEY = 'stirling_sso_auto_login_errors';
-  const AUTO_LOGIN_LOGOUT_KEY = 'stirling_sso_auto_login_logged_out';
+  const AUTO_LOGIN_ATTEMPTS_KEY = 'pdfox_sso_auto_login_attempts';
+  const AUTO_LOGIN_ERRORS_KEY = 'pdfox_sso_auto_login_errors';
+  const AUTO_LOGIN_LOGOUT_KEY = 'pdfox_sso_auto_login_logged_out';
   const MAX_AUTO_LOGIN_ATTEMPTS = 2;
   const MAX_AUTO_LOGIN_ERRORS = 1;
 
@@ -190,7 +190,7 @@ export default function Login() {
         }
 
         // Use the full paths from providerList as provider identifiers
-        // The backend provides paths like "/oauth2/authorization/google" or "/saml2/authenticate/stirling"
+        // The backend provides paths like "/oauth2/authorization/google" or "/saml2/authenticate/pdfox"
         // We'll use these full paths so the auth client knows where to redirect
         const providerPaths = Object.keys(data.providerList || {});
 
@@ -349,9 +349,9 @@ export default function Login() {
 
   // Set document meta
   useDocumentMeta({
-    title: `${t('login.title', 'Sign in')} - Stirling PDF`,
+    title: `${t('login.title', 'Sign in')} - PDFox`,
     description: t('app.description', 'The Free Adobe Acrobat alternative (10M+ Downloads)'),
-    ogTitle: `${t('login.title', 'Sign in')} - Stirling PDF`,
+    ogTitle: `${t('login.title', 'Sign in')} - PDFox`,
     ogDescription: t('app.description', 'The Free Adobe Acrobat alternative (10M+ Downloads)'),
     ogImage: `${baseUrl}/og_images/home.png`,
     ogUrl: `${window.location.origin}${window.location.pathname}`
@@ -547,7 +547,7 @@ export default function Login() {
               <Text component="span" fw={600} style={{ color: 'var(--text-always-dark)' }}>{t('login.username', 'Username')}:</Text> admin
             </Text>
             <Text size="sm" ta="center" style={{ color: 'var(--text-always-dark)' }}>
-              <Text component="span" fw={600} style={{ color: 'var(--text-always-dark)' }}>{t('login.password', 'Password')}:</Text> stirling
+              <Text component="span" fw={600} style={{ color: 'var(--text-always-dark)' }}>{t('login.password', 'Password')}:</Text> pdfox
             </Text>
             <Text size="xs" ta="center" mt="xs" style={{ color: 'var(--text-always-dark-muted)' }}>
               {t('login.changePasswordWarning', 'Please change your password after logging in for the first time')}

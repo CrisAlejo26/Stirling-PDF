@@ -11,7 +11,7 @@ import { useFirstLaunchCheck } from '@app/hooks/useFirstLaunchCheck';
 import { useBackendInitializer } from '@app/hooks/useBackendInitializer';
 import { DESKTOP_DEFAULT_APP_CONFIG } from '@app/config/defaultAppConfig';
 import { connectionModeService } from '@app/services/connectionModeService';
-import { STIRLING_SAAS_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_URL } from '@app/constants/connection';
 import { tauriBackendService } from '@app/services/tauriBackendService';
 import { selfHostedServerMonitor } from '@app/services/selfHostedServerMonitor';
 import { authService } from '@app/services/authService';
@@ -93,7 +93,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
         authService.isAuthenticated()
           .then(async (isAuth) => {
             if (isAuth) {
-              await connectionModeService.switchToSaaS(STIRLING_SAAS_URL).catch(console.error);
+              await connectionModeService.switchToSaaS(PDFOX_SAAS_URL).catch(console.error);
               setConnectionMode('saas');
             }
           })
@@ -276,7 +276,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
               {children}
               {/* Desktop onboarding modal: welcome slide → sign-in slide, shown once on first launch */}
               <DesktopOnboardingModal />
-              {/* Global sign-in modal, opened via stirling:open-sign-in event */}
+              {/* Global sign-in modal, opened via pdfox:open-sign-in event */}
               <SignInModal />
             </SaaSCheckoutProvider>
           </SaasBillingProvider>

@@ -9,7 +9,7 @@ import {
   FileContextStateValue,
   FileContextActionsValue
 } from '@app/contexts/file/contexts';
-import { StirlingFileStub, StirlingFile } from '@app/types/fileContext';
+import { PDFoxFileStub, PDFoxFile } from '@app/types/fileContext';
 import { FileId } from '@app/types/file';
 
 /**
@@ -38,7 +38,7 @@ export function useFileActions(): FileContextActionsValue {
 /**
  * Hook for current/primary file (first in list)
  */
-export function useCurrentFile(): { file?: File; record?: StirlingFileStub } {
+export function useCurrentFile(): { file?: File; record?: PDFoxFileStub } {
   const { state, selectors } = useFileState();
 
   const primaryFileId = state.files.ids[0];
@@ -46,7 +46,7 @@ export function useCurrentFile(): { file?: File; record?: StirlingFileStub } {
 
   return useMemo(() => ({
     file: primaryFileId ? selectors.getFile(primaryFileId) : undefined,
-    record: primaryFileId ? selectors.getStirlingFileStub(primaryFileId) : undefined
+    record: primaryFileId ? selectors.getPDFoxFileStub(primaryFileId) : undefined
   }), [primaryFileId, primaryFileRecord, selectors]);
 }
 
@@ -89,7 +89,7 @@ export function useFileManagement() {
     addFiles: actions.addFiles,
     removeFiles: actions.removeFiles,
     clearAllFiles: actions.clearAllFiles,
-    updateStirlingFileStub: actions.updateStirlingFileStub,
+    updatePDFoxFileStub: actions.updatePDFoxFileStub,
     reorderFiles: actions.reorderFiles
   }), [actions]);
 }
@@ -113,25 +113,25 @@ export function useFileUI() {
 /**
  * Hook for specific file by ID (optimized for individual file access)
  */
-export function useStirlingFileStub(fileId: FileId): { file?: File; record?: StirlingFileStub } {
+export function usePDFoxFileStub(fileId: FileId): { file?: File; record?: PDFoxFileStub } {
   const { state, selectors } = useFileState();
   const fileRecord = state.files.byId[fileId];
 
   return useMemo(() => ({
     file: selectors.getFile(fileId),
-    record: selectors.getStirlingFileStub(fileId)
+    record: selectors.getPDFoxFileStub(fileId)
   }), [fileId, fileRecord, selectors]);
 }
 
 /**
  * Hook for all files (use sparingly - causes re-renders on file list changes)
  */
-export function useAllFiles(): { files: StirlingFile[]; fileStubs: StirlingFileStub[]; fileIds: FileId[] } {
+export function useAllFiles(): { files: PDFoxFile[]; fileStubs: PDFoxFileStub[]; fileIds: FileId[] } {
   const { state, selectors } = useFileState();
 
   return useMemo(() => ({
     files: selectors.getFiles(),
-    fileStubs: selectors.getStirlingFileStubs(),
+    fileStubs: selectors.getPDFoxFileStubs(),
     fileIds: state.files.ids
   }), [state.files.ids, state.files.byId, selectors]);
 }
@@ -139,12 +139,12 @@ export function useAllFiles(): { files: StirlingFile[]; fileStubs: StirlingFileS
 /**
  * Hook for selected files (optimized for selection-based UI)
  */
-export function useSelectedFiles(): { selectedFiles: StirlingFile[]; selectedFileStubs: StirlingFileStub[]; selectedFileIds: FileId[] } {
+export function useSelectedFiles(): { selectedFiles: PDFoxFile[]; selectedFileStubs: PDFoxFileStub[]; selectedFileIds: FileId[] } {
   const { state, selectors } = useFileState();
 
   return useMemo(() => ({
     selectedFiles: selectors.getSelectedFiles(),
-    selectedFileStubs: selectors.getSelectedStirlingFileStubs(),
+    selectedFileStubs: selectors.getSelectedPDFoxFileStubs(),
     selectedFileIds: state.ui.selectedFileIds
   }), [state.ui.selectedFileIds, state.files.byId, selectors]);
 }

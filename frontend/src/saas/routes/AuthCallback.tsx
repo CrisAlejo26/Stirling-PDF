@@ -163,8 +163,8 @@ export default function AuthCallback() {
       <div className={`w-full max-w-md rounded-2xl bg-white/80 backdrop-blur shadow-xl p-8`}>
         <div className="text-center">
           <img
-            src={withBasePath("/branding/StirlingPDFLogoNoTextDark.svg")}
-            alt="Stirling PDF"
+            src={withBasePath("/branding/Logo_principal_dark.svg")}
+            alt="PDFox"
             className="mx-auto mb-5 h-8 opacity-80"
           />
 

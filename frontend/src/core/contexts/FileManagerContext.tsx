@@ -3,7 +3,7 @@ import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 import { fileStorage } from '@app/services/fileStorage';
 import { useFileActions } from '@app/contexts/FileContext';
 import { zipFileService } from '@app/services/zipFileService';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import { downloadFiles } from '@app/utils/downloadUtils';
 import { FileId } from '@app/types/file';
 import { groupFilesByOriginal } from '@app/utils/fileHistoryUtils';
@@ -25,13 +25,13 @@ interface FileManagerContextValue {
   storageFilter: 'all' | 'local' | 'sharedWithMe' | 'sharedByMe';
   selectedFileIds: FileId[];
   searchTerm: string;
-  selectedFiles: StirlingFileStub[];
-  filteredFiles: StirlingFileStub[];
+  selectedFiles: PDFoxFileStub[];
+  filteredFiles: PDFoxFileStub[];
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   selectedFilesSet: Set<FileId>;
   expandedFileIds: Set<FileId>;
-  fileGroups: Map<FileId, StirlingFileStub[]>;
-  loadedHistoryFiles: Map<FileId, StirlingFileStub[]>;
+  fileGroups: Map<FileId, PDFoxFileStub[]>;
+  loadedHistoryFiles: Map<FileId, PDFoxFileStub[]>;
   isLoading: boolean;
   activeFileIds: FileId[];
 
@@ -39,27 +39,27 @@ interface FileManagerContextValue {
   onSourceChange: (source: 'recent' | 'local' | 'drive') => void;
   onStorageFilterChange: (filter: 'all' | 'local' | 'sharedWithMe' | 'sharedByMe') => void;
   onLocalFileClick: () => void;
-  onFileSelect: (file: StirlingFileStub, index: number, shiftKey?: boolean) => void;
+  onFileSelect: (file: PDFoxFileStub, index: number, shiftKey?: boolean) => void;
   onFileRemove: (index: number) => void;
-  onHistoryFileRemove: (file: StirlingFileStub) => void;
-  onFileDoubleClick: (file: StirlingFileStub) => void;
+  onHistoryFileRemove: (file: PDFoxFileStub) => void;
+  onFileDoubleClick: (file: PDFoxFileStub) => void;
   onOpenFiles: () => void;
   onSearchChange: (value: string) => void;
   onFileInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSelectAll: () => void;
   onDeleteSelected: () => void;
   onDownloadSelected: () => void;
-  onDownloadSingle: (file: StirlingFileStub) => void;
+  onDownloadSingle: (file: PDFoxFileStub) => void;
   onToggleExpansion: (fileId: FileId) => void;
-  onAddToRecents: (file: StirlingFileStub) => void;
-  onUnzipFile: (file: StirlingFileStub) => Promise<void>;
-  onMakeCopy: (file: StirlingFileStub) => Promise<void>;
+  onAddToRecents: (file: PDFoxFileStub) => void;
+  onUnzipFile: (file: PDFoxFileStub) => Promise<void>;
+  onMakeCopy: (file: PDFoxFileStub) => Promise<void>;
   onNewFilesSelect: (files: File[]) => void;
   onGoogleDriveSelect: (files: File[]) => void;
   refreshRecentFiles: () => Promise<void>;
 
   // External props
-  recentFiles: StirlingFileStub[];
+  recentFiles: PDFoxFileStub[];
   isFileSupported: (fileName: string) => boolean;
   modalHeight: string;
 }
@@ -70,8 +70,8 @@ const FileManagerContext = createContext<FileManagerContextValue | null>(null);
 // Provider component props
 interface FileManagerProviderProps {
   children: React.ReactNode;
-  recentFiles: StirlingFileStub[];
-  onRecentFilesSelected: (files: StirlingFileStub[]) => void; // For selecting stored files
+  recentFiles: PDFoxFileStub[];
+  onRecentFilesSelected: (files: PDFoxFileStub[]) => void; // For selecting stored files
   onNewFilesSelect: (files: File[]) => void; // For uploading new local files
   onClose: () => void;
   isFileSupported: (fileName: string) => boolean;
@@ -107,9 +107,9 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [lastClickedIndex, setLastClickedIndex] = useState<number | null>(null);
   const [expandedFileIds, setExpandedFileIds] = useState<Set<FileId>>(new Set());
-  const [loadedHistoryFiles, setLoadedHistoryFiles] = useState<Map<FileId, StirlingFileStub[]>>(new Map()); // Cache for loaded history
+  const [loadedHistoryFiles, setLoadedHistoryFiles] = useState<Map<FileId, PDFoxFileStub[]>>(new Map()); // Cache for loaded history
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [deletePromptFile, setDeletePromptFile] = useState<StirlingFileStub | null>(null);
+  const [deletePromptFile, setDeletePromptFile] = useState<PDFoxFileStub | null>(null);
   const deletePromptResolveRef = useRef<((choice: RemoteDeleteChoice) => void) | null>(null);
   const { t } = useTranslation();
   const { actions } = useFileActions();
@@ -125,7 +125,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   const fileGroups = useMemo(() => {
     if (!recentFiles || recentFiles.length === 0) return new Map();
 
-    // Convert StirlingFileStub to FileRecord-like objects for grouping utility
+    // Convert PDFoxFileStub to FileRecord-like objects for grouping utility
     const recordsForGrouping = recentFiles.map(file => ({
       ...file,
       originalFileId: file.originalFileId,
@@ -183,7 +183,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   }, []);
 
 
-  const requestDeleteChoice = useCallback((file: StirlingFileStub): Promise<RemoteDeleteChoice> => {
+  const requestDeleteChoice = useCallback((file: PDFoxFileStub): Promise<RemoteDeleteChoice> => {
     return new Promise((resolve) => {
       deletePromptResolveRef.current = resolve;
       setDeletePromptFile(file);
@@ -215,7 +215,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     }
   }, [onNewFilesSelect, refreshRecentFiles, onClose]);
 
-  const handleFileSelect = useCallback((file: StirlingFileStub, currentIndex: number, shiftKey?: boolean) => {
+  const handleFileSelect = useCallback((file: PDFoxFileStub, currentIndex: number, shiftKey?: boolean) => {
     const fileId = file.id;
     if (!fileId) return;
 
@@ -259,7 +259,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   // Helper function to safely determine which files can be deleted
   const getSafeFilesToDelete = useCallback((
     fileIds: FileId[],
-    allStoredStubs: StirlingFileStub[]
+    allStoredStubs: PDFoxFileStub[]
   ): FileId[] => {
     const fileMap = new Map(allStoredStubs.map(f => [f.id, f]));
     const filesToDelete = new Set<FileId>();
@@ -278,7 +278,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
         const originalFileId = currentFile.originalFileId || currentFile.id;
 
         // Find all files in this history chain
-        const chainFiles = allStoredStubs.filter((file: StirlingFileStub) =>
+        const chainFiles = allStoredStubs.filter((file: PDFoxFileStub) =>
           (file.originalFileId || file.id) === originalFileId
         );
 
@@ -294,7 +294,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
       // If this file is a leaf node (not being deleted) and its lineage overlaps with files we want to delete
       if (file.isLeaf !== false && !fileIds.includes(file.id)) {
         // Find all files in this preserved lineage
-        const preservedChainFiles = allStoredStubs.filter((chainFile: StirlingFileStub) =>
+        const preservedChainFiles = allStoredStubs.filter((chainFile: PDFoxFileStub) =>
           (chainFile.originalFileId || chainFile.id) === fileOriginalId
         );
 
@@ -340,7 +340,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   }, []);
 
   // Shared internal delete logic
-  const performFileDelete = useCallback(async (fileToRemove: StirlingFileStub, fileIndex: number) => {
+  const performFileDelete = useCallback(async (fileToRemove: PDFoxFileStub, fileIndex: number) => {
     let deleteChoice: RemoteDeleteChoice = 'local';
     if (fileToRemove.remoteStorageId) {
       deleteChoice = await requestDeleteChoice(fileToRemove);
@@ -434,7 +434,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     const deletedFileId = fileToRemove.id;
 
     // Get all stored files to analyze lineages
-    const allStoredStubs = await fileStorage.getAllStirlingFileStubs();
+    const allStoredStubs = await fileStorage.getAllPDFoxFileStubs();
 
     // Get safe files to delete (respecting shared lineages)
     const filesToDelete = getSafeFilesToDelete([deletedFileId], allStoredStubs);
@@ -470,7 +470,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     // Delete safe files from IndexedDB
     try {
       for (const fileId of filesToDelete) {
-        await fileStorage.deleteStirlingFile(fileId as FileId);
+        await fileStorage.deletePDFoxFile(fileId as FileId);
       }
     } catch (error) {
       console.error('Failed to delete files from chain:', error);
@@ -511,7 +511,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   }, [filteredFiles, performFileDelete]);
 
   // Handle deletion of specific history files (not index-based)
-  const handleHistoryFileRemove = useCallback(async (fileToRemove: StirlingFileStub) => {
+  const handleHistoryFileRemove = useCallback(async (fileToRemove: PDFoxFileStub) => {
     const deletedFileId = fileToRemove.id;
 
     // Clear from expanded state to prevent ghost entries
@@ -541,7 +541,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
 
     // Delete safe files from IndexedDB
     try {
-        await fileStorage.deleteStirlingFile(deletedFileId);
+        await fileStorage.deletePDFoxFile(deletedFileId);
     } catch (error) {
       console.error('Failed to delete files from chain:', error);
     }
@@ -550,7 +550,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     await refreshRecentFiles();
   }, [filteredFiles, onFileRemove, refreshRecentFiles, getSafeFilesToDelete]);
 
-  const handleFileDoubleClick = useCallback((file: StirlingFileStub) => {
+  const handleFileDoubleClick = useCallback((file: PDFoxFileStub) => {
     if (isFileSupported(file.name)) {
       onRecentFilesSelected([file]);
       onClose();
@@ -627,7 +627,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     }
   }, [selectedFileIds, filteredFiles]);
 
-  const handleDownloadSingle = useCallback(async (file: StirlingFileStub) => {
+  const handleDownloadSingle = useCallback(async (file: PDFoxFileStub) => {
     try {
       await downloadFiles([file]);
     } catch (error) {
@@ -655,7 +655,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
       if (currentFileMetadata && (currentFileMetadata.versionNumber || 1) > 1) {
         try {
           // Get all stored file metadata for chain traversal
-          const allStoredStubs = await fileStorage.getAllStirlingFileStubs();
+          const allStoredStubs = await fileStorage.getAllPDFoxFileStubs();
           const fileMap = new Map(allStoredStubs.map(f => [f.id, f]));
 
           // Get the current file's IndexedDB data
@@ -666,16 +666,16 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
           }
 
           // Build complete history chain using IndexedDB metadata
-          const historyFiles: StirlingFileStub[] = [];
+          const historyFiles: PDFoxFileStub[] = [];
 
           // Find the original file
 
           // Collect only files in this specific branch (ancestors of current file)
-          const chainFiles: StirlingFileStub[] = [];
+          const chainFiles: PDFoxFileStub[] = [];
           const allFiles = Array.from(fileMap.values());
 
           // Build a map for fast parent lookups
-          const fileIdMap = new Map<FileId, StirlingFileStub>();
+          const fileIdMap = new Map<FileId, PDFoxFileStub>();
           allFiles.forEach(f => fileIdMap.set(f.id, f));
 
           // Trace back from current file through parent chain
@@ -693,7 +693,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
           // Sort by version number (oldest first for history display)
           chainFiles.sort((a, b) => (a.versionNumber || 1) - (b.versionNumber || 1));
 
-          // StirlingFileStubs already have all the data we need - no conversion required!
+          // PDFoxFileStubs already have all the data we need - no conversion required!
           historyFiles.push(...chainFiles);
 
           // Cache the loaded history files
@@ -712,7 +712,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     }
   }, [expandedFileIds, recentFiles]);
 
-  const handleAddToRecents = useCallback(async (file: StirlingFileStub) => {
+  const handleAddToRecents = useCallback(async (file: PDFoxFileStub) => {
     try {
       // Mark the file as a leaf node so it appears in recent files
       await fileStorage.markFileAsLeaf(file.id);
@@ -737,16 +737,16 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
     }
   }, [onNewFilesSelect, refreshRecentFiles, onClose]);
 
-  const handleUnzipFile = useCallback(async (file: StirlingFileStub) => {
+  const handleUnzipFile = useCallback(async (file: PDFoxFileStub) => {
     try {
       // Load the full file from storage
-      const stirlingFile = await fileStorage.getStirlingFile(file.id);
-      if (!stirlingFile) {
+      const pdfoxFile = await fileStorage.getPDFoxFile(file.id);
+      if (!pdfoxFile) {
         return;
       }
 
       // Extract and store files using shared service method
-      const result = await zipFileService.extractAndStoreFilesWithHistory(stirlingFile, file);
+      const result = await zipFileService.extractAndStoreFilesWithHistory(pdfoxFile, file);
 
       if (result.success) {
         // Refresh file manager to show new files
@@ -762,7 +762,7 @@ export const FileManagerProvider: React.FC<FileManagerProviderProps> = ({
   }, [refreshRecentFiles]);
 
   const handleMakeCopy = useCallback(
-    async (file: StirlingFileStub) => {
+    async (file: PDFoxFileStub) => {
       if (!file.remoteStorageId) {
         return;
       }

@@ -40,7 +40,7 @@ export interface MachineInfo {
 }
 
 export class UpdateService {
-  private readonly baseUrl = 'https://supabase.stirling.com/functions/v1/updates';
+  private readonly baseUrl = 'https://supabase.pdfox.com/functions/v1/updates';
 
   /**
    * Compare two version strings
@@ -75,7 +75,7 @@ export class UpdateService {
 
     // Determine file based on machine type and security
     if (machineInfo.machineType === 'Server-jar') {
-      return DOWNLOAD_BASE_URL + (machineInfo.activeSecurity ? 'Stirling-PDF-with-login.jar' : 'Stirling-PDF.jar');
+      return DOWNLOAD_BASE_URL + (machineInfo.activeSecurity ? 'PDFox-PDF-with-login.jar' : 'PDFox-PDF.jar');
     }
 
     // Client installations
@@ -163,7 +163,7 @@ export class UpdateService {
    * Get current version from GitHub build.gradle as fallback
    */
   async getCurrentVersionFromGitHub(): Promise<string> {
-    const url = 'https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/master/build.gradle';
+    const url = 'https://raw.githubusercontent.com/PDFox-Tools/PDFox-PDF/master/build.gradle';
 
     try {
       const response = await fetch(url);

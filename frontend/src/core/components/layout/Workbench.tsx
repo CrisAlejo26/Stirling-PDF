@@ -198,7 +198,7 @@ export default function Workbench() {
           setCurrentView={setCurrentView}
           customViews={customWorkbenchViews}
           activeFiles={activeFiles.map(f => {
-            const stub = selectors.getStirlingFileStub(f.fileId);
+            const stub = selectors.getPDFoxFileStub(f.fileId);
             return { fileId: f.fileId, name: f.name, versionNumber: stub?.versionNumber };
           })}
           currentFileIndex={activeFileIndex}

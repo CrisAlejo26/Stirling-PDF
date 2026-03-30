@@ -38,7 +38,7 @@ export default function SaasOnboardingModal(props: SaasOnboardingModalProps) {
       return (
         <div className={styles.heroIconsContainer}>
           <div className={styles.iconWrapper}>
-            <img src={`${BASE_PATH}/modern-logo/logo512.png`} alt="Stirling icon" className={styles.downloadIcon} />
+            <img src={`${BASE_PATH}/modern-logo/Logo_principal_light.png`} alt="PDFox icon" className={styles.downloadIcon} />
           </div>
         </div>
       );

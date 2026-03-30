@@ -8,7 +8,7 @@ import {
 } from '@app/utils/pdfiumBitmapUtils';
 import { generateThumbnailWithMetadata } from '@app/utils/thumbnailUtils';
 import { createChildStub, createProcessedFile } from '@app/contexts/file/fileActions';
-import { createStirlingFile, FileId, StirlingFile, StirlingFileStub } from '@app/types/fileContext';
+import { createPDFoxFile, FileId, PDFoxFile, PDFoxFileStub } from '@app/types/fileContext';
 import type { SignatureAPI } from '@app/components/viewer/viewerTypes';
 import {
   getPdfiumModule,
@@ -19,8 +19,8 @@ import {
 
 interface MinimalFileContextSelectors {
   getAllFileIds: () => FileId[];
-  getStirlingFileStub: (id: FileId) => StirlingFileStub | undefined;
-  getFile: (id: FileId) => StirlingFile | undefined;
+  getPDFoxFileStub: (id: FileId) => PDFoxFileStub | undefined;
+  getFile: (id: FileId) => PDFoxFile | undefined;
 }
 
 interface SignatureFlatteningOptions {
@@ -30,15 +30,15 @@ interface SignatureFlatteningOptions {
     saveAsCopy: () => Promise<ArrayBuffer | null>;
   };
   selectors: MinimalFileContextSelectors;
-  originalFile?: StirlingFile;
+  originalFile?: PDFoxFile;
   getScrollState: () => { currentPage: number; totalPages: number };
   activeFileIndex?: number;
 }
 
 export interface SignatureFlatteningResult {
   inputFileIds: FileId[];
-  outputStirlingFile: StirlingFile;
-  outputStub: StirlingFileStub;
+  outputPDFoxFile: PDFoxFile;
+  outputStub: PDFoxFileStub;
 }
 
 export async function flattenSignatures(options: SignatureFlatteningOptions): Promise<SignatureFlatteningResult | null> {
@@ -102,10 +102,10 @@ export async function flattenSignatures(options: SignatureFlatteningOptions): Pr
         const allFileIds = selectors.getAllFileIds();
         if (allFileIds.length > 0) {
           const fileIndex = activeFileIndex !== undefined && activeFileIndex < allFileIds.length ? activeFileIndex : 0;
-          const fileStub = selectors.getStirlingFileStub(allFileIds[fileIndex]);
+          const fileStub = selectors.getPDFoxFileStub(allFileIds[fileIndex]);
           const fileObject = selectors.getFile(allFileIds[fileIndex]);
           if (fileStub && fileObject) {
-            currentFile = createStirlingFile(fileObject, allFileIds[fileIndex] as FileId);
+            currentFile = createPDFoxFile(fileObject, allFileIds[fileIndex] as FileId);
           }
         }
       }
@@ -207,7 +207,7 @@ export async function flattenSignatures(options: SignatureFlatteningOptions): Pr
 
       const inputFileIds: FileId[] = [currentFile.fileId];
 
-      const record = selectors.getStirlingFileStub(currentFile.fileId);
+      const record = selectors.getPDFoxFileStub(currentFile.fileId);
       if (!record) {
         console.error('No file record found for:', currentFile.fileId);
         return null;
@@ -220,11 +220,11 @@ export async function flattenSignatures(options: SignatureFlatteningOptions): Pr
         thumbnailResult.thumbnail,
         processedFileMetadata
       );
-      const outputStirlingFile = createStirlingFile(signedFile, outputStub.id);
+      const outputPDFoxFile = createPDFoxFile(signedFile, outputStub.id);
 
       return {
         inputFileIds,
-        outputStirlingFile,
+        outputPDFoxFile,
         outputStub
       };
     }

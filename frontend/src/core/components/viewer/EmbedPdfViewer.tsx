@@ -14,9 +14,9 @@ import { useNavigationGuard, useNavigationState } from '@app/contexts/Navigation
 import { useSignature } from '@app/contexts/SignatureContext';
 import { useRedaction } from '@app/contexts/RedactionContext';
 import type { RedactionPendingTrackerAPI } from '@app/components/viewer/RedactionPendingTracker';
-import { createStirlingFilesAndStubs } from '@app/services/fileStubHelpers';
+import { createPDFoxFilesAndStubs } from '@app/services/fileStubHelpers';
 import NavigationWarningModal from '@app/components/shared/NavigationWarningModal';
-import { isStirlingFile, getFormFillFileId } from '@app/types/fileContext';
+import { isPDFoxFile, getFormFillFileId } from '@app/types/fileContext';
 import { useViewerRightRailButtons } from '@app/components/viewer/useViewerRightRailButtons';
 import { StampPlacementOverlay } from '@app/components/viewer/StampPlacementOverlay';
 import { RulerOverlay, type PageMeasureScales, type PageScaleInfo, type ViewportScale } from '@app/components/viewer/RulerOverlay';
@@ -336,7 +336,7 @@ const EmbedPdfViewerContent = ({
   }, [previewFile, fileWithUrl]);
 
   const bookmarkCacheKey = React.useMemo(() => {
-    if (currentFile && isStirlingFile(currentFile)) {
+    if (currentFile && isPDFoxFile(currentFile)) {
       return currentFile.fileId;
     }
 
@@ -364,7 +364,7 @@ const EmbedPdfViewerContent = ({
     }
 
     return activeFiles.map(file => {
-      if (isStirlingFile(file)) {
+      if (isPDFoxFile(file)) {
         return file.fileId;
       }
       return undefined;
@@ -600,15 +600,15 @@ const EmbedPdfViewerContent = ({
       const filename = currentFile.name || 'document.pdf';
       const file = new File([blob], filename, { type: 'application/pdf' });
 
-      // Step 3: Create StirlingFiles and stubs for version history
+      // Step 3: Create PDFoxFiles and stubs for version history
       // Only consume the current file, not all active files
       const currentFileId = activeFiles[activeFileIndex]?.fileId;
       if (!currentFileId) throw new Error('Current file ID not found');
 
-      const parentStub = selectors.getStirlingFileStub(currentFileId);
+      const parentStub = selectors.getPDFoxFileStub(currentFileId);
       if (!parentStub) throw new Error('Parent stub not found');
 
-      const { stirlingFiles, stubs } = await createStirlingFilesAndStubs([file], parentStub, 'multiTool');
+      const { pdfoxFiles, stubs } = await createPDFoxFilesAndStubs([file], parentStub, 'multiTool');
 
       // Store the page to restore after file replacement triggers re-render
       pendingScrollRestoreRef.current = pageToRestore;
@@ -624,7 +624,7 @@ const EmbedPdfViewerContent = ({
       }
 
       // Step 4: Consume only the current file (replace in context)
-      await actions.consumeFiles([currentFileId], stirlingFiles, stubs);
+      await actions.consumeFiles([currentFileId], pdfoxFiles, stubs);
 
       // Mark annotations as saved so navigation away from the viewer is allowed.
       hasAnnotationChangesRef.current = false;
@@ -658,11 +658,11 @@ const EmbedPdfViewerContent = ({
       const currentFileId = activeFiles[activeFileIndex]?.fileId;
       if (!currentFileId) throw new Error('Current file ID not found');
 
-      const parentStub = selectors.getStirlingFileStub(currentFileId);
+      const parentStub = selectors.getPDFoxFileStub(currentFileId);
       if (!parentStub) throw new Error('Parent stub not found');
 
-      // Create StirlingFiles and stubs for version history
-      const { stirlingFiles, stubs } = await createStirlingFilesAndStubs([file], parentStub, 'multiTool');
+      // Create PDFoxFiles and stubs for version history
+      const { pdfoxFiles, stubs } = await createPDFoxFilesAndStubs([file], parentStub, 'multiTool');
 
       // Store the page to restore after file replacement
       pendingScrollRestoreRef.current = pageToRestore;
@@ -679,7 +679,7 @@ const EmbedPdfViewerContent = ({
       }
 
       // Replace the current file in context
-      await actions.consumeFiles([currentFileId], stirlingFiles, stubs);
+      await actions.consumeFiles([currentFileId], pdfoxFiles, stubs);
 
       console.log('[Viewer] Form fill changes applied successfully');
     } catch (error) {
@@ -728,14 +728,14 @@ const EmbedPdfViewerContent = ({
       const filename = currentFile.name || 'document.pdf';
       const file = new File([blob], filename, { type: 'application/pdf' });
 
-      // Create StirlingFiles and stubs for version history
+      // Create PDFoxFiles and stubs for version history
       const currentFileId = activeFiles[activeFileIndex]?.fileId;
       if (!currentFileId) throw new Error('Current file ID not found');
 
-      const parentStub = selectors.getStirlingFileStub(currentFileId);
+      const parentStub = selectors.getPDFoxFileStub(currentFileId);
       if (!parentStub) throw new Error('Parent stub not found');
 
-      const { stirlingFiles, stubs } = await createStirlingFilesAndStubs([file], parentStub, 'multiTool');
+      const { pdfoxFiles, stubs } = await createPDFoxFilesAndStubs([file], parentStub, 'multiTool');
 
       // Store view state to restore after file replacement
       pendingScrollRestoreRef.current = pageToRestore;
@@ -744,7 +744,7 @@ const EmbedPdfViewerContent = ({
       rotationRestoreAttemptsRef.current = 0;
 
       // Consume only the current file (replace in context)
-      await actions.consumeFiles([currentFileId], stirlingFiles, stubs);
+      await actions.consumeFiles([currentFileId], pdfoxFiles, stubs);
 
       // Clear flags
       hasAnnotationChangesRef.current = false;
@@ -972,7 +972,7 @@ const EmbedPdfViewerContent = ({
               url={effectiveFile.url}
               fileName={
                 previewFile ? previewFile.name :
-                (currentFile && isStirlingFile(currentFile) ? currentFile.name :
+                (currentFile && isPDFoxFile(currentFile) ? currentFile.name :
                 (effectiveFile?.file instanceof File ? effectiveFile.file.name : undefined))
               }
               enableAnnotations={shouldEnableAnnotations}

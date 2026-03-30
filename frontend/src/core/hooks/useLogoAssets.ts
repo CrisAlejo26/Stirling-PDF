@@ -18,12 +18,12 @@ export function useLogoAssets() {
       tooltipLogo: `${folderPath}/logo-tooltip.svg`,
       firstPage: `${folderPath}/Firstpage.png`,
       favicon: `${folderPath}/favicon.ico`,
-      logo192: `${folderPath}/logo192.png`,
-      logo512: `${folderPath}/logo512.png`,
+      logo192: `${folderPath}/Logo_principal_light.png`,
+      logo512: `${folderPath}/Logo_principal_light.png`,
       wordmark: {
-        white: `${folderPath}/StirlingPDFLogoWhiteText.svg`,
-        black: `${folderPath}/StirlingPDFLogoBlackText.svg`,
-        grey: `${folderPath}/StirlingPDFLogoGreyText.svg`,
+        white: `${folderPath}/Logo_letter_dark.svg`,
+        black: `${folderPath}/Logo_letter_light.svg`,
+        grey: `${folderPath}/Logo_letter_light.svg`,
       },
       manifestHref: logoVariant === 'classic'
         ? `${BASE_PATH}/manifest-classic.json`

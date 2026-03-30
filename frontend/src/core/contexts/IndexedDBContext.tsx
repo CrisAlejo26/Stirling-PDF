@@ -6,21 +6,21 @@
 import React, { createContext, useContext, useCallback, useRef } from 'react';
 import { fileStorage } from '@app/services/fileStorage';
 import { FileId } from '@app/types/file';
-import { StirlingFileStub, createStirlingFile, createQuickKey } from '@app/types/fileContext';
+import { PDFoxFileStub, createPDFoxFile, createQuickKey } from '@app/types/fileContext';
 import { generateThumbnailForFile } from '@app/utils/thumbnailUtils';
 
 const DEBUG = process.env.NODE_ENV === 'development';
 
 interface IndexedDBContextValue {
   // Core CRUD operations
-  saveFile: (file: File, fileId: FileId, existingThumbnail?: string) => Promise<StirlingFileStub>;
+  saveFile: (file: File, fileId: FileId, existingThumbnail?: string) => Promise<PDFoxFileStub>;
   loadFile: (fileId: FileId) => Promise<File | null>;
-  loadMetadata: (fileId: FileId) => Promise<StirlingFileStub | null>;
+  loadMetadata: (fileId: FileId) => Promise<PDFoxFileStub | null>;
   deleteFile: (fileId: FileId) => Promise<void>;
 
   // Batch operations
-  loadAllMetadata: () => Promise<StirlingFileStub[]>;
-  loadLeafMetadata: () => Promise<StirlingFileStub[]>; // Only leaf files for recent files list
+  loadAllMetadata: () => Promise<PDFoxFileStub[]>;
+  loadLeafMetadata: () => Promise<PDFoxFileStub[]>; // Only leaf files for recent files list
   deleteMultiple: (fileIds: FileId[]) => Promise<void>;
   clearAll: () => Promise<void>;
 
@@ -58,15 +58,15 @@ export function IndexedDBProvider({ children }: IndexedDBProviderProps) {
     if (DEBUG) console.log(`🗂️ Evicted ${toRemove.length} LRU cache entries`);
   }, []);
 
-  const saveFile = useCallback(async (file: File, fileId: FileId, existingThumbnail?: string): Promise<StirlingFileStub> => {
+  const saveFile = useCallback(async (file: File, fileId: FileId, existingThumbnail?: string): Promise<PDFoxFileStub> => {
     // Use existing thumbnail or generate new one if none provided
     const thumbnail = existingThumbnail || await generateThumbnailForFile(file);
 
     // Store in IndexedDB (no history data - that's handled by direct fileStorage calls now)
-    const stirlingFile = createStirlingFile(file, fileId);
+    const pdfoxFile = createPDFoxFile(file, fileId);
 
     // Create minimal stub for storage
-    const stub: StirlingFileStub = {
+    const stub: PDFoxFileStub = {
       id: fileId,
       name: file.name,
       size: file.size,
@@ -81,14 +81,14 @@ export function IndexedDBProvider({ children }: IndexedDBProviderProps) {
       toolHistory: []
     };
 
-    await fileStorage.storeStirlingFile(stirlingFile, stub);
-    const storedFile = await fileStorage.getStirlingFileStub(fileId);
+    await fileStorage.storePDFoxFile(pdfoxFile, stub);
+    const storedFile = await fileStorage.getPDFoxFileStub(fileId);
 
     // Cache the file object for immediate reuse
     fileCache.current.set(fileId, { file, lastAccessed: Date.now() });
     evictLRUEntries();
 
-    // Return StirlingFileStub from the stored file (no conversion needed)
+    // Return PDFoxFileStub from the stored file (no conversion needed)
     if (!storedFile) {
       throw new Error(`Failed to retrieve stored file after saving: ${file.name}`);
     }
@@ -106,10 +106,10 @@ export function IndexedDBProvider({ children }: IndexedDBProviderProps) {
     }
 
     // Load from IndexedDB
-    const storedFile = await fileStorage.getStirlingFile(fileId);
+    const storedFile = await fileStorage.getPDFoxFile(fileId);
     if (!storedFile) return null;
 
-    // StirlingFile is already a File object, no reconstruction needed
+    // PDFoxFile is already a File object, no reconstruction needed
     const file = storedFile;
 
     // Cache for future use with LRU eviction
@@ -119,9 +119,9 @@ export function IndexedDBProvider({ children }: IndexedDBProviderProps) {
     return file;
   }, [evictLRUEntries]);
 
-  const loadMetadata = useCallback(async (fileId: FileId): Promise<StirlingFileStub | null> => {
+  const loadMetadata = useCallback(async (fileId: FileId): Promise<PDFoxFileStub | null> => {
     // Load stub directly from storage service
-    return await fileStorage.getStirlingFileStub(fileId);
+    return await fileStorage.getPDFoxFileStub(fileId);
   }, []);
 
   const deleteFile = useCallback(async (fileId: FileId): Promise<void> => {
@@ -129,21 +129,21 @@ export function IndexedDBProvider({ children }: IndexedDBProviderProps) {
     fileCache.current.delete(fileId);
 
     // Remove from IndexedDB
-    await fileStorage.deleteStirlingFile(fileId);
+    await fileStorage.deletePDFoxFile(fileId);
   }, []);
 
-  const loadLeafMetadata = useCallback(async (): Promise<StirlingFileStub[]> => {
-    const metadata = await fileStorage.getLeafStirlingFileStubs(); // Only get leaf files
+  const loadLeafMetadata = useCallback(async (): Promise<PDFoxFileStub[]> => {
+    const metadata = await fileStorage.getLeafPDFoxFileStubs(); // Only get leaf files
 
-    // All files are already StirlingFileStub objects, no processing needed
+    // All files are already PDFoxFileStub objects, no processing needed
     return metadata;
 
   }, []);
 
-  const loadAllMetadata = useCallback(async (): Promise<StirlingFileStub[]> => {
-    const metadata = await fileStorage.getAllStirlingFileStubs();
+  const loadAllMetadata = useCallback(async (): Promise<PDFoxFileStub[]> => {
+    const metadata = await fileStorage.getAllPDFoxFileStubs();
 
-    // All files are already StirlingFileStub objects, no processing needed
+    // All files are already PDFoxFileStub objects, no processing needed
     return metadata;
   }, []);
 
@@ -152,7 +152,7 @@ export function IndexedDBProvider({ children }: IndexedDBProviderProps) {
     fileIds.forEach(id => fileCache.current.delete(id));
 
     // Remove from IndexedDB in parallel
-    await Promise.all(fileIds.map(id => fileStorage.deleteStirlingFile(id)));
+    await Promise.all(fileIds.map(id => fileStorage.deletePDFoxFile(id)));
   }, []);
 
   const clearAll = useCallback(async (): Promise<void> => {

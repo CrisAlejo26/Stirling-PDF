@@ -55,7 +55,7 @@ export default function ApiKeys() {
   return (
     <Stack gap={20} p={0}>
       <Text size="sm" c="dimmed">
-        {t('config.apiKeys.intro', 'Use your API key to programmatically access Stirling PDF\'s processing capabilities.')}
+        {t('config.apiKeys.intro', 'Use your API key to programmatically access PDFox\'s processing capabilities.')}
       </Text>
 
       <Paper
@@ -73,12 +73,12 @@ export default function ApiKeys() {
               {t('config.apiKeys.docsTitle', 'API Documentation')}
             </Text>
             <Text size="sm" c="dimmed">
-              {t('config.apiKeys.docsDescription', 'Learn more about integrating with Stirling PDF:')}
+              {t('config.apiKeys.docsDescription', 'Learn more about integrating with PDFox:')}
             </Text>
             <Stack gap={4}>
               <Text size="sm">
                 <Anchor
-                  href="https://docs.stirlingpdf.com/API"
+                  href="https://docs.pdfoxpdf.com/API"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
@@ -89,7 +89,7 @@ export default function ApiKeys() {
               </Text>
               <Text size="sm">
                 <Anchor
-                  href="https://registry.scalar.com/@stirlingpdf/apis/stirling-pdf-processing-api/"
+                  href="https://registry.scalar.com/@pdfoxpdf/apis/pdfox-pdf-processing-api/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}

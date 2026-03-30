@@ -4,15 +4,15 @@ import { useTranslation } from "react-i18next";
 import SearchIcon from "@mui/icons-material/Search";
 import SortIcon from "@mui/icons-material/Sort";
 import FileCard from "@app/components/shared/FileCard";
-import { StirlingFileStub } from "@app/types/fileContext";
+import { PDFoxFileStub } from "@app/types/fileContext";
 import { FileId } from "@app/types/file";
 
 interface FileGridProps {
-  files: Array<{ file: File; record?: StirlingFileStub }>;
+  files: Array<{ file: File; record?: PDFoxFileStub }>;
   onRemove?: (index: number) => void;
-  onDoubleClick?: (item: { file: File; record?: StirlingFileStub }) => void;
-  onView?: (item: { file: File; record?: StirlingFileStub }) => void;
-  onEdit?: (item: { file: File; record?: StirlingFileStub }) => void;
+  onDoubleClick?: (item: { file: File; record?: PDFoxFileStub }) => void;
+  onView?: (item: { file: File; record?: PDFoxFileStub }) => void;
+  onEdit?: (item: { file: File; record?: PDFoxFileStub }) => void;
   onSelect?: (fileId: FileId) => void;
   selectedFiles?: FileId[];
   showSearch?: boolean;
@@ -126,7 +126,7 @@ const FileGrid = ({
         {displayFiles
           .filter(item => {
             if (!item.record?.id) {
-              console.error('FileGrid: File missing StirlingFileStub with proper ID:', item.file.name);
+              console.error('FileGrid: File missing PDFoxFileStub with proper ID:', item.file.name);
               return false;
             }
             return true;

@@ -192,7 +192,7 @@ export const ServerSelection: React.FC<ServerSelectionProps> = ({ onSelect, load
           error={testError}
           description={t(
             'setup.server.url.description',
-            'Enter the full URL of your self-hosted Stirling PDF server'
+            'Enter the full URL of your self-hosted PDFox server'
           )}
         />
 

@@ -3,7 +3,7 @@
  */
 
 import { FileId } from '@app/types/file';
-import { FileContextAction, StirlingFileStub, ProcessedFilePage } from '@app/types/fileContext';
+import { FileContextAction, PDFoxFileStub, ProcessedFilePage } from '@app/types/fileContext';
 
 const DEBUG = process.env.NODE_ENV === 'development';
 
@@ -166,7 +166,7 @@ export class FileLifecycleManager {
   /**
    * Update file record with race condition guards
    */
-  updateStirlingFileStub = (fileId: FileId, updates: Partial<StirlingFileStub>, stateRef?: React.MutableRefObject<any>): void => {
+  updatePDFoxFileStub = (fileId: FileId, updates: Partial<PDFoxFileStub>, stateRef?: React.MutableRefObject<any>): void => {
     // Guard against updating removed files (race condition protection)
     if (!this.filesRef.current.has(fileId)) {
       if (DEBUG) console.warn(`🗂️ Attempted to update removed file (filesRef): ${fileId}`);

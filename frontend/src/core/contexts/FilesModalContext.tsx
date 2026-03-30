@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useCallback, useMemo } from
 import { useFileHandler } from '@app/hooks/useFileHandler';
 import { useFileActions } from '@app/contexts/FileContext';
 import { useFileContext } from '@app/contexts/file/fileHooks';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import type { FileId } from '@app/types/file';
 import { fileStorage } from '@app/services/fileStorage';
 import apiClient from '@app/services/apiClient';
@@ -20,7 +20,7 @@ interface FilesModalContextType {
   openFilesModal: (options?: { insertAfterPage?: number; customHandler?: (files: File[], insertAfterPage?: number) => void }) => void;
   closeFilesModal: () => void;
   onFileUpload: (files: File[]) => void;
-  onRecentFileSelect: (stirlingFileStubs: StirlingFileStub[]) => void;
+  onRecentFileSelect: (pdfoxFileStubs: PDFoxFileStub[]) => void;
   onModalClose?: () => void;
   setOnModalClose: (callback: () => void) => void;
 }
@@ -52,7 +52,7 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       if (bundle) {
         const { manifest, rootOrder, sortedEntries, files } = bundle;
 
-        const stirlingFiles = await actions.addFilesWithOptions(files, {
+        const pdfoxFiles = await actions.addFilesWithOptions(files, {
           selectFiles: false,
           autoUnzip: false,
           skipAutoUnzip: false,
@@ -60,8 +60,8 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         });
 
         const idMap = new Map<string, FileId>();
-        for (let i = 0; i < stirlingFiles.length; i += 1) {
-          idMap.set(sortedEntries[i].logicalId, stirlingFiles[i].fileId as FileId);
+        for (let i = 0; i < pdfoxFiles.length; i += 1) {
+          idMap.set(sortedEntries[i].logicalId, pdfoxFiles[i].fileId as FileId);
         }
 
         const rootIdMap = new Map<string, FileId>();
@@ -96,7 +96,7 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             remoteSharedViaLink,
             remoteShareToken,
           };
-          actions.updateStirlingFileStub(newId, updates);
+          actions.updatePDFoxFileStub(newId, updates);
           await fileStorage.updateFileMetadata(newId, updates);
         }
 
@@ -119,13 +119,13 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       }
 
       const file = new File([blob], filename, { type: contentType || blob.type });
-      const stirlingFiles = await actions.addFilesWithOptions([file], {
+      const pdfoxFiles = await actions.addFilesWithOptions([file], {
         selectFiles: false,
         autoUnzip: false,
         skipAutoUnzip: false,
         allowDuplicates: true,
       });
-      const fileId = stirlingFiles[0]?.fileId as FileId | undefined;
+      const fileId = pdfoxFiles[0]?.fileId as FileId | undefined;
       if (fileId && remoteStorageId) {
         const remoteUpdatedAt = remoteStorageUpdatedAt ?? Date.now();
         const updates = {
@@ -136,7 +136,7 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           remoteSharedViaLink,
           remoteShareToken,
         };
-        actions.updateStirlingFileStub(fileId, updates);
+        actions.updatePDFoxFileStub(fileId, updates);
         await fileStorage.updateFileMetadata(fileId, updates);
       }
       return fileId ? [fileId] : [];
@@ -207,7 +207,7 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         .map((f) => fileCtx.findFileId(f) as FileId | undefined)
         .filter((id): id is FileId => Boolean(id));
       if (ids.length > 0) {
-        const currentSelected = fileCtx.selectors.getSelectedStirlingFileStubs().map((s) => s.id);
+        const currentSelected = fileCtx.selectors.getSelectedPDFoxFileStubs().map((s) => s.id);
         const nextSelection = Array.from(new Set([...currentSelected, ...ids]));
         actions.setSelectedFiles(nextSelection);
       }
@@ -215,14 +215,14 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     closeFilesModal();
   }, [addFiles, closeFilesModal, insertAfterPage, customHandler, actions, fileCtx]);
 
-  const handleRecentFileSelect = useCallback(async (stirlingFileStubs: StirlingFileStub[]) => {
-    const serverOnlyStubs = stirlingFileStubs.filter(
+  const handleRecentFileSelect = useCallback(async (pdfoxFileStubs: PDFoxFileStub[]) => {
+    const serverOnlyStubs = pdfoxFileStubs.filter(
       (stub) => stub.remoteStorageId && stub.id.startsWith('server-')
     );
-    const sharedLinkStubs = stirlingFileStubs.filter(
+    const sharedLinkStubs = pdfoxFileStubs.filter(
       (stub) => stub.remoteShareToken
     );
-    const localStubs = stirlingFileStubs.filter(
+    const localStubs = pdfoxFileStubs.filter(
       (stub) => !serverOnlyStubs.includes(stub) && !sharedLinkStubs.includes(stub)
     );
 
@@ -230,9 +230,9 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       try {
         const loadedFiles: File[] = [];
         for (const stub of localStubs) {
-          const stirlingFile = await fileStorage.getStirlingFile(stub.id);
-          if (stirlingFile) {
-            loadedFiles.push(stirlingFile);
+          const pdfoxFile = await fileStorage.getPDFoxFile(stub.id);
+          if (pdfoxFile) {
+            loadedFiles.push(pdfoxFile);
           }
         }
         for (const stub of serverOnlyStubs) {
@@ -308,20 +308,20 @@ export const FilesModalProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       });
     }
 
-    if (actions.addStirlingFileStubs) {
-      await actions.addStirlingFileStubs(localStubs, { selectFiles: false });
+    if (actions.addPDFoxFileStubs) {
+      await actions.addPDFoxFileStubs(localStubs, { selectFiles: false });
       const requestedIds = localStubs.map((s) => s.id);
       const nextSelection = Array.from(
         new Set([...requestedIds, ...selectedFromServer])
       );
       actions.setSelectedFiles(nextSelection);
     } else {
-      console.error('addStirlingFileStubs action not available');
+      console.error('addPDFoxFileStubs action not available');
     }
 
     closeFilesModal();
   }, [
-    actions.addStirlingFileStubs,
+    actions.addPDFoxFileStubs,
     actions,
     closeFilesModal,
     customHandler,

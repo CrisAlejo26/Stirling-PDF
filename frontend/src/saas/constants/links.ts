@@ -1,1 +1,1 @@
-export const devApiLink = "https://registry.scalar.com/@stirlingpdf/apis/stirling-pdf-processing-api/";
+export const devApiLink = "https://registry.scalar.com/@pdfoxpdf/apis/pdfox-pdf-processing-api/";

@@ -3,7 +3,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import { message } from '@tauri-apps/plugin-dialog';
 import { useFileState, useFileActions } from '@app/contexts/FileContext';
 import { downloadFile } from '@app/services/downloadService';
-import type { StirlingFileStub } from '@app/types/fileContext';
+import type { PDFoxFileStub } from '@app/types/fileContext';
 import { useTranslation } from 'react-i18next';
 
 export function useExitWarning() {
@@ -25,7 +25,7 @@ export function useExitWarning() {
         return;
       }
 
-      const allStubs = selectorsRef.current.getStirlingFileStubs();
+      const allStubs = selectorsRef.current.getPDFoxFileStubs();
       const dirtyStubs = allStubs.filter(stub => stub.isDirty);
 
       if (dirtyStubs.length > 0) {
@@ -93,7 +93,7 @@ export function useExitWarning() {
     };
   }, [fileActions, t]);
 
-  const saveDirtyFiles = async (dirtyStubs: StirlingFileStub[]) => {
+  const saveDirtyFiles = async (dirtyStubs: PDFoxFileStub[]) => {
     const filesById = new Map(selectorsRef.current.getFiles().map(file => [file.fileId, file]));
     let failedCount = 0;
     let cancelled = false;
@@ -120,7 +120,7 @@ export function useExitWarning() {
         }
 
         if (result.savedPath) {
-          fileActions.updateStirlingFileStub(stub.id, {
+          fileActions.updatePDFoxFileStub(stub.id, {
             localFilePath: stub.localFilePath ?? result.savedPath,
             isDirty: false
           });

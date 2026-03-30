@@ -1,46 +1,46 @@
-import { StirlingFile, FileId, StirlingFileStub, createStirlingFile, ProcessedFileMetadata, createNewStirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFile, FileId, PDFoxFileStub, createPDFoxFile, ProcessedFileMetadata, createNewPDFoxFileStub } from '@app/types/fileContext';
 
 /**
- * Builds parallel inputFileIds and inputStirlingFileStubs arrays from the valid input files.
+ * Builds parallel inputFileIds and inputPDFoxFileStubs arrays from the valid input files.
  * Falls back to a fresh stub when the file is not found in the current context state
  * (e.g. it was removed between operation start and this point).
  */
 export function buildInputTracking(
-  validFiles: StirlingFile[],
-  selectors: { getStirlingFileStub: (id: FileId) => StirlingFileStub | undefined }
-): { inputFileIds: FileId[]; inputStirlingFileStubs: StirlingFileStub[] } {
+  validFiles: PDFoxFile[],
+  selectors: { getPDFoxFileStub: (id: FileId) => PDFoxFileStub | undefined }
+): { inputFileIds: FileId[]; inputPDFoxFileStubs: PDFoxFileStub[] } {
   const inputFileIds: FileId[] = [];
-  const inputStirlingFileStubs: StirlingFileStub[] = [];
+  const inputPDFoxFileStubs: PDFoxFileStub[] = [];
   for (const file of validFiles) {
     const fileId = file.fileId;
-    const record = selectors.getStirlingFileStub(fileId);
+    const record = selectors.getPDFoxFileStub(fileId);
     if (record) {
       inputFileIds.push(fileId);
-      inputStirlingFileStubs.push(record);
+      inputPDFoxFileStubs.push(record);
     } else {
       console.warn(`No file stub found for file: ${file.name}`);
       inputFileIds.push(fileId);
-      inputStirlingFileStubs.push(createNewStirlingFileStub(file, fileId));
+      inputPDFoxFileStubs.push(createNewPDFoxFileStub(file, fileId));
     }
   }
-  return { inputFileIds, inputStirlingFileStubs };
+  return { inputFileIds, inputPDFoxFileStubs };
 }
 
 /**
- * Creates parallel outputStirlingFileStubs and outputStirlingFiles arrays from processed files.
+ * Creates parallel outputPDFoxFileStubs and outputPDFoxFiles arrays from processed files.
  * The stubFactory determines how each stub is constructed (child version vs fresh root).
  */
 export function buildOutputPairs(
   processedFiles: File[],
   thumbnails: string[],
   metadataArray: Array<ProcessedFileMetadata | undefined>,
-  stubFactory: (file: File, thumbnail: string, metadata: ProcessedFileMetadata | undefined, index: number) => StirlingFileStub
-): { outputStirlingFileStubs: StirlingFileStub[]; outputStirlingFiles: StirlingFile[] } {
-  const outputStirlingFileStubs = processedFiles.map((file, index) =>
+  stubFactory: (file: File, thumbnail: string, metadata: ProcessedFileMetadata | undefined, index: number) => PDFoxFileStub
+): { outputPDFoxFileStubs: PDFoxFileStub[]; outputPDFoxFiles: PDFoxFile[] } {
+  const outputPDFoxFileStubs = processedFiles.map((file, index) =>
     stubFactory(file, thumbnails[index], metadataArray[index], index)
   );
-  const outputStirlingFiles = processedFiles.map((file, index) =>
-    createStirlingFile(file, outputStirlingFileStubs[index].id)
+  const outputPDFoxFiles = processedFiles.map((file, index) =>
+    createPDFoxFile(file, outputPDFoxFileStubs[index].id)
   );
-  return { outputStirlingFileStubs, outputStirlingFiles };
+  return { outputPDFoxFileStubs, outputPDFoxFiles };
 }

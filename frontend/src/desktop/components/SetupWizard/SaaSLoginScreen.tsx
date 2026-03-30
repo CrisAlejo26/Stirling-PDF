@@ -61,7 +61,7 @@ export const SaaSLoginScreen: React.FC<SaaSLoginScreenProps> = ({
 
   return (
     <>
-      <LoginHeader title={t('setup.saas.title', 'Sign in to Stirling Cloud')} onClose={onClose} />
+      <LoginHeader title={t('setup.saas.title', 'Sign in to PDFox Cloud')} onClose={onClose} />
 
       <ErrorMessage error={displayError} />
 

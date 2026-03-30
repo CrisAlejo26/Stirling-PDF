@@ -288,17 +288,17 @@ export const usePageEditorExport = ({
         await actions.removeFiles(sourceFileIds, true);
       }
 
-      const newStirlingFiles = await actions.addFiles(renamedFiles, {
+      const newPDFoxFiles = await actions.addFiles(renamedFiles, {
         selectFiles: true,
       });
-      if (newStirlingFiles.length > 0) {
-        actions.setSelectedFiles(newStirlingFiles.map((file) => file.fileId));
+      if (newPDFoxFiles.length > 0) {
+        actions.setSelectedFiles(newPDFoxFiles.map((file) => file.fileId));
       }
 
-      if (sourceFileIds.length === 1 && newStirlingFiles.length === 1) {
-        const sourceStub = selectors.getStirlingFileStub(sourceFileIds[0]);
+      if (sourceFileIds.length === 1 && newPDFoxFiles.length === 1) {
+        const sourceStub = selectors.getPDFoxFileStub(sourceFileIds[0]);
         if (sourceStub?.localFilePath) {
-          actions.updateStirlingFileStub(newStirlingFiles[0].fileId, {
+          actions.updatePDFoxFileStub(newPDFoxFiles[0].fileId, {
             localFilePath: sourceStub.localFilePath,
             isDirty: true
           });

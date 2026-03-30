@@ -5,7 +5,7 @@ import { useFilesModalContext } from '@app/contexts/FilesModalContext';
 import { useNavigationActions } from '@app/contexts/NavigationContext';
 import { useToolWorkflow } from '@app/contexts/ToolWorkflowContext';
 import { useAllFiles, useFileManagement } from '@app/contexts/FileContext';
-import { StirlingFile } from '@app/types/fileContext';
+import { PDFoxFile } from '@app/types/fileContext';
 import { fileStorage } from '@app/services/fileStorage';
 
 interface TourOrchestrationContextType {
@@ -49,10 +49,10 @@ export const TourOrchestrationProvider: React.FC<{ children: React.ReactNode }> 
   const { clearAllFiles } = useFileManagement();
 
   // Store the user's files before tour starts
-  const savedFilesRef = useRef<StirlingFile[]>([]);
+  const savedFilesRef = useRef<PDFoxFile[]>([]);
 
   // Keep a ref to always have the latest files
-  const filesRef = useRef<StirlingFile[]>(files);
+  const filesRef = useRef<PDFoxFile[]>(files);
   React.useEffect(() => {
     filesRef.current = files;
   }, [files]);
@@ -79,7 +79,7 @@ export const TourOrchestrationProvider: React.FC<{ children: React.ReactNode }> 
     const currentFiles = filesRef.current;
     if (currentFiles.length > 0) {
       try {
-        await Promise.all(currentFiles.map(file => fileStorage.deleteStirlingFile(file.fileId)));
+        await Promise.all(currentFiles.map(file => fileStorage.deletePDFoxFile(file.fileId)));
         console.log(`Deleted ${currentFiles.length} file(s) from storage`);
       } catch (error) {
         console.error('Failed to delete files from storage:', error);
@@ -88,7 +88,7 @@ export const TourOrchestrationProvider: React.FC<{ children: React.ReactNode }> 
 
     // Restore saved files
     if (savedFilesRef.current.length > 0) {
-      // Create fresh File objects from StirlingFile to avoid ID conflicts
+      // Create fresh File objects from PDFoxFile to avoid ID conflicts
       const filesToRestore = await Promise.all(
         savedFilesRef.current.map(async (sf) => {
           const buffer = await sf.arrayBuffer();

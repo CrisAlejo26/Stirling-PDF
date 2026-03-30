@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Modal } from '@mantine/core';
 import { Dropzone } from '@mantine/dropzone';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import { useFileManager } from '@app/hooks/useFileManager';
 import { useFilesModalContext } from '@app/contexts/FilesModalContext';
 import { useAppConfig } from '@app/contexts/AppConfigContext';
@@ -22,7 +22,7 @@ interface FileManagerProps {
 const FileManager: React.FC<FileManagerProps> = ({ selectedTool }) => {
   const { isFilesModalOpen, closeFilesModal, onFileUpload, onRecentFileSelect } = useFilesModalContext();
   const { config } = useAppConfig();
-  const [recentFiles, setRecentFiles] = useState<StirlingFileStub[]>([]);
+  const [recentFiles, setRecentFiles] = useState<PDFoxFileStub[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -43,9 +43,9 @@ const FileManager: React.FC<FileManagerProps> = ({ selectedTool }) => {
     setRecentFiles(files);
   }, [loadRecentFiles]);
 
-  const handleRecentFilesSelected = useCallback(async (files: StirlingFileStub[]) => {
+  const handleRecentFilesSelected = useCallback(async (files: PDFoxFileStub[]) => {
     try {
-      // Use StirlingFileStubs directly - preserves all metadata!
+      // Use PDFoxFileStubs directly - preserves all metadata!
       onRecentFileSelect(files);
     } catch (error) {
       console.error('Failed to process selected files:', error);

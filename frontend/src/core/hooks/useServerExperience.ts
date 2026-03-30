@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppConfig } from '@app/contexts/AppConfigContext';
 
-const SELF_REPORTED_ADMIN_KEY = 'stirling-self-reported-admin';
+const SELF_REPORTED_ADMIN_KEY = 'pdfox-self-reported-admin';
 const FREE_TIER_LIMIT = 5;
 
 type UserCountSource = 'admin' | 'estimate' | 'unknown';

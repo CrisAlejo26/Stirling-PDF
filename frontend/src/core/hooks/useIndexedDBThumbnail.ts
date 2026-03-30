@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StirlingFileStub } from "@app/types/fileContext";
+import { PDFoxFileStub } from "@app/types/fileContext";
 import { useIndexedDB } from "@app/contexts/IndexedDBContext";
 import { generateThumbnailForFile } from "@app/utils/thumbnailUtils";
 import { FileId } from "@app/types/fileContext";
@@ -9,7 +9,7 @@ import { FileId } from "@app/types/fileContext";
  * Hook for IndexedDB-aware thumbnail loading
  * Handles thumbnail generation for files not in IndexedDB
  */
-export function useIndexedDBThumbnail(file: StirlingFileStub | undefined | null): {
+export function useIndexedDBThumbnail(file: PDFoxFileStub | undefined | null): {
   thumbnail: string | null;
   isGenerating: boolean
 } {

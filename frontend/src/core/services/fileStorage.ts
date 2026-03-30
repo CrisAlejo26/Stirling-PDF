@@ -1,21 +1,21 @@
 /**
- * Stirling File Storage Service
+ * PDFox File Storage Service
  * Single-table architecture with typed query methods
  * Forces correct usage patterns through service API design
  */
 
 import { FileId, BaseFileMetadata } from '@app/types/file';
-import { StirlingFile, StirlingFileStub, createStirlingFile } from '@app/types/fileContext';
+import { PDFoxFile, PDFoxFileStub, createPDFoxFile } from '@app/types/fileContext';
 import { indexedDBManager, DATABASE_CONFIGS } from '@app/services/indexedDBManager';
 
 /**
  * Storage record - single source of truth
- * Contains all data needed for both StirlingFile and StirlingFileStub
+ * Contains all data needed for both PDFoxFile and PDFoxFileStub
  */
-export interface StoredStirlingFileRecord extends BaseFileMetadata {
+export interface StoredPDFoxFileRecord extends BaseFileMetadata {
   data: ArrayBuffer;
-  fileId: FileId; // Matches runtime StirlingFile.fileId exactly
-  quickKey: string; // Matches runtime StirlingFile.quickKey exactly
+  fileId: FileId; // Matches runtime PDFoxFile.fileId exactly
+  quickKey: string; // Matches runtime PDFoxFile.quickKey exactly
   thumbnail?: string;
   url?: string; // For compatibility with existing components
 }
@@ -39,20 +39,20 @@ class FileStorageService {
   }
 
   /**
-   * Store a StirlingFile with its metadata from StirlingFileStub
+   * Store a PDFoxFile with its metadata from PDFoxFileStub
    */
-  async storeStirlingFile(stirlingFile: StirlingFile, stub: StirlingFileStub): Promise<void> {
+  async storePDFoxFile(pdfoxFile: PDFoxFile, stub: PDFoxFileStub): Promise<void> {
     const db = await this.getDatabase();
-    const arrayBuffer = await stirlingFile.arrayBuffer();
+    const arrayBuffer = await pdfoxFile.arrayBuffer();
 
-    const record: StoredStirlingFileRecord = {
-      id: stirlingFile.fileId,
-      fileId: stirlingFile.fileId, // Explicit field for clarity
-      quickKey: stirlingFile.quickKey,
-      name: stirlingFile.name,
-      type: stirlingFile.type,
-      size: stirlingFile.size,
-      lastModified: stirlingFile.lastModified,
+    const record: StoredPDFoxFileRecord = {
+      id: pdfoxFile.fileId,
+      fileId: pdfoxFile.fileId, // Explicit field for clarity
+      quickKey: pdfoxFile.quickKey,
+      name: pdfoxFile.name,
+      type: pdfoxFile.type,
+      size: pdfoxFile.size,
+      lastModified: pdfoxFile.lastModified,
       createdAt: stub.createdAt,
       data: arrayBuffer,
       thumbnail: stub.thumbnailUrl,
@@ -68,7 +68,7 @@ class FileStorageService {
 
       // History data from stub
       versionNumber: stub.versionNumber ?? 1,
-      originalFileId: stub.originalFileId ?? stirlingFile.fileId,
+      originalFileId: stub.originalFileId ?? pdfoxFile.fileId,
       parentFileId: stub.parentFileId ?? undefined,
       toolHistory: stub.toolHistory ?? []
     };
@@ -100,9 +100,9 @@ class FileStorageService {
   }
 
   /**
-   * Get StirlingFile with full data - for loading into workbench
+   * Get PDFoxFile with full data - for loading into workbench
    */
-  async getStirlingFile(id: FileId): Promise<StirlingFile | null> {
+  async getPDFoxFile(id: FileId): Promise<PDFoxFile | null> {
     const db = await this.getDatabase();
 
     return new Promise((resolve, reject) => {
@@ -112,7 +112,7 @@ class FileStorageService {
 
       request.onerror = () => reject(request.error);
       request.onsuccess = () => {
-        const record = request.result as StoredStirlingFileRecord | undefined;
+        const record = request.result as StoredPDFoxFileRecord | undefined;
         if (!record) {
           resolve(null);
           return;
@@ -125,25 +125,25 @@ class FileStorageService {
           lastModified: record.lastModified
         });
 
-        // Convert to StirlingFile with preserved IDs
-        const stirlingFile = createStirlingFile(file, record.fileId);
-        resolve(stirlingFile);
+        // Convert to PDFoxFile with preserved IDs
+        const pdfoxFile = createPDFoxFile(file, record.fileId);
+        resolve(pdfoxFile);
       };
     });
   }
 
   /**
-   * Get multiple StirlingFiles - for batch loading
+   * Get multiple PDFoxFiles - for batch loading
    */
-  async getStirlingFiles(ids: FileId[]): Promise<StirlingFile[]> {
-    const results = await Promise.all(ids.map(id => this.getStirlingFile(id)));
-    return results.filter((file): file is StirlingFile => file !== null);
+  async getPDFoxFiles(ids: FileId[]): Promise<PDFoxFile[]> {
+    const results = await Promise.all(ids.map(id => this.getPDFoxFile(id)));
+    return results.filter((file): file is PDFoxFile => file !== null);
   }
 
   /**
-   * Get StirlingFileStub (metadata only) - for UI browsing
+   * Get PDFoxFileStub (metadata only) - for UI browsing
    */
-  async getStirlingFileStub(id: FileId): Promise<StirlingFileStub | null> {
+  async getPDFoxFileStub(id: FileId): Promise<PDFoxFileStub | null> {
     const db = await this.getDatabase();
 
     return new Promise((resolve, reject) => {
@@ -153,14 +153,14 @@ class FileStorageService {
 
       request.onerror = () => reject(request.error);
       request.onsuccess = () => {
-        const record = request.result as StoredStirlingFileRecord | undefined;
+        const record = request.result as StoredPDFoxFileRecord | undefined;
         if (!record) {
           resolve(null);
           return;
         }
 
-        // Create StirlingFileStub from metadata (no file data)
-        const stub: StirlingFileStub = {
+        // Create PDFoxFileStub from metadata (no file data)
+        const stub: PDFoxFileStub = {
           id: record.id,
           name: record.name,
           type: record.type,
@@ -190,22 +190,22 @@ class FileStorageService {
   }
 
   /**
-   * Get all StirlingFileStubs (metadata only) - for FileManager browsing
+   * Get all PDFoxFileStubs (metadata only) - for FileManager browsing
    */
-  async getAllStirlingFileStubs(): Promise<StirlingFileStub[]> {
+  async getAllPDFoxFileStubs(): Promise<PDFoxFileStub[]> {
     const db = await this.getDatabase();
 
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.storeName], 'readonly');
       const store = transaction.objectStore(this.storeName);
       const request = store.openCursor();
-      const stubs: StirlingFileStub[] = [];
+      const stubs: PDFoxFileStub[] = [];
 
       request.onerror = () => reject(request.error);
       request.onsuccess = (event) => {
         const cursor = (event.target as IDBRequest).result;
         if (cursor) {
-          const record = cursor.value as StoredStirlingFileRecord;
+          const record = cursor.value as StoredPDFoxFileRecord;
           if (record && record.name && typeof record.size === 'number') {
             // Extract metadata only - no file data
             stubs.push({
@@ -243,30 +243,30 @@ class FileStorageService {
   /**
    * Get all history stubs for a given original file ID.
    */
-  async getHistoryChainStubs(originalFileId: FileId): Promise<StirlingFileStub[]> {
-    const stubs = await this.getAllStirlingFileStubs();
+  async getHistoryChainStubs(originalFileId: FileId): Promise<PDFoxFileStub[]> {
+    const stubs = await this.getAllPDFoxFileStubs();
     return stubs
       .filter((stub) => (stub.originalFileId || stub.id) === originalFileId)
       .sort((a, b) => (a.versionNumber || 1) - (b.versionNumber || 1));
   }
 
   /**
-   * Get leaf StirlingFileStubs only - for unprocessed files
+   * Get leaf PDFoxFileStubs only - for unprocessed files
    */
-  async getLeafStirlingFileStubs(): Promise<StirlingFileStub[]> {
+  async getLeafPDFoxFileStubs(): Promise<PDFoxFileStub[]> {
     const db = await this.getDatabase();
 
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.storeName], 'readonly');
       const store = transaction.objectStore(this.storeName);
       const request = store.openCursor();
-      const leafStubs: StirlingFileStub[] = [];
+      const leafStubs: PDFoxFileStub[] = [];
 
       request.onerror = () => reject(request.error);
       request.onsuccess = (event) => {
         const cursor = (event.target as IDBRequest).result;
         if (cursor) {
-          const record = cursor.value as StoredStirlingFileRecord;
+          const record = cursor.value as StoredPDFoxFileRecord;
           // Only include leaf files (default to true if undefined)
           if (record && record.name && typeof record.size === 'number' && record.isLeaf !== false) {
             leafStubs.push({
@@ -302,9 +302,9 @@ class FileStorageService {
   }
 
   /**
-   * Delete StirlingFile - single operation, no sync issues
+   * Delete PDFoxFile - single operation, no sync issues
    */
-  async deleteStirlingFile(id: FileId): Promise<void> {
+  async deletePDFoxFile(id: FileId): Promise<void> {
     const db = await this.getDatabase();
 
     return new Promise((resolve, reject) => {
@@ -330,7 +330,7 @@ class FileStorageService {
         const getRequest = store.get(id);
 
         getRequest.onsuccess = () => {
-          const record = getRequest.result as StoredStirlingFileRecord;
+          const record = getRequest.result as StoredPDFoxFileRecord;
           if (record) {
             record.thumbnail = thumbnail;
             const updateRequest = store.put(record);
@@ -392,7 +392,7 @@ class FileStorageService {
       }
 
       // Calculate our actual IndexedDB usage from file metadata
-      const stubs = await this.getAllStirlingFileStubs();
+      const stubs = await this.getAllPDFoxFileStubs();
       used = stubs.reduce((total, stub) => total + (stub?.size || 0), 0);
       fileCount = stubs.length;
 
@@ -429,7 +429,7 @@ class FileStorageService {
 
         request.onerror = () => reject(request.error);
         request.onsuccess = () => {
-          const record = request.result as StoredStirlingFileRecord | undefined;
+          const record = request.result as StoredPDFoxFileRecord | undefined;
           if (record) {
             const blob = new Blob([record.data], { type: record.type });
             const url = URL.createObjectURL(blob);
@@ -455,7 +455,7 @@ class FileStorageService {
       const transaction = db.transaction([this.storeName], 'readwrite');
       const store = transaction.objectStore(this.storeName);
 
-      const record = await new Promise<StoredStirlingFileRecord | undefined>((resolve, reject) => {
+      const record = await new Promise<StoredPDFoxFileRecord | undefined>((resolve, reject) => {
         const request = store.get(fileId);
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
@@ -491,7 +491,7 @@ class FileStorageService {
       const transaction = db.transaction([this.storeName], 'readwrite');
       const store = transaction.objectStore(this.storeName);
 
-      const record = await new Promise<StoredStirlingFileRecord | undefined>((resolve, reject) => {
+      const record = await new Promise<StoredPDFoxFileRecord | undefined>((resolve, reject) => {
         const request = store.get(fileId);
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
@@ -520,15 +520,15 @@ class FileStorageService {
   /**
    * Update metadata fields for a stored file record.
    */
-  async updateFileMetadata(fileId: FileId, updates: Partial<StoredStirlingFileRecord>): Promise<boolean> {
+  async updateFileMetadata(fileId: FileId, updates: Partial<StoredPDFoxFileRecord>): Promise<boolean> {
     try {
       const db = await this.getDatabase();
       const transaction = db.transaction([this.storeName], 'readwrite');
       const store = transaction.objectStore(this.storeName);
-      const record = await new Promise<StoredStirlingFileRecord | undefined>((resolve, reject) => {
+      const record = await new Promise<StoredPDFoxFileRecord | undefined>((resolve, reject) => {
         const request = store.get(fileId);
         request.onerror = () => reject(request.error);
-        request.onsuccess = () => resolve(request.result as StoredStirlingFileRecord | undefined);
+        request.onsuccess = () => resolve(request.result as StoredPDFoxFileRecord | undefined);
       });
 
       if (!record) {

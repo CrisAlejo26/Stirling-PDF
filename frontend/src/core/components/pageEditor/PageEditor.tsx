@@ -107,7 +107,7 @@ const PageEditor = ({
     const newFiles: any[] = [];
 
     fileOrder.forEach(fileId => {
-      const stub = selectors.getStirlingFileStub(fileId);
+      const stub = selectors.getPDFoxFileStub(fileId);
       const isSelected = state.ui.selectedFileIds.includes(fileId);
       const isPdf = stub?.name?.toLowerCase().endsWith('.pdf') ?? false;
 

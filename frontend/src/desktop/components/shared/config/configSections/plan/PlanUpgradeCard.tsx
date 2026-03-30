@@ -3,7 +3,7 @@ import { Card, Text, Button, Stack, List, ThemeIcon } from '@mantine/core';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useTranslation } from 'react-i18next';
 import { open as shellOpen } from '@tauri-apps/plugin-shell';
-import { STIRLING_SAAS_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_URL } from '@app/constants/connection';
 import { BILLING_CONFIG } from '@app/config/billing';
 import type { TierLevel } from '@app/types/billing';
 
@@ -21,7 +21,7 @@ export function PlanUpgradeCard({ currentTier }: PlanUpgradeCardProps) {
 
   const handleUpgrade = async () => {
     // For MVP, direct to web SaaS for upgrades
-    const upgradeUrl = `${STIRLING_SAAS_URL}/account?tab=plan`;
+    const upgradeUrl = `${PDFOX_SAAS_URL}/account?tab=plan`;
 
     try {
       await shellOpen(upgradeUrl);

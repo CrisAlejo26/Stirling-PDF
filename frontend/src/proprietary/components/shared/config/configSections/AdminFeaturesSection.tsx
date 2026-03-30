@@ -45,7 +45,7 @@ export default function AdminFeaturesSection() {
       const result: FeaturesSettingsData & { _pending?: Record<string, any> } = {
         serverCertificate: systemData.serverCertificate || {
           enabled: true,
-          organizationName: 'Stirling-PDF',
+          organizationName: 'PDFox-PDF',
           validity: 365,
           regenerateOnStartup: false
         }
@@ -143,14 +143,14 @@ export default function AdminFeaturesSection() {
           </Group>
 
           <Text size="xs" c="dimmed">
-            {t('admin.settings.features.serverCertificate.description', 'Configure server-side certificate generation for "Sign with Stirling-PDF" functionality')}
+            {t('admin.settings.features.serverCertificate.description', 'Configure server-side certificate generation for "Sign with PDFox-PDF" functionality')}
           </Text>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
               <Text fw={500} size="sm">{t('admin.settings.features.serverCertificate.enabled.label', 'Enable Server Certificate')}</Text>
               <Text size="xs" c="dimmed" mt={4}>
-                {t('admin.settings.features.serverCertificate.enabled.description', 'Enable server-side certificate for "Sign with Stirling-PDF" option')}
+                {t('admin.settings.features.serverCertificate.enabled.description', 'Enable server-side certificate for "Sign with PDFox-PDF" option')}
               </Text>
             </div>
             <Group gap="xs">
@@ -179,12 +179,12 @@ export default function AdminFeaturesSection() {
                 </Group>
               }
               description={t('admin.settings.features.serverCertificate.organizationName.description', 'Organization name for generated certificates')}
-              value={settings.serverCertificate?.organizationName || 'Stirling-PDF'}
+              value={settings.serverCertificate?.organizationName || 'PDFox-PDF'}
               onChange={(e) => setSettings({
                 ...settings,
                 serverCertificate: { ...settings.serverCertificate, organizationName: e.target.value }
               })}
-              placeholder="Stirling-PDF"
+              placeholder="PDFox-PDF"
               disabled={!loginEnabled}
             />
           </div>

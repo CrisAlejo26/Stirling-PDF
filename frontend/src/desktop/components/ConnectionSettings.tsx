@@ -75,7 +75,7 @@ export const ConnectionSettings: React.FC = () => {
               variant="light"
             >
               {config.mode === 'saas'
-                ? t('settings.connection.mode.saas', 'Stirling Cloud')
+                ? t('settings.connection.mode.saas', 'PDFox Cloud')
                 : config.mode === 'local'
                   ? t('settings.connection.mode.local', 'Local Only')
                   : t('settings.connection.mode.selfhosted', 'Self-Hosted')}
@@ -98,7 +98,7 @@ export const ConnectionSettings: React.FC = () => {
                   {t('settings.connection.server', 'Server')}
                 </Text>
                 <Text size="sm" c="dimmed">
-                  {config.mode === 'saas' ? 'stirling.com' : config.server_config.url}
+                  {config.mode === 'saas' ? 'pdfox.com' : config.server_config.url}
                 </Text>
               </div>
 

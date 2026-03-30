@@ -36,7 +36,7 @@ export async function printPdfNatively(file?: File | Blob, url?: string | null, 
 
   const tempPath = await join(
     await tempDir(),
-    `stirling-print-${crypto.randomUUID()}-${sanitizeFileName(fileName)}`,
+    `pdfox-print-${crypto.randomUUID()}-${sanitizeFileName(fileName)}`,
   );
 
   await writeFile(tempPath, new Uint8Array(await source.arrayBuffer()));

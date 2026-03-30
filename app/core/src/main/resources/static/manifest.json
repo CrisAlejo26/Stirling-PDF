@@ -1,6 +1,6 @@
 {
-  "short_name": "Stirling PDF",
-  "name": "Stirling PDF",
+  "short_name": "PDFox",
+  "name": "PDFox",
   "icons": [
     {
       "src": "modern-logo/favicon.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "modern-logo/logo192.png",
+      "src": "modern-logo/Logo_principal_light.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "modern-logo/logo512.png",
+      "src": "modern-logo/Logo_principal_light.png",
       "type": "image/png",
       "sizes": "512x512"
     }

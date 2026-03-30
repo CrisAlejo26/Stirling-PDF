@@ -3,10 +3,10 @@
  */
 export async function handleAuthCallbackSuccess(token: string): Promise<void> {
   // Notify desktop popup listeners (self-hosted SSO flow)
-  const isDesktopPopup = typeof window !== 'undefined' && window.opener && window.name === 'stirling-desktop-sso';
+  const isDesktopPopup = typeof window !== 'undefined' && window.opener && window.name === 'pdfox-desktop-sso';
   if (isDesktopPopup) {
     try {
-      window.opener.postMessage({ type: 'stirling-desktop-sso', token }, '*');
+      window.opener.postMessage({ type: 'pdfox-desktop-sso', token }, '*');
     } catch (postError) {
       console.error('[AuthCallback] Failed to notify desktop window:', postError);
     }

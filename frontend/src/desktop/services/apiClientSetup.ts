@@ -6,7 +6,7 @@ import { createBackendNotReadyError } from '@app/constants/backendErrors';
 import { operationRouter } from '@app/services/operationRouter';
 import { authService } from '@app/services/authService';
 import { connectionModeService } from '@app/services/connectionModeService';
-import { STIRLING_SAAS_URL, STIRLING_SAAS_BACKEND_API_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_URL, PDFOX_SAAS_BACKEND_API_URL } from '@app/constants/connection';
 import { OPEN_SIGN_IN_EVENT } from '@app/constants/signInEvents';
 import i18n from '@app/i18n';
 
@@ -61,7 +61,7 @@ export function setupApiInterceptors(client: AxiosInstance): void {
         // - SaaS backend: Needs auth token
         // - Self-hosted backend: Needs auth token
         const isRemote = await operationRouter.isSelfHostedMode();
-        const isSaaSBackendRequest = baseUrl === STIRLING_SAAS_BACKEND_API_URL;
+        const isSaaSBackendRequest = baseUrl === PDFOX_SAAS_BACKEND_API_URL;
         const needsAuth = isRemote || isSaaSBackendRequest;
 
         // Tag request so error handler can identify SaaS backend errors without URL matching
@@ -182,7 +182,7 @@ export function setupApiInterceptors(client: AxiosInstance): void {
           }
         } else {
           // SaaS mode: use Supabase refresh endpoint
-          refreshed = await authService.refreshSupabaseToken(STIRLING_SAAS_URL);
+          refreshed = await authService.refreshSupabaseToken(PDFOX_SAAS_URL);
         }
 
         if (refreshed) {

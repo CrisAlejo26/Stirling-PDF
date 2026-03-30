@@ -1,28 +1,28 @@
 /**
- * Test utilities for creating StirlingFile objects in tests
+ * Test utilities for creating PDFoxFile objects in tests
  */
 
-import { StirlingFile, createStirlingFile } from '@app/types/fileContext';
+import { PDFoxFile, createPDFoxFile } from '@app/types/fileContext';
 
 /**
- * Create a StirlingFile object for testing purposes
+ * Create a PDFoxFile object for testing purposes
  */
-export function createTestStirlingFile(
+export function createTestPDFoxFile(
   name: string,
   content: string = 'test content',
   type: string = 'application/pdf'
-): StirlingFile {
+): PDFoxFile {
   const file = new File([content], name, { type });
-  return createStirlingFile(file);
+  return createPDFoxFile(file);
 }
 
 /**
- * Create multiple StirlingFile objects for testing
+ * Create multiple PDFoxFile objects for testing
  */
 export function createTestFilesWithId(
   files: Array<{ name: string; content?: string; type?: string }>
-): StirlingFile[] {
+): PDFoxFile[] {
   return files.map(({ name, content = 'test content', type = 'application/pdf' }) =>
-    createTestStirlingFile(name, content, type)
+    createTestPDFoxFile(name, content, type)
   );
 }

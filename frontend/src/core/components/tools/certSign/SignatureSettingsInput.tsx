@@ -84,7 +84,7 @@ const SignatureSettingsInput = ({ value, onChange, disabled = false }: Signature
             size="xs"
           />
           <Switch
-            label={t('certSign.showLogo', 'Show Stirling PDF Logo')}
+            label={t('certSign.showLogo', 'Show PDFox Logo')}
             checked={value.showLogo || false}
             onChange={(event) => handleChange('showLogo', event.currentTarget.checked)}
             disabled={disabled}

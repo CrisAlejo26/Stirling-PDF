@@ -4,7 +4,7 @@ import '@app/components/shared/rightRail/RightRail.css';
 import { useToolWorkflow } from '@app/contexts/ToolWorkflowContext';
 import { useRightRail } from '@app/contexts/RightRailContext';
 import { useFileState, useFileSelection, useFileActions } from '@app/contexts/FileContext';
-import { isStirlingFile } from '@app/types/fileContext';
+import { isPDFoxFile } from '@app/types/fileContext';
 import { useNavigationState } from '@app/contexts/NavigationContext';
 import { useTranslation } from 'react-i18next';
 import { useFileActionTerminology } from '@app/hooks/useFileActionTerminology';
@@ -141,7 +141,7 @@ export default function RightRail() {
         if (!buffer) return;
         const fileToExport = selectedFiles.length > 0 ? selectedFiles[0] : activeFiles[0];
         if (!fileToExport) return;
-        const stub = isStirlingFile(fileToExport) ? selectors.getStirlingFileStub(fileToExport.fileId) : undefined;
+        const stub = isPDFoxFile(fileToExport) ? selectors.getPDFoxFileStub(fileToExport.fileId) : undefined;
         try {
           const result = await downloadFile({
             data: new Blob([buffer], { type: 'application/pdf' }),
@@ -149,7 +149,7 @@ export default function RightRail() {
             localPath: forceNewFile ? undefined : stub?.localFilePath,
           });
           if (!forceNewFile && !result.cancelled && stub && result.savedPath) {
-            fileActions.updateStirlingFileStub(stub.id, {
+            fileActions.updatePDFoxFileStub(stub.id, {
               localFilePath: stub.localFilePath ?? result.savedPath,
               isDirty: false,
             });
@@ -169,7 +169,7 @@ export default function RightRail() {
 
       if (filesToExport.length > 0) {
         for (const file of filesToExport) {
-          const stub = isStirlingFile(file) ? selectors.getStirlingFileStub(file.fileId) : undefined;
+          const stub = isPDFoxFile(file) ? selectors.getPDFoxFileStub(file.fileId) : undefined;
           try {
             const result = await downloadFile({
               data: file,
@@ -178,7 +178,7 @@ export default function RightRail() {
             });
             if (result.cancelled) continue;
             if (!forceNewFile && stub && result.savedPath) {
-              fileActions.updateStirlingFileStub(stub.id, {
+              fileActions.updatePDFoxFileStub(stub.id, {
                 localFilePath: stub.localFilePath ?? result.savedPath,
                 isDirty: false,
               });

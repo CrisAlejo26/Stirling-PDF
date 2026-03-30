@@ -12,7 +12,7 @@ import {
 } from '@app/types/compare';
 import { CompareParameters } from '@app/hooks/tools/compare/useCompareParameters';
 import { ToolOperationHook } from '@app/hooks/tools/shared/useToolOperation';
-import type { StirlingFile } from '@app/types/fileContext';
+import type { PDFoxFile } from '@app/types/fileContext';
 import { useFileContext } from '@app/contexts/file/fileHooks';
 import {
   aggregateTotals,
@@ -187,7 +187,7 @@ export const useCompareOperation = (): CompareOperationHook => {
   );
 
   const executeOperation = useCallback(
-    async (params: CompareParameters, selectedFiles: StirlingFile[]) => {
+    async (params: CompareParameters, selectedFiles: PDFoxFile[]) => {
       // start new run
       const runId = ++activeRunIdRef.current;
       cancelledRef.current = false;

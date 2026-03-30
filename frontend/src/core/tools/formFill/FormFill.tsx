@@ -26,7 +26,7 @@ import { useNavigation } from '@app/contexts/NavigationContext';
 import { useViewer } from '@app/contexts/ViewerContext';
 import { useFileState } from '@app/contexts/FileContext';
 import { Skeleton } from '@mantine/core';
-import { isStirlingFile, getFormFillFileId } from '@app/types/fileContext';
+import { isPDFoxFile, getFormFillFileId } from '@app/types/fileContext';
 import type { BaseToolProps } from '@app/types/tool';
 import type { FormField } from '@app/tools/formFill/types';
 import { FieldInput } from '@app/tools/formFill/FieldInput';
@@ -143,7 +143,7 @@ const FormFill = (_props: BaseToolProps) => {
     if (activeFiles.length === 0) return null;
     if (selectedFileIds.length > 0) {
       const sel = activeFiles.find(
-        (f) => isStirlingFile(f) && selectedFileIds.includes(f.fileId)
+        (f) => isPDFoxFile(f) && selectedFileIds.includes(f.fileId)
       );
       if (sel) return sel;
     }
@@ -202,7 +202,7 @@ const FormFill = (_props: BaseToolProps) => {
   const handleSave = useCallback(async () => {
     // Ref-based guard prevents concurrent saves that cause file duplication
     if (savingRef.current) return;
-    if (!currentFile || !isStirlingFile(currentFile)) return;
+    if (!currentFile || !isPDFoxFile(currentFile)) return;
 
     if (!validateForm()) {
       setSaveError('Please fill in all required fields');

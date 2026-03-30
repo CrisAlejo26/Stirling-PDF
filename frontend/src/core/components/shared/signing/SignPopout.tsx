@@ -314,11 +314,11 @@ const SignPopout = ({ isOpen, onClose, buttonRef, isRTL, groupSigningEnabled }: 
     setCreating(true);
     try {
       const selectedFile = selectedFiles[0];
-      const stirlingFile = await fileStorage.getStirlingFile(selectedFile.fileId);
-      if (!stirlingFile) throw new Error('File not found');
+      const pdfoxFile = await fileStorage.getPDFoxFile(selectedFile.fileId);
+      if (!pdfoxFile) throw new Error('File not found');
 
       const formData = new FormData();
-      formData.append('file', stirlingFile, selectedFile.name);
+      formData.append('file', pdfoxFile, selectedFile.name);
       formData.append('workflowType', 'SIGNING');
       formData.append('documentName', selectedFile.name);
       selectedUserIds.forEach((userId, index) => {

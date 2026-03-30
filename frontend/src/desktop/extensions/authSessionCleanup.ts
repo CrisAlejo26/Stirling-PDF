@@ -15,7 +15,7 @@ export async function clearPlatformAuthOnLoginInit(): Promise<void> {
   try {
     // Only clear if there's NO token in storage
     // If token exists, user just logged in and we should keep it
-    const token = typeof window !== 'undefined' ? localStorage.getItem('stirling_jwt') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('pdfox_jwt') : null;
     console.log('[AuthCleanup] Login init check - token exists:', !!token, 'length:', token?.length || 0);
 
     if (!token) {

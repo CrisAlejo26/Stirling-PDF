@@ -1,4 +1,4 @@
-import { StirlingFile } from '@app/types/fileContext';
+import { PDFoxFile } from '@app/types/fileContext';
 import type { ResponseHandler } from '@app/utils/toolResponseProcessor';
 import { ToolId } from '@app/types/toolId';
 import type { ProcessingProgress } from '@app/hooks/tools/shared/useToolState';
@@ -155,7 +155,7 @@ export interface ToolOperationHook<TParams = void> {
   willUseCloud?: boolean;
 
   // Actions
-  executeOperation: (params: TParams, selectedFiles: StirlingFile[]) => Promise<void>;
+  executeOperation: (params: TParams, selectedFiles: PDFoxFile[]) => Promise<void>;
   resetResults: () => void;
   clearError: () => void;
   cancelOperation: () => void;

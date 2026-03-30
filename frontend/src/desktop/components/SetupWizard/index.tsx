@@ -9,7 +9,7 @@ import { SelfHostedLoginScreen } from '@app/components/SetupWizard/SelfHostedLog
 import { ServerConfig, SSOProviderConfig, connectionModeService } from '@app/services/connectionModeService';
 import { AuthServiceError, authService, UserInfo } from '@app/services/authService';
 import { tauriBackendService } from '@app/services/tauriBackendService';
-import { STIRLING_SAAS_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_URL } from '@app/constants/connection';
 import { listen } from '@tauri-apps/api/event';
 import '@app/routes/authShared/auth.css';
 
@@ -31,7 +31,7 @@ interface SetupWizardProps {
 export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete, noLayout = false, onClose }) => {
   const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState<SetupStep>(SetupStep.SaaSLogin);
-  const [serverConfig, setServerConfig] = useState<ServerConfig | null>({ url: STIRLING_SAAS_URL });
+  const [serverConfig, setServerConfig] = useState<ServerConfig | null>({ url: PDFOX_SAAS_URL });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selfHostedMfaCode, setSelfHostedMfaCode] = useState('');
@@ -249,7 +249,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete, noLayout =
           const accessTokenFromQuery = parsed.searchParams.get('access_token');
           const serverFromQuery = parsed.searchParams.get('server');
           const token = accessTokenFromHash || accessTokenFromQuery;
-          const serverUrl = serverFromQuery || serverConfig?.url || STIRLING_SAAS_URL;
+          const serverUrl = serverFromQuery || serverConfig?.url || PDFOX_SAAS_URL;
           if (!token || !serverUrl) {
             console.error('[SetupWizard] Deep link missing token or server for SSO completion');
             return;
@@ -277,8 +277,8 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete, noLayout =
         setLoading(true);
         setError(null);
 
-        await authService.completeSupabaseSession(accessToken, serverConfig?.url || STIRLING_SAAS_URL);
-        await connectionModeService.switchToSaaS(serverConfig?.url || STIRLING_SAAS_URL);
+        await authService.completeSupabaseSession(accessToken, serverConfig?.url || PDFOX_SAAS_URL);
+        await connectionModeService.switchToSaaS(serverConfig?.url || PDFOX_SAAS_URL);
         tauriBackendService.startBackend().catch(console.error);
         onComplete();
       } catch (err) {
@@ -304,7 +304,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete, noLayout =
       setActiveStep(SetupStep.ServerSelection);
     } else if (activeStep === SetupStep.ServerSelection) {
       setActiveStep(SetupStep.SaaSLogin);
-      setServerConfig({ url: STIRLING_SAAS_URL });
+      setServerConfig({ url: PDFOX_SAAS_URL });
     } else if (activeStep === SetupStep.SaaSSignup) {
       setActiveStep(SetupStep.SaaSLogin);
     }
@@ -316,7 +316,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete, noLayout =
     // server_config may be null when the user switched to local mode from a locked deployment.
     // Fall back to the URL saved by switchToLocal() so the wizard still shows locked login.
     const serverUrl = currentConfig.server_config?.url
-      || localStorage.getItem('stirling-provisioned-server-url');
+      || localStorage.getItem('pdfox-provisioned-server-url');
     if (!serverUrl) return;
 
     setLockConnectionMode(true);
@@ -380,7 +380,7 @@ export const SetupWizard: React.FC<SetupWizardProps> = ({ onComplete, noLayout =
       {/* Step Content */}
       {!lockConnectionMode && activeStep === SetupStep.SaaSLogin && (
         <SaaSLoginScreen
-          serverUrl={serverConfig?.url || STIRLING_SAAS_URL}
+          serverUrl={serverConfig?.url || PDFOX_SAAS_URL}
           onLogin={handleSaaSLogin}
           onOAuthSuccess={handleSaaSLoginOAuth}
           onSelfHostedClick={handleSelfHostedClick}

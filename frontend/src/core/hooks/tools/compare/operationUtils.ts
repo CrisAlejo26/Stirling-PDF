@@ -1,7 +1,7 @@
 import { pdfWorkerManager } from '@app/services/pdfWorkerManager';
 import { appendWord as sharedAppendWord } from '@app/utils/textDiff';
 import { PARAGRAPH_SENTINEL } from '@app/types/compare';
-import type { StirlingFile } from '@app/types/fileContext';
+import type { PDFoxFile } from '@app/types/fileContext';
 import type { PDFPageProxy, TextContent, TextItem } from 'pdfjs-dist/types/src/display/api';
 import type {
   CompareChange,
@@ -288,7 +288,7 @@ export const filterTokensForDiff = (
   return { tokens: outTokens, metadata: outMeta, filteredToOriginal: map };
 };
 
-export const extractContentFromPdf = async (file: StirlingFile): Promise<ExtractedContent> => {
+export const extractContentFromPdf = async (file: PDFoxFile): Promise<ExtractedContent> => {
   const arrayBuffer = await file.arrayBuffer();
   const pdfDoc = await pdfWorkerManager.createDocument(arrayBuffer, {
     disableAutoFetch: true,

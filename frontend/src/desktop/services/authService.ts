@@ -5,7 +5,7 @@ import { connectionModeService } from '@app/services/connectionModeService';
 import { tauriBackendService } from '@app/services/tauriBackendService';
 import axios from 'axios';
 import tauriHttpClient from '@app/services/tauriHttpClient';
-import { DESKTOP_DEEP_LINK_CALLBACK, STIRLING_SAAS_URL, SUPABASE_KEY } from '@app/constants/connection';
+import { DESKTOP_DEEP_LINK_CALLBACK, PDFOX_SAAS_URL, SUPABASE_KEY } from '@app/constants/connection';
 
 export interface UserInfo {
   username: string;
@@ -76,7 +76,7 @@ export class AuthService {
 
     // Sync to localStorage for web layer (fallback)
     try {
-      localStorage.setItem('stirling_jwt', token);
+      localStorage.setItem('pdfox_jwt', token);
     } catch (error) {
       console.error('[Desktop AuthService] Failed to save token to localStorage:', error);
     }
@@ -90,7 +90,7 @@ export class AuthService {
       try {
         await invoke('save_refresh_token', { token: refreshToken });
         // Only remove from localStorage after successful save
-        localStorage.removeItem('stirling_refresh_token');
+        localStorage.removeItem('pdfox_refresh_token');
       } catch (error) {
         console.error('[Desktop AuthService] Failed to save refresh token:', error);
       }
@@ -117,7 +117,7 @@ export class AuthService {
     }
 
     // Fallback to localStorage
-    return localStorage.getItem('stirling_jwt');
+    return localStorage.getItem('pdfox_jwt');
   }
 
   /**
@@ -149,8 +149,8 @@ export class AuthService {
 
     // Best effort: clear web storage
     try {
-      localStorage.removeItem('stirling_jwt');
-      localStorage.removeItem('stirling_refresh_token');
+      localStorage.removeItem('pdfox_jwt');
+      localStorage.removeItem('pdfox_refresh_token');
     } catch (error) {
       console.warn('[Desktop AuthService] Failed to clear localStorage tokens', error);
     }
@@ -230,7 +230,7 @@ export class AuthService {
   }
 
   async signUpSaas(email: string, password: string): Promise<void> {
-    if (!STIRLING_SAAS_URL) {
+    if (!PDFOX_SAAS_URL) {
       throw new Error('VITE_SAAS_SERVER_URL is not configured');
     }
     if (!SUPABASE_KEY) {
@@ -238,7 +238,7 @@ export class AuthService {
     }
 
     const redirectParam = encodeURIComponent(DESKTOP_DEEP_LINK_CALLBACK);
-    const signupUrl = `${STIRLING_SAAS_URL.replace(/\/$/, '')}/auth/v1/signup?redirect_to=${redirectParam}`;
+    const signupUrl = `${PDFOX_SAAS_URL.replace(/\/$/, '')}/auth/v1/signup?redirect_to=${redirectParam}`;
 
     try {
       const response = await axios.post(
@@ -272,8 +272,8 @@ export class AuthService {
   async login(serverUrl: string, username: string, password: string, mfaCode?: string): Promise<UserInfo> {
     try {
       // Validate SaaS configuration if connecting to SaaS
-      if (serverUrl === STIRLING_SAAS_URL) {
-        if (!STIRLING_SAAS_URL) {
+      if (serverUrl === PDFOX_SAAS_URL) {
+        if (!PDFOX_SAAS_URL) {
           throw new Error('VITE_SAAS_SERVER_URL is not configured');
         }
         if (!SUPABASE_KEY) {
@@ -288,7 +288,7 @@ export class AuthService {
         password,
         mfaCode,
         supabaseKey: SUPABASE_KEY,
-        saasServerUrl: STIRLING_SAAS_URL,
+        saasServerUrl: PDFOX_SAAS_URL,
       });
 
       const { token, username: returnedUsername, email } = response;
@@ -369,7 +369,7 @@ export class AuthService {
         // 404 - endpoint not found
         else if (errMsg.includes('404') || errMsg.includes('not found')) {
           this.setAuthStatus('unauthenticated', null);
-          throw new Error('Login endpoint not found. Please ensure you are connecting to a valid Stirling PDF server.', {
+          throw new Error('Login endpoint not found. Please ensure you are connecting to a valid PDFox server.', {
             cause: error,
           });
         }
@@ -711,7 +711,7 @@ export class AuthService {
     const path = typeof window !== 'undefined' ? window.location.pathname : '';
     if (path.startsWith('/login') || path.startsWith('/setup')) {
       // Check if token exists in storage (user just logged in via web flow)
-      const tokenInStorage = typeof window !== 'undefined' ? localStorage.getItem('stirling_jwt') : null;
+      const tokenInStorage = typeof window !== 'undefined' ? localStorage.getItem('pdfox_jwt') : null;
       if (tokenInStorage) {
         console.log('[Desktop AuthService] On login/setup path with token present - skipping validation');
         console.log('[Desktop AuthService] Login flow will handle authentication state');

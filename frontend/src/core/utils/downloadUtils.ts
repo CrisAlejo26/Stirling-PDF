@@ -1,4 +1,4 @@
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import { fileStorage } from '@app/services/fileStorage';
 import { zipFileService } from '@app/services/zipFileService';
 import { downloadFile } from '@app/services/downloadService';
@@ -17,17 +17,17 @@ export function downloadBlob(blob: Blob, filename: string): void {
  * @param file - The file object with storage information
  * @throws Error if file cannot be retrieved from storage
  */
-export async function downloadFileFromStorage(file: StirlingFileStub): Promise<void> {
+export async function downloadFileFromStorage(file: PDFoxFileStub): Promise<void> {
   const lookupKey = file.id;
-  const stirlingFile = await fileStorage.getStirlingFile(lookupKey);
+  const pdfoxFile = await fileStorage.getPDFoxFile(lookupKey);
 
-  if (!stirlingFile) {
+  if (!pdfoxFile) {
     throw new Error(`File "${file.name}" not found in storage`);
   }
 
   await downloadFile({
-    data: stirlingFile,
-    filename: stirlingFile.name,
+    data: pdfoxFile,
+    filename: pdfoxFile.name,
     localPath: file.localFilePath
   });
 }
@@ -36,7 +36,7 @@ export async function downloadFileFromStorage(file: StirlingFileStub): Promise<v
  * Downloads multiple files as individual downloads
  * @param files - Array of files to download
  */
-export async function downloadMultipleFiles(files: StirlingFileStub[]): Promise<void> {
+export async function downloadMultipleFiles(files: PDFoxFileStub[]): Promise<void> {
   for (const file of files) {
     await downloadFileFromStorage(file);
   }
@@ -47,7 +47,7 @@ export async function downloadMultipleFiles(files: StirlingFileStub[]): Promise<
  * @param files - Array of files to include in ZIP
  * @param zipFilename - Optional custom ZIP filename (defaults to timestamped name)
  */
-export async function downloadFilesAsZip(files: StirlingFileStub[], zipFilename?: string): Promise<void> {
+export async function downloadFilesAsZip(files: PDFoxFileStub[], zipFilename?: string): Promise<void> {
   if (files.length === 0) {
     throw new Error('No files provided for ZIP download');
   }
@@ -56,11 +56,11 @@ export async function downloadFilesAsZip(files: StirlingFileStub[], zipFilename?
   const filesToZip: File[] = [];
   for (const fileWithUrl of files) {
     const lookupKey = fileWithUrl.id;
-    const stirlingFile = await fileStorage.getStirlingFile(lookupKey);
+    const pdfoxFile = await fileStorage.getPDFoxFile(lookupKey);
 
-    if (stirlingFile) {
-      // StirlingFile is already a File object!
-      filesToZip.push(stirlingFile);
+    if (pdfoxFile) {
+      // PDFoxFile is already a File object!
+      filesToZip.push(pdfoxFile);
     }
   }
 
@@ -85,7 +85,7 @@ export async function downloadFilesAsZip(files: StirlingFileStub[], zipFilename?
  * @param options - Download options
  */
 export async function downloadFiles(
-  files: StirlingFileStub[],
+  files: PDFoxFileStub[],
   options: {
     forceZip?: boolean;
     zipFilename?: string;

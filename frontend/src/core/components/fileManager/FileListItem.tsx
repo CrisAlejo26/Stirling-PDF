@@ -12,7 +12,7 @@ import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import LinkIcon from '@mui/icons-material/Link';
 import { useTranslation } from 'react-i18next';
 import { getFileSize, getFileDate } from '@app/utils/fileUtils';
-import { FileId, StirlingFileStub } from '@app/types/fileContext';
+import { FileId, PDFoxFileStub } from '@app/types/fileContext';
 import { useFileManagerContext } from '@app/contexts/FileManagerContext';
 import { zipFileService } from '@app/services/zipFileService';
 import ToolChain from '@app/components/shared/ToolChain';
@@ -28,7 +28,7 @@ import { absoluteWithBasePath } from '@app/constants/app';
 import { alert } from '@app/components/toast';
 
 interface FileListItemProps {
-  file: StirlingFileStub;
+  file: PDFoxFileStub;
   isSelected: boolean;
   isSupported: boolean;
   onSelect: (shiftKey?: boolean) => void;

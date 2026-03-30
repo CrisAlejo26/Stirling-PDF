@@ -45,7 +45,7 @@ const FreeTrialSlideBody = ({ trialStatus }: { trialStatus: TrialStatus }) => {
       <p>
         {t(
           'onboarding.freeTrial.body',
-          'You have full access to Stirling PDF Pro features during your trial. Enjoy unlimited conversions, larger file sizes, and priority processing.'
+          'You have full access to PDFox Pro features during your trial. Enjoy unlimited conversions, larger file sizes, and priority processing.'
         )}
       </p>
       <div style={{

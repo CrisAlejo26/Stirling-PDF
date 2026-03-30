@@ -190,7 +190,7 @@ export default function ShareLinkPage() {
                   loading={isWorking}
                   disabled={!canOpen}
                 >
-                  {t('storageShare.openInApp', 'Open in Stirling PDF')}
+                  {t('storageShare.openInApp', 'Open in PDFox')}
                 </Button>
                 <Button
                   variant="light"

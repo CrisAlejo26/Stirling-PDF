@@ -14,11 +14,11 @@ interface FirstLoginSlideProps {
   usingDefaultCredentials?: boolean;
 }
 
-const DEFAULT_PASSWORD = 'stirling';
+const DEFAULT_PASSWORD = 'pdfox';
 
 function FirstLoginForm({ username, onPasswordChanged, usingDefaultCredentials = false }: FirstLoginSlideProps) {
   const { t } = useTranslation();
-  // If using default credentials, pre-fill with "stirling" - user won't see this field
+  // If using default credentials, pre-fill with "pdfox" - user won't see this field
   const [currentPassword, setCurrentPassword] = useState(usingDefaultCredentials ? DEFAULT_PASSWORD : '');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

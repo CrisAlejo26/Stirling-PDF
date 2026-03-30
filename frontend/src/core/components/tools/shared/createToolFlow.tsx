@@ -4,12 +4,12 @@ import { createToolSteps, ToolStepProvider } from '@app/components/tools/shared/
 import OperationButton from '@app/components/tools/shared/OperationButton';
 import { ToolOperationHook } from '@app/hooks/tools/shared/useToolOperation';
 import { ToolWorkflowTitle, ToolWorkflowTitleProps } from '@app/components/tools/shared/ToolWorkflowTitle';
-import { StirlingFile } from '@app/types/fileContext';
+import { PDFoxFile } from '@app/types/fileContext';
 import type { TooltipTip } from '@app/types/tips';
 import type { ExecuteDisabledReason } from '@app/hooks/tools/shared/toolOperationTypes';
 
 export interface FilesStepConfig {
-  selectedFiles: StirlingFile[];
+  selectedFiles: PDFoxFile[];
   isCollapsed?: boolean;
   minFiles?: number;
   onCollapsedClick?: () => void;

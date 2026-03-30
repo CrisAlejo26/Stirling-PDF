@@ -3,20 +3,20 @@
  */
 
 import {
-  StirlingFileStub,
+  PDFoxFileStub,
   FileContextAction,
   FileContextState,
-  createNewStirlingFileStub,
+  createNewPDFoxFileStub,
   createFileId,
   createQuickKey,
-  createStirlingFile,
+  createPDFoxFile,
   ProcessedFileMetadata,
 } from '@app/types/fileContext';
 import { FileId, ToolOperation } from '@app/types/file';
 import { generateThumbnailWithMetadata } from '@app/utils/thumbnailUtils';
 import { FileLifecycleManager } from '@app/contexts/file/lifecycle';
 import { buildQuickKeySet } from '@app/contexts/file/fileSelectors';
-import { StirlingFile } from '@app/types/fileContext';
+import { PDFoxFile } from '@app/types/fileContext';
 import { fileStorage } from '@app/services/fileStorage';
 import { zipFileService } from '@app/services/zipFileService';
 const DEBUG = process.env.NODE_ENV === 'development';
@@ -146,23 +146,23 @@ export async function generateProcessedFileMetadata(file: File): Promise<Process
 }
 
 /**
- * Create a child StirlingFileStub from a parent stub with proper history management.
+ * Create a child PDFoxFileStub from a parent stub with proper history management.
  * Used when a tool processes an existing file to create a new version with incremented history.
  *
- * @param parentStub - The parent StirlingFileStub to create a child from
+ * @param parentStub - The parent PDFoxFileStub to create a child from
  * @param operation - Tool operation information (toolName, timestamp)
  * @param resultingFile - The processed File object
  * @param thumbnail - Optional thumbnail for the child
  * @param processedFileMetadata - Optional fresh metadata for the processed file
- * @returns New child StirlingFileStub with proper version history
+ * @returns New child PDFoxFileStub with proper version history
  */
 export function createChildStub(
-  parentStub: StirlingFileStub,
+  parentStub: PDFoxFileStub,
   operation: ToolOperation,
   resultingFile: File,
   thumbnail?: string,
   processedFileMetadata?: ProcessedFileMetadata
-): StirlingFileStub {
+): PDFoxFileStub {
   const newFileId = createFileId();
 
   // Build new tool history by appending to parent's history
@@ -247,13 +247,13 @@ export async function addFiles(
   dispatch: React.Dispatch<FileContextAction>,
   lifecycleManager: FileLifecycleManager,
   enablePersistence: boolean = false
-): Promise<StirlingFile[]> {
+): Promise<PDFoxFile[]> {
   // Acquire mutex to prevent race conditions
   await addFilesMutex.lock();
 
   try {
-    const stirlingFileStubs: StirlingFileStub[] = [];
-    const stirlingFiles: StirlingFile[] = [];
+    const pdfoxFileStubs: PDFoxFileStub[] = [];
+    const pdfoxFiles: PDFoxFile[] = [];
     // Hydration tasks are scheduled per-file to update thumbnails/metadata without blocking add flow
 
   // Build quickKey lookup from existing files for deduplication
@@ -326,7 +326,7 @@ export async function addFiles(
     filesRef.current.set(fileId, file);
 
     // Create new filestub with minimal metadata; hydrate thumbnails/processedFile asynchronously
-    const fileStub = createNewStirlingFileStub(file, fileId);
+    const fileStub = createNewPDFoxFileStub(file, fileId);
 
     // Check for pending file path mapping from Tauri file dialog (desktop only)
     try {
@@ -355,14 +355,14 @@ export async function addFiles(
     if (!allowDuplicates) {
       existingQuickKeys.add(quickKey);
     }
-    stirlingFileStubs.push(fileStub);
+    pdfoxFileStubs.push(fileStub);
 
     // Dispatch immediately so each file appears as soon as it is processed
-    dispatch({ type: 'ADD_FILES', payload: { stirlingFileStubs: [fileStub] } });
+    dispatch({ type: 'ADD_FILES', payload: { pdfoxFileStubs: [fileStub] } });
 
-    // Create StirlingFile directly
-    const stirlingFile = createStirlingFile(file, fileId);
-    stirlingFiles.push(stirlingFile);
+    // Create PDFoxFile directly
+    const pdfoxFile = createPDFoxFile(file, fileId);
+    pdfoxFiles.push(pdfoxFile);
 
     // Queue background hydration so add flow doesn't block on thumbnail/metadata work
     scheduleMetadataHydration(async () => {
@@ -386,7 +386,7 @@ export async function addFiles(
         }
       }
 
-      const updates: Partial<StirlingFileStub> = {};
+      const updates: Partial<PDFoxFileStub> = {};
       const primaryThumbnail = thumbnail || processedFileMetadata?.thumbnailUrl || processedFileMetadata?.pages?.[0]?.thumbnail;
 
       if (processedFileMetadata) {
@@ -401,29 +401,29 @@ export async function addFiles(
       }
 
       if (Object.keys(updates).length > 0) {
-        lifecycleManager.updateStirlingFileStub(fileId, updates, stateRef);
+        lifecycleManager.updatePDFoxFileStub(fileId, updates, stateRef);
       }
     });
   }
 
   // Persist to storage if enabled using fileStorage service
-  if (enablePersistence && stirlingFiles.length > 0) {
-    await Promise.all(stirlingFiles.map(async (stirlingFile, index) => {
+  if (enablePersistence && pdfoxFiles.length > 0) {
+    await Promise.all(pdfoxFiles.map(async (pdfoxFile, index) => {
       try {
         // Get corresponding stub with all metadata
-        const fileStub = stirlingFileStubs[index];
+        const fileStub = pdfoxFileStubs[index];
 
-        // Store using the cleaner signature - pass StirlingFile + StirlingFileStub directly
-        await fileStorage.storeStirlingFile(stirlingFile, fileStub);
+        // Store using the cleaner signature - pass PDFoxFile + PDFoxFileStub directly
+        await fileStorage.storePDFoxFile(pdfoxFile, fileStub);
 
-        if (DEBUG) console.log(`📄 addFiles: Stored file ${stirlingFile.name} with metadata:`, fileStub);
+        if (DEBUG) console.log(`📄 addFiles: Stored file ${pdfoxFile.name} with metadata:`, fileStub);
       } catch (error) {
-        console.error('Failed to persist file to storage:', stirlingFile.name, error);
+        console.error('Failed to persist file to storage:', pdfoxFile.name, error);
       }
     }));
   }
 
-  return stirlingFiles;
+  return pdfoxFiles;
   } finally {
     // Always release mutex even if error occurs
     addFilesMutex.unlock();
@@ -433,38 +433,38 @@ export async function addFiles(
 
 /**
  * Consume files helper - replace unpinned input files with output files
- * Now accepts pre-created StirlingFiles and StirlingFileStubs to preserve all metadata
+ * Now accepts pre-created PDFoxFiles and PDFoxFileStubs to preserve all metadata
  */
 export async function consumeFiles(
   inputFileIds: FileId[],
-  outputStirlingFiles: StirlingFile[],
-  outputStirlingFileStubs: StirlingFileStub[],
+  outputPDFoxFiles: PDFoxFile[],
+  outputPDFoxFileStubs: PDFoxFileStub[],
   filesRef: React.MutableRefObject<Map<FileId, File>>,
   dispatch: React.Dispatch<FileContextAction>
 ): Promise<FileId[]> {
-  if (DEBUG) console.log(`📄 consumeFiles: Processing ${inputFileIds.length} input files, ${outputStirlingFiles.length} output files with pre-created stubs`);
+  if (DEBUG) console.log(`📄 consumeFiles: Processing ${inputFileIds.length} input files, ${outputPDFoxFiles.length} output files with pre-created stubs`);
 
   // Validate that we have matching files and stubs
-  if (outputStirlingFiles.length !== outputStirlingFileStubs.length) {
-    throw new Error(`Mismatch between output files (${outputStirlingFiles.length}) and stubs (${outputStirlingFileStubs.length})`);
+  if (outputPDFoxFiles.length !== outputPDFoxFileStubs.length) {
+    throw new Error(`Mismatch between output files (${outputPDFoxFiles.length}) and stubs (${outputPDFoxFileStubs.length})`);
   }
 
-  // Store StirlingFiles in filesRef using their existing IDs (no ID generation needed)
-  for (let i = 0; i < outputStirlingFiles.length; i++) {
-    const stirlingFile = outputStirlingFiles[i];
-    const stub = outputStirlingFileStubs[i];
+  // Store PDFoxFiles in filesRef using their existing IDs (no ID generation needed)
+  for (let i = 0; i < outputPDFoxFiles.length; i++) {
+    const pdfoxFile = outputPDFoxFiles[i];
+    const stub = outputPDFoxFileStubs[i];
 
-    if (stirlingFile.fileId !== stub.id) {
-      console.warn(`📄 consumeFiles: ID mismatch between StirlingFile (${stirlingFile.fileId}) and stub (${stub.id})`);
+    if (pdfoxFile.fileId !== stub.id) {
+      console.warn(`📄 consumeFiles: ID mismatch between PDFoxFile (${pdfoxFile.fileId}) and stub (${stub.id})`);
     }
 
-    filesRef.current.set(stirlingFile.fileId, stirlingFile);
+    filesRef.current.set(pdfoxFile.fileId, pdfoxFile);
 
-    if (DEBUG) console.log(`📄 consumeFiles: Stored StirlingFile ${stirlingFile.name} with ID ${stirlingFile.fileId}`);
+    if (DEBUG) console.log(`📄 consumeFiles: Stored PDFoxFile ${pdfoxFile.name} with ID ${pdfoxFile.fileId}`);
   }
 
   // Mark input files as processed in storage (no longer leaf nodes)
-  if(!outputStirlingFileStubs.reduce((areAllV1, stub) => areAllV1 && (stub.versionNumber == 1), true)) {
+  if(!outputPDFoxFileStubs.reduce((areAllV1, stub) => areAllV1 && (stub.versionNumber == 1), true)) {
     await Promise.all(
       inputFileIds.map(async (fileId) => {
         try {
@@ -478,23 +478,23 @@ export async function consumeFiles(
   }
 
   // Save output files directly to fileStorage with complete metadata
-  for (let i = 0; i < outputStirlingFiles.length; i++) {
-    const stirlingFile = outputStirlingFiles[i];
-    const stub = outputStirlingFileStubs[i];
+  for (let i = 0; i < outputPDFoxFiles.length; i++) {
+    const pdfoxFile = outputPDFoxFiles[i];
+    const stub = outputPDFoxFileStubs[i];
 
     try {
       // Use fileStorage directly with complete metadata from stub
-      await fileStorage.storeStirlingFile(stirlingFile, stub);
+      await fileStorage.storePDFoxFile(pdfoxFile, stub);
 
-      if (DEBUG) console.log(`📄 Saved StirlingFile ${stirlingFile.name} directly to storage with complete metadata:`, {
-        fileId: stirlingFile.fileId,
+      if (DEBUG) console.log(`📄 Saved PDFoxFile ${pdfoxFile.name} directly to storage with complete metadata:`, {
+        fileId: pdfoxFile.fileId,
         versionNumber: stub.versionNumber,
         originalFileId: stub.originalFileId,
         parentFileId: stub.parentFileId,
         toolChainLength: stub.toolHistory?.length || 0
       });
     } catch (error) {
-      console.error('Failed to persist output file to fileStorage:', stirlingFile.name, error);
+      console.error('Failed to persist output file to fileStorage:', pdfoxFile.name, error);
     }
   }
 
@@ -503,20 +503,20 @@ export async function consumeFiles(
     type: 'CONSUME_FILES',
     payload: {
       inputFileIds,
-      outputStirlingFileStubs: outputStirlingFileStubs
+      outputPDFoxFileStubs: outputPDFoxFileStubs
     }
   });
 
-  if (DEBUG) console.log(`📄 consumeFiles: Successfully consumed files - removed ${inputFileIds.length} inputs, added ${outputStirlingFileStubs.length} outputs`);
+  if (DEBUG) console.log(`📄 consumeFiles: Successfully consumed files - removed ${inputFileIds.length} inputs, added ${outputPDFoxFileStubs.length} outputs`);
   // Return the output file IDs for undo tracking
-  return outputStirlingFileStubs.map(stub => stub.id);
+  return outputPDFoxFileStubs.map(stub => stub.id);
 }
 
 /**
  * Helper function to restore files to filesRef and manage IndexedDB cleanup
  */
 async function restoreFilesAndCleanup(
-  filesToRestore: Array<{ file: File; record: StirlingFileStub }>,
+  filesToRestore: Array<{ file: File; record: PDFoxFileStub }>,
   fileIdsToRemove: FileId[],
   filesRef: React.MutableRefObject<Map<FileId, File>>,
   indexedDB?: { deleteFile: (fileId: FileId) => Promise<void> } | null
@@ -565,17 +565,17 @@ async function restoreFilesAndCleanup(
  */
 export async function undoConsumeFiles(
   inputFiles: File[],
-  inputStirlingFileStubs: StirlingFileStub[],
+  inputPDFoxFileStubs: PDFoxFileStub[],
   outputFileIds: FileId[],
   filesRef: React.MutableRefObject<Map<FileId, File>>,
   dispatch: React.Dispatch<FileContextAction>,
   indexedDB?: { saveFile: (file: File, fileId: FileId, existingThumbnail?: string) => Promise<any>; deleteFile: (fileId: FileId) => Promise<void> } | null
 ): Promise<void> {
-  if (DEBUG) console.log(`📄 undoConsumeFiles: Restoring ${inputStirlingFileStubs.length} input files, removing ${outputFileIds.length} output files`);
+  if (DEBUG) console.log(`📄 undoConsumeFiles: Restoring ${inputPDFoxFileStubs.length} input files, removing ${outputFileIds.length} output files`);
 
   // Validate inputs
-  if (inputFiles.length !== inputStirlingFileStubs.length) {
-    throw new Error(`Mismatch between input files (${inputFiles.length}) and records (${inputStirlingFileStubs.length})`);
+  if (inputFiles.length !== inputPDFoxFileStubs.length) {
+    throw new Error(`Mismatch between input files (${inputFiles.length}) and records (${inputPDFoxFileStubs.length})`);
   }
 
   // Create a backup of current filesRef state for rollback
@@ -585,7 +585,7 @@ export async function undoConsumeFiles(
     // Prepare files to restore
     const filesToRestore = inputFiles.map((file, index) => ({
       file,
-      record: inputStirlingFileStubs[index]
+      record: inputPDFoxFileStubs[index]
     }));
 
     // Restore input files and clean up output files
@@ -598,7 +598,7 @@ export async function undoConsumeFiles(
 
     // Mark restored files as dirty if they have localFilePath
     // (they now differ from what's saved on disk)
-    const stubsWithDirtyMarked = inputStirlingFileStubs.map(stub => {
+    const stubsWithDirtyMarked = inputPDFoxFileStubs.map(stub => {
       if (stub.localFilePath) {
         return { ...stub, isDirty: true };
       }
@@ -609,12 +609,12 @@ export async function undoConsumeFiles(
     dispatch({
       type: 'UNDO_CONSUME_FILES',
       payload: {
-        inputStirlingFileStubs: stubsWithDirtyMarked,
+        inputPDFoxFileStubs: stubsWithDirtyMarked,
         outputFileIds
       }
     });
 
-    if (DEBUG) console.log(`📄 undoConsumeFiles: Successfully undone consume operation - restored ${inputStirlingFileStubs.length} inputs, removed ${outputFileIds.length} outputs`);
+    if (DEBUG) console.log(`📄 undoConsumeFiles: Successfully undone consume operation - restored ${inputPDFoxFileStubs.length} inputs, removed ${outputFileIds.length} outputs`);
   } catch (error) {
     // Rollback filesRef to previous state
     if (DEBUG) console.error('📄 undoConsumeFiles: Error during undo, rolling back filesRef', error);
@@ -631,35 +631,35 @@ export async function undoConsumeFiles(
  */
 
 /**
- * Add files using existing StirlingFileStubs from storage - preserves all metadata
+ * Add files using existing PDFoxFileStubs from storage - preserves all metadata
  * Use this when loading files that already exist in storage (FileManager, etc.)
- * StirlingFileStubs come with proper thumbnails, history, processing state
+ * PDFoxFileStubs come with proper thumbnails, history, processing state
  */
-export async function addStirlingFileStubs(
-  stirlingFileStubs: StirlingFileStub[],
+export async function addPDFoxFileStubs(
+  pdfoxFileStubs: PDFoxFileStub[],
   options: { insertAfterPageId?: string; selectFiles?: boolean } = {},
   stateRef: React.MutableRefObject<FileContextState>,
   filesRef: React.MutableRefObject<Map<FileId, File>>,
   dispatch: React.Dispatch<FileContextAction>,
   lifecycleManager: FileLifecycleManager
-): Promise<StirlingFile[]> {
+): Promise<PDFoxFile[]> {
   await addFilesMutex.lock();
 
   try {
     // Show loading indicator while preparing files from storage
-    if (stirlingFileStubs.length > 0) {
+    if (pdfoxFileStubs.length > 0) {
       dispatch({ type: 'SET_PROCESSING', payload: { isProcessing: true, progress: 0 } });
     }
 
     const existingQuickKeys = buildQuickKeySet(stateRef.current.files.byId);
-    const loadedFiles: StirlingFile[] = [];
+    const loadedFiles: PDFoxFile[] = [];
     let firstFileDispatched = false;
 
     // Process and dispatch files one by one for progressive UI updates
-    for (const stub of stirlingFileStubs) {
+    for (const stub of pdfoxFileStubs) {
       // Check for duplicates using quickKey
       if (existingQuickKeys.has(stub.quickKey || '')) {
-        if (DEBUG) console.log(`📄 Skipping duplicate StirlingFileStub: ${stub.name}`);
+        if (DEBUG) console.log(`📄 Skipping duplicate PDFoxFileStub: ${stub.name}`);
         continue;
       }
 
@@ -674,7 +674,7 @@ export async function addStirlingFileStubs(
       existingQuickKeys.add(stub.quickKey || '');
 
       // Dispatch each file immediately as we process it (progressive loading)
-      dispatch({ type: 'ADD_FILES', payload: { stirlingFileStubs: [record] } });
+      dispatch({ type: 'ADD_FILES', payload: { pdfoxFileStubs: [record] } });
 
       // Clear loading indicator after first file appears
       if (!firstFileDispatched) {
@@ -687,16 +687,16 @@ export async function addStirlingFileStubs(
 
       // Load File object from IndexedDB asynchronously
       scheduleMetadataHydration(async () => {
-        const stirlingFile = await fileStorage.getStirlingFile(fileId);
-        if (!stirlingFile) {
+        const pdfoxFile = await fileStorage.getPDFoxFile(fileId);
+        if (!pdfoxFile) {
           return;
         }
 
         // Store the loaded file in filesRef
-        filesRef.current.set(fileId, stirlingFile);
+        filesRef.current.set(fileId, pdfoxFile);
 
         // Check if processedFile data needs regeneration
-        if (stirlingFile.type.startsWith('application/pdf')) {
+        if (pdfoxFile.type.startsWith('application/pdf')) {
           const needsProcessing = !stub.processedFile ||
                                   !stub.processedFile.pages ||
                                   stub.processedFile.pages.length === 0 ||
@@ -704,10 +704,10 @@ export async function addStirlingFileStubs(
 
           if (needsProcessing) {
             // Regenerate metadata
-            const processedFileMetadata = await generateProcessedFileMetadata(stirlingFile);
+            const processedFileMetadata = await generateProcessedFileMetadata(pdfoxFile);
 
             if (processedFileMetadata) {
-              const updates: Partial<StirlingFileStub> = {
+              const updates: Partial<PDFoxFileStub> = {
                 processedFile: processedFileMetadata
               };
 
@@ -720,7 +720,7 @@ export async function addStirlingFileStubs(
                 }
               }
 
-              lifecycleManager.updateStirlingFileStub(fileId, updates, stateRef);
+              lifecycleManager.updatePDFoxFileStub(fileId, updates, stateRef);
             }
           }
         }
@@ -745,5 +745,5 @@ export const createFileActions = (dispatch: React.Dispatch<FileContextAction>) =
   markFileError: (fileId: FileId) => dispatch({ type: 'MARK_FILE_ERROR', payload: { fileId } }),
   clearFileError: (fileId: FileId) => dispatch({ type: 'CLEAR_FILE_ERROR', payload: { fileId } }),
   clearAllFileErrors: () => dispatch({ type: 'CLEAR_ALL_FILE_ERRORS' }),
-  updateStirlingFileStub: (fileId: FileId, updates: Partial<StirlingFileStub>) => dispatch({ type: 'UPDATE_FILE_RECORD', payload: { id: fileId, updates } })
+  updatePDFoxFileStub: (fileId: FileId, updates: Partial<PDFoxFileStub>) => dispatch({ type: 'UPDATE_FILE_RECORD', payload: { id: fileId, updates } })
 });

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@app/auth/UseSession";
 import { devApiLink } from "@app/constants/links";
 import SplitPdfPanel from "@app/tools/Split";
 import CompressPdfPanel from "@app/tools/Compress";
@@ -151,6 +152,7 @@ export interface TranslatedToolCatalog {
 export function useTranslatedToolCatalog(): TranslatedToolCatalog {
   const { t } = useTranslation();
   const proprietaryTools = useProprietaryToolRegistry();
+  const { user: authUser } = useAuth();
 
   return useMemo(() => {
     const allTools: ToolRegistry = {
@@ -849,7 +851,7 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
         description: t("home.devFolderScanning.desc", "Link to automated folder scanning guide"),
         categoryId: ToolCategoryId.ADVANCED_TOOLS,
         subcategoryId: SubcategoryId.DEVELOPER_TOOLS,
-        link: "https://docs.stirlingpdf.com/Configuration/Folder%20Scanning/",
+        link: "https://docs.pdfoxpdf.com/Configuration/Folder%20Scanning/",
         endpoints: ["dev-folder-scanning-docs"],
         synonyms: getSynonyms(t, "devFolderScanning"),
         supportsAutomate: false,
@@ -862,7 +864,7 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
         description: t("home.devSsoGuide.desc", "Link to SSO guide"),
         categoryId: ToolCategoryId.ADVANCED_TOOLS,
         subcategoryId: SubcategoryId.DEVELOPER_TOOLS,
-        link: "https://docs.stirlingpdf.com/Configuration/Single%20Sign-On%20Configuration/",
+        link: "https://docs.pdfoxpdf.com/Configuration/Single%20Sign-On%20Configuration/",
         endpoints: ["dev-sso-guide-docs"],
         synonyms: getSynonyms(t, "devSsoGuide"),
         supportsAutomate: false,
@@ -875,7 +877,7 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
         description: t("home.devAirgapped.desc", "Link to air-gapped setup guide"),
         categoryId: ToolCategoryId.ADVANCED_TOOLS,
         subcategoryId: SubcategoryId.DEVELOPER_TOOLS,
-        link: "https://docs.stirlingpdf.com/Paid-Offerings/#activating-your-license",
+        link: "https://docs.pdfoxpdf.com/Paid-Offerings/#activating-your-license",
         endpoints: ["dev-airgapped-docs"],
         synonyms: getSynonyms(t, "devAirgapped"),
         supportsAutomate: false,
@@ -977,6 +979,10 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
 
     Object.entries(allTools).forEach(([key, entry]) => {
       const toolId = key as ToolId;
+      // Hide developer tools for non-ADMIN users
+      if (entry.subcategoryId === SubcategoryId.DEVELOPER_TOOLS && authUser?.role !== 'ADMIN') {
+        return;
+      }
       if (isSuperToolId(toolId)) {
         superTools[toolId] = entry;
       } else if (isLinkToolId(toolId)) {
@@ -992,5 +998,5 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
       superTools,
       linkTools,
     };
-  }, [t, proprietaryTools]); // Re-compute when translations or proprietary tools change
+  }, [t, proprietaryTools, authUser?.role]); // Re-compute when translations, proprietary tools, or role changes
 }

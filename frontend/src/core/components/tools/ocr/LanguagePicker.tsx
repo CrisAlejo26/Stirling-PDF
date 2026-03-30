@@ -134,7 +134,7 @@ const LanguagePicker: React.FC<LanguagePickerProps> = ({
           textDecoration: 'underline',
           textAlign: 'center'
         }}
-        onClick={() => window.open('https://docs.stirlingpdf.com/Configuration/OCR', '_blank')}
+        onClick={() => window.open('https://docs.pdfoxpdf.com/Configuration/OCR', '_blank')}
       >
         {t('ocr.languagePicker.viewSetupGuide', 'View setup guide →')}
       </Text>

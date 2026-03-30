@@ -1,7 +1,7 @@
 import {
   ProcessedFileMetadata,
   ProcessedFilePage,
-  StirlingFileStub,
+  PDFoxFileStub,
 } from '@app/types/fileContext';
 
 export interface PageDimensions {
@@ -31,7 +31,7 @@ export function getFirstPageDimensionsFromMetadata(
 }
 
 export function getFirstPageDimensionsFromStub(
-  file?: StirlingFileStub
+  file?: PDFoxFileStub
 ): PageDimensions {
   return getFirstPageDimensionsFromMetadata(file?.processedFile);
 }
@@ -47,7 +47,7 @@ export function getFirstPageAspectRatioFromMetadata(
 }
 
 export function getFirstPageAspectRatioFromStub(
-  file?: StirlingFileStub
+  file?: PDFoxFileStub
 ): number | null {
   return getFirstPageAspectRatioFromMetadata(file?.processedFile);
 }

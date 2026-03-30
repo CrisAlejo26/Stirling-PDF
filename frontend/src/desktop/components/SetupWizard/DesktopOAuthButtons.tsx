@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { authService, UserInfo } from '@app/services/authService';
 import { buildOAuthCallbackHtml } from '@app/utils/oauthCallbackHtml';
 import { BASE_PATH } from '@app/constants/app';
-import { STIRLING_SAAS_URL } from '@app/constants/connection';
+import { PDFOX_SAAS_URL } from '@app/constants/connection';
 import '@app/components/SetupWizard/desktopOAuth.css';
 
 type KnownProviderId = 'google' | 'github' | 'keycloak' | 'azure' | 'apple' | 'oidc';
@@ -47,7 +47,7 @@ export const DesktopOAuthButtons: React.FC<DesktopOAuthButtonsProps> = ({
       // Build callback page HTML with translations and dark mode support
       const successHtml = buildOAuthCallbackHtml({
         title: t('oauth.success.title', 'Authentication Successful'),
-        message: t('oauth.success.message', 'You can close this window and return to Stirling PDF.'),
+        message: t('oauth.success.message', 'You can close this window and return to PDFox.'),
         isError: false,
       });
 
@@ -60,7 +60,7 @@ export const DesktopOAuthButtons: React.FC<DesktopOAuthButtonsProps> = ({
 
       const normalizedServer = serverUrl.replace(/\/+$/, '');
       const usingSupabaseFlow =
-        mode === 'saas' || normalizedServer === STIRLING_SAAS_URL.replace(/\/+$/, '');
+        mode === 'saas' || normalizedServer === PDFOX_SAAS_URL.replace(/\/+$/, '');
       const userInfo = usingSupabaseFlow
         ? await authService.loginWithOAuth(provider.id, serverUrl, successHtml, errorHtml)
         : await authService.loginWithSelfHostedOAuth(provider.path || provider.id, serverUrl);

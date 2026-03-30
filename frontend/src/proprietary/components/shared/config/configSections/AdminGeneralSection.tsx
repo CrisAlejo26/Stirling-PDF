@@ -388,7 +388,7 @@ export default function AdminGeneralSection() {
               description={t('admin.settings.general.appNameNavbar.description', 'The name displayed in the navigation bar')}
               value={settings.ui?.appNameNavbar || ''}
               onChange={(e) => setSettings({ ...settings, ui: { ...settings.ui, appNameNavbar: e.target.value } })}
-              placeholder="Stirling PDF"
+              placeholder="PDFox"
               disabled={!loginEnabled}
             />
           </div>
@@ -425,7 +425,7 @@ export default function AdminGeneralSection() {
                   label: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0' }}>
                       <img
-                        src="modern-logo/StirlingPDFLogoNoTextLight.svg"
+                        src="modern-logo/Logo_principal_dark.svg"
                         alt={t('admin.settings.general.logoStyle.modernAlt', 'Modern logo')}
                         style={{ width: '24px', height: '24px' }}
                       />
@@ -675,7 +675,7 @@ export default function AdminGeneralSection() {
                   creator: e.target.value
                 }
               })}
-              placeholder="Stirling-PDF"
+              placeholder="PDFox-PDF"
               disabled={!loginEnabled}
             />
           </div>
@@ -697,7 +697,7 @@ export default function AdminGeneralSection() {
                   producer: e.target.value
                 }
               })}
-              placeholder="Stirling-PDF"
+              placeholder="PDFox-PDF"
               disabled={!loginEnabled}
             />
           </div>

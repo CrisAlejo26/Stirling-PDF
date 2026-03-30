@@ -1,19 +1,19 @@
-import { StirlingFile, StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFile, PDFoxFileStub } from '@app/types/fileContext';
 import { createChildStub, generateProcessedFileMetadata } from '@app/contexts/file/fileActions';
-import { createStirlingFile } from '@app/types/fileContext';
+import { createPDFoxFile } from '@app/types/fileContext';
 import { ToolId } from '@app/types/toolId';
 
 /**
- * Create StirlingFiles and StirlingFileStubs from exported files
+ * Create PDFoxFiles and PDFoxFileStubs from exported files
  * Used when saving page editor changes to create version history
  */
-export async function createStirlingFilesAndStubs(
+export async function createPDFoxFilesAndStubs(
   files: File[],
-  parentStub: StirlingFileStub,
+  parentStub: PDFoxFileStub,
   toolId: ToolId
-): Promise<{ stirlingFiles: StirlingFile[], stubs: StirlingFileStub[] }> {
-  const stirlingFiles: StirlingFile[] = [];
-  const stubs: StirlingFileStub[] = [];
+): Promise<{ pdfoxFiles: PDFoxFile[], stubs: PDFoxFileStub[] }> {
+  const pdfoxFiles: PDFoxFile[] = [];
+  const stubs: PDFoxFileStub[] = [];
 
   for (const file of files) {
     const processedFileMetadata = await generateProcessedFileMetadata(file);
@@ -25,10 +25,10 @@ export async function createStirlingFilesAndStubs(
       processedFileMetadata
     );
 
-    const stirlingFile = createStirlingFile(file, childStub.id);
-    stirlingFiles.push(stirlingFile);
+    const pdfoxFile = createPDFoxFile(file, childStub.id);
+    pdfoxFiles.push(pdfoxFile);
     stubs.push(childStub);
   }
 
-  return { stirlingFiles, stubs };
+  return { pdfoxFiles, stubs };
 }

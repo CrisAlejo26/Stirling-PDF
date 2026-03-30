@@ -32,13 +32,13 @@ import {
   OUTPUT_OPTIONS,
   FIT_OPTIONS
 } from "@app/constants/convertConstants";
-import { StirlingFile } from "@app/types/fileContext";
+import { PDFoxFile } from "@app/types/fileContext";
 
 interface ConvertSettingsProps {
   parameters: ConvertParameters;
   onParameterChange: <K extends keyof ConvertParameters>(key: K, value: ConvertParameters[K]) => void;
   getAvailableToExtensions: (fromExtension: string) => Array<{value: string, label: string, group: string}>;
-  selectedFiles: StirlingFile[];
+  selectedFiles: PDFoxFile[];
   disabled?: boolean;
 }
 
@@ -204,7 +204,7 @@ const ConvertSettings = ({
   };
 
   const filterFilesByExtension = (extension: string) => {
-    const files = activeFiles.map(fileId => selectors.getFile(fileId)).filter(Boolean) as StirlingFile[];
+    const files = activeFiles.map(fileId => selectors.getFile(fileId)).filter(Boolean) as PDFoxFile[];
     return files.filter(file => {
       const fileExtension = detectFileExtension(file.name);
 
@@ -218,7 +218,7 @@ const ConvertSettings = ({
     });
   };
 
-  const updateFileSelection = (files: StirlingFile[]) => {
+  const updateFileSelection = (files: PDFoxFile[]) => {
     const fileIds = files.map(file => file.fileId);
     setSelectedFiles(fileIds);
   };

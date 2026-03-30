@@ -2,7 +2,7 @@ import JSZip from 'jszip';
 
 import type { ShareBundleManifest } from '@app/services/serverStorageBundle';
 
-const MANIFEST_FILENAME = 'stirling-share.json';
+const MANIFEST_FILENAME = 'pdfox-share.json';
 
 export function parseContentDispositionFilename(disposition?: string): string | null {
   if (!disposition) return null;

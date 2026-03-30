@@ -36,9 +36,9 @@ export default function Footer({
   const { showCookiePreferences } = useCookieConsent({ analyticsEnabled: finalAnalyticsEnabled, forceLightMode });
 
   // Default URLs
-  const defaultTermsUrl = "https://www.stirling.com/legal/terms-of-service";
-  const defaultPrivacyUrl = "https://www.stirling.com/legal/privacy-policy";
-  const defaultAccessibilityUrl = "https://www.stirling.com/accessibility";
+  const defaultTermsUrl = "https://www.pdfox.com/legal/terms-of-service";
+  const defaultPrivacyUrl = "https://www.pdfox.com/legal/privacy-policy";
+  const defaultAccessibilityUrl = "https://www.pdfox.com/accessibility";
 
   // Use provided URLs or fall back to defaults
   const finalTermsUrl = finalTermsAndConditions || defaultTermsUrl;
@@ -70,7 +70,7 @@ export default function Footer({
             id="survey"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://stirlingpdf.info/s/cm28y3niq000o56dv7liv8wsu"
+            href="https://pdfoxpdf.info/s/cm28y3niq000o56dv7liv8wsu"
           >
             {t('survey.nav', 'Survey')}
           </a>
@@ -102,7 +102,7 @@ export default function Footer({
             className="footer-link px-3"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://github.com/Stirling-Tools/Stirling-PDF"
+            href="https://github.com/PDFox-Tools/PDFox-PDF"
           >
             {t('footer.issues', 'GitHub')}
           </a>

@@ -2,7 +2,7 @@ import apiClient from '@app/services/apiClient';
 import { fileStorage } from '@app/services/fileStorage';
 import { buildHistoryBundle, buildSharePackage } from '@app/services/serverStorageBundle';
 import type { FileId } from '@app/types/file';
-import type { StirlingFileStub } from '@app/types/fileContext';
+import type { PDFoxFileStub } from '@app/types/fileContext';
 
 function resolveUpdatedAt(value: unknown): number {
   if (!value) {
@@ -18,7 +18,7 @@ function resolveUpdatedAt(value: unknown): number {
 export async function uploadHistoryChain(
   originalFileId: FileId,
   existingRemoteId?: number
-): Promise<{ remoteId: number; updatedAt: number; chain: StirlingFileStub[] }> {
+): Promise<{ remoteId: number; updatedAt: number; chain: PDFoxFileStub[] }> {
   const chain = await fileStorage.getHistoryChainStubs(originalFileId);
   if (chain.length === 0) {
     throw new Error('No history chain found.');
@@ -26,7 +26,7 @@ export async function uploadHistoryChain(
 
   const finalStub =
     chain.slice().reverse().find((stub) => stub.isLeaf !== false) || chain[chain.length - 1];
-  const finalFile = await fileStorage.getStirlingFile(finalStub.id);
+  const finalFile = await fileStorage.getPDFoxFile(finalStub.id);
   if (!finalFile) {
     throw new Error('Missing final file data for sharing.');
   }
@@ -60,12 +60,12 @@ export async function uploadHistoryChain(
 export async function uploadHistoryChains(
   originalFileIds: FileId[],
   existingRemoteId?: number
-): Promise<{ remoteId: number; updatedAt: number; chain: StirlingFileStub[] }> {
+): Promise<{ remoteId: number; updatedAt: number; chain: PDFoxFileStub[] }> {
   const uniqueRoots = Array.from(new Set(originalFileIds));
-  const chainMap = new Map<FileId, StirlingFileStub[]>();
-  const combinedChain: StirlingFileStub[] = [];
+  const chainMap = new Map<FileId, PDFoxFileStub[]>();
+  const combinedChain: PDFoxFileStub[] = [];
   const seenIds = new Set<FileId>();
-  const leafStubs: StirlingFileStub[] = [];
+  const leafStubs: PDFoxFileStub[] = [];
 
   for (const rootId of uniqueRoots) {
     const chain = await fileStorage.getHistoryChainStubs(rootId);
@@ -88,7 +88,7 @@ export async function uploadHistoryChains(
 
   let shareFile: File;
   if (leafStubs.length === 1) {
-    const finalFile = await fileStorage.getStirlingFile(leafStubs[0].id);
+    const finalFile = await fileStorage.getPDFoxFile(leafStubs[0].id);
     if (!finalFile) {
       throw new Error('Missing final file data for sharing.');
     }

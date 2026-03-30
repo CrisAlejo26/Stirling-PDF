@@ -4,7 +4,7 @@ import apiClient from '@app/services/apiClient'; // Our configured instance
 import { processResponse, ResponseHandler } from '@app/utils/toolResponseProcessor';
 import { isEmptyOutput } from '@app/services/errorUtils';
 import type { ProcessingProgress } from '@app/hooks/tools/shared/useToolState';
-import type { StirlingFile, FileId } from '@app/types/fileContext';
+import type { PDFoxFile, FileId } from '@app/types/fileContext';
 
 export interface ApiCallsConfig<TParams = void> {
   endpoint: string | ((params: TParams) => string);
@@ -19,7 +19,7 @@ export const useToolApiCalls = <TParams = void>() => {
 
   const processFiles = useCallback(async (
     params: TParams,
-    validFiles: StirlingFile[],
+    validFiles: PDFoxFile[],
     config: ApiCallsConfig<TParams>,
     onProgress: (progress: ProcessingProgress) => void,
     onStatus: (status: string) => void,

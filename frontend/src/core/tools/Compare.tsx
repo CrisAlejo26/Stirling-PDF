@@ -20,7 +20,7 @@ import { useToolWorkflow } from '@app/contexts/ToolWorkflowContext';
 import { useNavigationActions } from '@app/contexts/NavigationContext';
 import { useFileContext, useFileState } from '@app/contexts/file/fileHooks';
 import type { FileId } from '@app/types/file';
-import type { StirlingFile } from '@app/types/fileContext';
+import type { PDFoxFile } from '@app/types/fileContext';
 import DocumentThumbnail from '@app/components/shared/filePreview/DocumentThumbnail';
 import type { CompareWorkbenchData } from '@app/types/compare';
 import FitText from '@app/components/shared/FitText';
@@ -149,7 +149,7 @@ const Compare = (props: BaseToolProps) => {
     (
       baseId: FileId | null,
       compId: FileId | null,
-      options?: { baseFile?: StirlingFile | null; comparisonFile?: StirlingFile | null }
+      options?: { baseFile?: PDFoxFile | null; comparisonFile?: PDFoxFile | null }
     ) => {
       if (!baseId || !compId) {
         return;
@@ -262,7 +262,7 @@ const Compare = (props: BaseToolProps) => {
     const compSel =
       base.selectedFiles.find((file) => file.fileId === compId) ??
       (compId ? selectors.getFile(compId) : null);
-    const selected: StirlingFile[] = [];
+    const selected: PDFoxFile[] = [];
     if (baseSel) selected.push(baseSel);
     if (compSel) selected.push(compSel);
 
@@ -282,7 +282,7 @@ const Compare = (props: BaseToolProps) => {
   // Run compare with explicit ids (used after swap so we don't depend on async state propagation)
   const runCompareWithIds = useCallback(async (baseId: FileId | null, compId: FileId | null) => {
     const nextParams = { ...params, baseFileId: baseId, comparisonFileId: compId };
-    const selected: StirlingFile[] = [];
+    const selected: PDFoxFile[] = [];
     const baseSel =
       base.selectedFiles.find((file) => file.fileId === baseId) ??
       (baseId ? selectors.getFile(baseId) : null);
@@ -325,7 +325,7 @@ const Compare = (props: BaseToolProps) => {
   const renderSelectedFile = useCallback(
     (role: 'base' | 'comparison') => {
       const fileId = role === 'base' ? params.baseFileId : params.comparisonFileId;
-      const stub = fileId ? selectors.getStirlingFileStub(fileId) : undefined;
+      const stub = fileId ? selectors.getPDFoxFileStub(fileId) : undefined;
       
       // Show add button in base if no base file, or in comparison if base exists but no comparison
       const shouldShowAddButton = 
@@ -423,8 +423,8 @@ const Compare = (props: BaseToolProps) => {
     [params.baseFileId, params.comparisonFileId, selectors, t, openFilesModal]
   );
 
-  const baseStub = params.baseFileId ? selectors.getStirlingFileStub(params.baseFileId) : undefined;
-  const compStub = params.comparisonFileId ? selectors.getStirlingFileStub(params.comparisonFileId) : undefined;
+  const baseStub = params.baseFileId ? selectors.getPDFoxFileStub(params.baseFileId) : undefined;
+  const compStub = params.comparisonFileId ? selectors.getPDFoxFileStub(params.comparisonFileId) : undefined;
   const canExecute = Boolean(
     params.baseFileId &&
     params.comparisonFileId &&

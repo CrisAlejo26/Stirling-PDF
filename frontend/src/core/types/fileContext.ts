@@ -28,20 +28,20 @@ export interface ProcessedFileMetadata {
 }
 
 /**
- * StirlingFileStub - Metadata record for files in the active workbench session
+ * PDFoxFileStub - Metadata record for files in the active workbench session
  *
  * Contains UI display data and processing state. Actual File objects stored
  * separately in refs for memory efficiency. Supports multi-tool workflows
  * where files persist across tool operations.
  */
 /**
- * StirlingFileStub - Runtime UI metadata for files in the active workbench session
+ * PDFoxFileStub - Runtime UI metadata for files in the active workbench session
  *
  * Contains UI display data and processing state. Actual File objects stored
  * separately in refs for memory efficiency. Supports multi-tool workflows
  * where files persist across tool operations.
  */
-export interface StirlingFileStub extends BaseFileMetadata {
+export interface PDFoxFileStub extends BaseFileMetadata {
   quickKey?: string;             // Fast deduplication key: name|size|lastModified
   thumbnailUrl?: string;         // Generated thumbnail blob URL for visual display
   blobUrl?: string;             // File access blob URL for downloads/processing
@@ -55,7 +55,7 @@ export interface StirlingFileStub extends BaseFileMetadata {
 
 export interface FileContextNormalizedFiles {
   ids: FileId[];
-  byId: Record<FileId, StirlingFileStub>;
+  byId: Record<FileId, PDFoxFileStub>;
 }
 
 // Helper functions - UUID-based primary keys (zero collisions, synchronous)
@@ -78,14 +78,14 @@ export function createQuickKey(file: File): string {
   return `${file.name}|${file.size}|${file.lastModified}`;
 }
 
-// Stirling PDF file with embedded UUID - replaces loose File + FileId parameter passing
-export interface StirlingFile extends File {
+// PDFox file with embedded UUID - replaces loose File + FileId parameter passing
+export interface PDFoxFile extends File {
   readonly fileId: FileId;
   readonly quickKey: string; // Fast deduplication key: name|size|lastModified
 }
 
 // Type guard to check if a File object has an embedded fileId
-export function isStirlingFile(file: File | Blob): file is StirlingFile {
+export function isPDFoxFile(file: File | Blob): file is PDFoxFile {
   return file instanceof File && 'fileId' in file && typeof (file as any).fileId === 'string' &&
     'quickKey' in file && typeof (file as any).quickKey === 'string';
 }
@@ -98,8 +98,8 @@ export function isStirlingFile(file: File | Blob): file is StirlingFile {
 export function getFormFillFileId(file: File | Blob | null | undefined): string | null {
   if (!file) return null;
 
-  if (isStirlingFile(file)) {
-    return `stirling-${file.fileId}`;
+  if (isPDFoxFile(file)) {
+    return `pdfox-${file.fileId}`;
   }
 
   if (file instanceof File) {
@@ -110,12 +110,12 @@ export function getFormFillFileId(file: File | Blob | null | undefined): string 
   return `blob-${(file as any).size || 0}`;
 }
 
-// Create a StirlingFile from a regular File object
-export function createStirlingFile(file: File, id?: FileId): StirlingFile {
-  // If the file already has Stirling metadata and we aren't trying to override it,
+// Create a PDFoxFile from a regular File object
+export function createPDFoxFile(file: File, id?: FileId): PDFoxFile {
+  // If the file already has PDFox metadata and we aren't trying to override it,
   // return as–is. When a new id is requested we clone the File so we can embed
   // the fresh identifier without mutating the original object.
-  if (isStirlingFile(file)) {
+  if (isPDFoxFile(file)) {
     if (!id || file.fileId === id) {
       return file;
     }
@@ -145,21 +145,21 @@ export function createStirlingFile(file: File, id?: FileId): StirlingFile {
     configurable: false
   });
 
-  return file as StirlingFile;
+  return file as PDFoxFile;
 }
 
-// Extract FileIds from StirlingFile array
-export function extractFileIds(files: StirlingFile[]): FileId[] {
+// Extract FileIds from PDFoxFile array
+export function extractFileIds(files: PDFoxFile[]): FileId[] {
   return files.map(file => file.fileId);
 }
 
-// Extract regular File objects from StirlingFile array
-export function extractFiles(files: StirlingFile[]): File[] {
+// Extract regular File objects from PDFoxFile array
+export function extractFiles(files: PDFoxFile[]): File[] {
   return files as File[];
 }
 
-// Check if an object is a File or StirlingFile (replaces instanceof File checks)
-export function isFileObject(obj: any): obj is File | StirlingFile {
+// Check if an object is a File or PDFoxFile (replaces instanceof File checks)
+export function isFileObject(obj: any): obj is File | PDFoxFile {
   return obj &&
     typeof obj.name === 'string' &&
     typeof obj.size === 'number' &&
@@ -170,12 +170,12 @@ export function isFileObject(obj: any): obj is File | StirlingFile {
 
 
 
-export function createNewStirlingFileStub(
+export function createNewPDFoxFileStub(
   file: File,
   id?: FileId,
   thumbnail?: string,
   processedFileMetadata?: ProcessedFileMetadata
-): StirlingFileStub {
+): PDFoxFileStub {
   const fileId = id || createFileId();
   return {
     id: fileId,
@@ -193,7 +193,7 @@ export function createNewStirlingFileStub(
   };
 }
 
-export function revokeFileResources(record: StirlingFileStub): void {
+export function revokeFileResources(record: PDFoxFileStub): void {
   // Only revoke blob: URLs to prevent errors on other schemes
   if (record.thumbnailUrl && record.thumbnailUrl.startsWith('blob:')) {
     try {
@@ -240,7 +240,7 @@ export interface FileContextState {
   // Core file management - lightweight file IDs only
   files: {
     ids: FileId[];
-    byId: Record<FileId, StirlingFileStub>;
+    byId: Record<FileId, PDFoxFileStub>;
   };
 
   // Pinned files - files that won't be consumed by tools
@@ -260,16 +260,16 @@ export interface FileContextState {
 // Action types for reducer pattern
 export type FileContextAction =
   // File management actions
-  | { type: 'ADD_FILES'; payload: { stirlingFileStubs: StirlingFileStub[] } }
+  | { type: 'ADD_FILES'; payload: { pdfoxFileStubs: PDFoxFileStub[] } }
   | { type: 'REMOVE_FILES'; payload: { fileIds: FileId[] } }
-  | { type: 'UPDATE_FILE_RECORD'; payload: { id: FileId; updates: Partial<StirlingFileStub> } }
+  | { type: 'UPDATE_FILE_RECORD'; payload: { id: FileId; updates: Partial<PDFoxFileStub> } }
   | { type: 'REORDER_FILES'; payload: { orderedFileIds: FileId[] } }
 
   // Pinned files actions
   | { type: 'PIN_FILE'; payload: { fileId: FileId } }
   | { type: 'UNPIN_FILE'; payload: { fileId: FileId } }
-  | { type: 'CONSUME_FILES'; payload: { inputFileIds: FileId[]; outputStirlingFileStubs: StirlingFileStub[] } }
-  | { type: 'UNDO_CONSUME_FILES'; payload: { inputStirlingFileStubs: StirlingFileStub[]; outputFileIds: FileId[] } }
+  | { type: 'CONSUME_FILES'; payload: { inputFileIds: FileId[]; outputPDFoxFileStubs: PDFoxFileStub[] } }
+  | { type: 'UNDO_CONSUME_FILES'; payload: { inputPDFoxFileStubs: PDFoxFileStub[]; outputFileIds: FileId[] } }
 
   // UI actions
   | { type: 'SET_SELECTED_FILES'; payload: { fileIds: FileId[] } }
@@ -288,7 +288,7 @@ export type FileContextAction =
 
 export interface FileContextActions {
   // File management - lightweight actions only
-  addFiles: (files: File[], options?: { insertAfterPageId?: string; selectFiles?: boolean }) => Promise<StirlingFile[]>;
+  addFiles: (files: File[], options?: { insertAfterPageId?: string; selectFiles?: boolean }) => Promise<PDFoxFile[]>;
   addFilesWithOptions: (
     files: File[],
     options?: {
@@ -300,21 +300,21 @@ export interface FileContextActions {
       confirmLargeExtraction?: (fileCount: number, fileName: string) => Promise<boolean>;
       allowDuplicates?: boolean;
     }
-  ) => Promise<StirlingFile[]>;
-  addStirlingFileStubs: (stirlingFileStubs: StirlingFileStub[], options?: { insertAfterPageId?: string; selectFiles?: boolean }) => Promise<StirlingFile[]>;
+  ) => Promise<PDFoxFile[]>;
+  addPDFoxFileStubs: (pdfoxFileStubs: PDFoxFileStub[], options?: { insertAfterPageId?: string; selectFiles?: boolean }) => Promise<PDFoxFile[]>;
   removeFiles: (fileIds: FileId[], deleteFromStorage?: boolean) => Promise<void>;
-  updateStirlingFileStub: (id: FileId, updates: Partial<StirlingFileStub>) => void;
+  updatePDFoxFileStub: (id: FileId, updates: Partial<PDFoxFileStub>) => void;
   reorderFiles: (orderedFileIds: FileId[]) => void;
   clearAllFiles: () => Promise<void>;
   clearAllData: () => Promise<void>;
 
-  // File pinning - accepts StirlingFile for safer type checking
-  pinFile: (file: StirlingFile) => void;
-  unpinFile: (file: StirlingFile) => void;
+  // File pinning - accepts PDFoxFile for safer type checking
+  pinFile: (file: PDFoxFile) => void;
+  unpinFile: (file: PDFoxFile) => void;
 
   // File consumption (replace unpinned files with outputs)
-  consumeFiles: (inputFileIds: FileId[], outputStirlingFiles: StirlingFile[], outputStirlingFileStubs: StirlingFileStub[]) => Promise<FileId[]>;
-  undoConsumeFiles: (inputFiles: File[], inputStirlingFileStubs: StirlingFileStub[], outputFileIds: FileId[]) => Promise<void>;
+  consumeFiles: (inputFileIds: FileId[], outputPDFoxFiles: PDFoxFile[], outputPDFoxFileStubs: PDFoxFileStub[]) => Promise<FileId[]>;
+  undoConsumeFiles: (inputFiles: File[], inputPDFoxFileStubs: PDFoxFileStub[], outputFileIds: FileId[]) => Promise<void>;
   // Selection management
   setSelectedFiles: (fileIds: FileId[]) => void;
   setSelectedPages: (pageNumbers: number[]) => void;
@@ -341,17 +341,17 @@ export interface FileContextActions {
 
 // File selectors (separate from actions to avoid re-renders)
 export interface FileContextSelectors {
-  getFile: (id: FileId) => StirlingFile | undefined;
-  getFiles: (ids?: FileId[]) => StirlingFile[];
-  getStirlingFileStub: (id: FileId) => StirlingFileStub | undefined;
-  getStirlingFileStubs: (ids?: FileId[]) => StirlingFileStub[];
+  getFile: (id: FileId) => PDFoxFile | undefined;
+  getFiles: (ids?: FileId[]) => PDFoxFile[];
+  getPDFoxFileStub: (id: FileId) => PDFoxFileStub | undefined;
+  getPDFoxFileStubs: (ids?: FileId[]) => PDFoxFileStub[];
   getAllFileIds: () => FileId[];
-  getSelectedFiles: () => StirlingFile[];
-  getSelectedStirlingFileStubs: () => StirlingFileStub[];
+  getSelectedFiles: () => PDFoxFile[];
+  getSelectedPDFoxFileStubs: () => PDFoxFileStub[];
   getPinnedFileIds: () => FileId[];
-  getPinnedFiles: () => StirlingFile[];
-  getPinnedStirlingFileStubs: () => StirlingFileStub[];
-  isFilePinned: (file: StirlingFile) => boolean;
+  getPinnedFiles: () => PDFoxFile[];
+  getPinnedPDFoxFileStubs: () => PDFoxFileStub[];
+  isFilePinned: (file: PDFoxFile) => boolean;
   getFilesSignature: () => string;
 }
 

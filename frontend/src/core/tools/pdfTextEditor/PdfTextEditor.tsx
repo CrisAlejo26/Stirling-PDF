@@ -5,7 +5,7 @@ import DescriptionIcon from '@mui/icons-material/DescriptionOutlined';
 import { useToolWorkflow } from '@app/contexts/ToolWorkflowContext';
 import { useFileSelection, useFileManagement, useFileContext } from '@app/contexts/FileContext';
 import { useNavigationActions, useNavigationState } from '@app/contexts/NavigationContext';
-import { createStirlingFilesAndStubs } from '@app/services/fileStubHelpers';
+import { createPDFoxFilesAndStubs } from '@app/services/fileStubHelpers';
 import { BaseToolProps, ToolComponent } from '@app/types/tool';
 import { getDefaultWorkbench } from '@app/types/workbench';
 import { CONVERSION_ENDPOINTS } from '@app/constants/convertConstants';
@@ -1244,7 +1244,7 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
         return;
       }
 
-      const parentStub = selectors.getStirlingFileStub(sourceFileIdRef.current as any);
+      const parentStub = selectors.getPDFoxFileStub(sourceFileIdRef.current as any);
       if (!parentStub) {
         console.warn('[PdfTextEditor] Could not find parent stub for save to workbench');
         await handleGeneratePdf(true);
@@ -1408,15 +1408,15 @@ const PdfTextEditor = ({ onComplete, onError }: BaseToolProps) => {
       // Create the new PDF file
       const pdfFile = new File([pdfBlob], downloadName, { type: 'application/pdf' });
 
-      // Create StirlingFile and stub for the output
-      const { stirlingFiles, stubs } = await createStirlingFilesAndStubs(
+      // Create PDFoxFile and stub for the output
+      const { pdfoxFiles, stubs } = await createPDFoxFilesAndStubs(
         [pdfFile],
         parentStub,
         'pdfTextEditor',
       );
 
       // Replace the original file with the edited version
-      await consumeFiles([sourceFileIdRef.current as any], stirlingFiles, stubs);
+      await consumeFiles([sourceFileIdRef.current as any], pdfoxFiles, stubs);
 
       // Update the source file ID to point to the new file
       sourceFileIdRef.current = stubs[0].id;

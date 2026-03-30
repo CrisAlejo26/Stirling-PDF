@@ -14,7 +14,7 @@ declare module 'assets/material-symbols-icons.json' {
 
 declare global {
   interface Window {
-    __STIRLING_PDF_BASE_URL__?: string;
+    __PDFOX_PDF_BASE_URL__?: string;
   }
 }
 

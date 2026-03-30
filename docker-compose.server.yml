@@ -11,8 +11,8 @@ services:
       - ./tessdata:/usr/share/tessdata:rw
       - ./pipeline:/pipeline:rw
     environment:
-      DISABLE_ADDITIONAL_FEATURES: "false"
-      SECURITY_ENABLELOGIN: "true"
+      DISABLE_ADDITIONAL_FEATURES: "true"
+      SECURITY_ENABLELOGIN: "false"
       SYSTEM_DEFAULTLOCALE: es-ES
       UI_APPNAME: Stirling-PDF
       SYSTEM_MAXFILESIZE: "100"

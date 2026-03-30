@@ -36,7 +36,7 @@ export interface ConnectionTestResult {
   diagnostics?: DiagnosticResult[];
 }
 
-export const LOCAL_MODE_STORAGE_KEY = 'stirling-local-mode';
+export const LOCAL_MODE_STORAGE_KEY = 'pdfox-local-mode';
 
 export class ConnectionModeService {
   private static instance: ConnectionModeService;
@@ -100,7 +100,7 @@ export class ConnectionModeService {
         // mode has never been explicitly set (no localStorage flag either direction),
         // and there is no provisioning lock. Default to local so the user sees
         // the bundled backend instead of a broken SaaS-mode UI.
-        // MSI installs with STIRLING_SERVER_URL are excluded because they have a
+        // MSI installs with PDFOX_SERVER_URL are excluded because they have a
         // non-null server_config; locked provisioned installs are excluded by the
         // lock_connection_mode guard.
         config.mode = 'local';
@@ -156,7 +156,7 @@ export class ConnectionModeService {
     // When a locked provisioned deployment falls back to local, preserve the server URL
     // so the SetupWizard can pre-fill it if the user tries to sign in again.
     if (this.currentConfig?.lock_connection_mode && this.currentConfig.server_config?.url) {
-      localStorage.setItem('stirling-provisioned-server-url', this.currentConfig.server_config.url);
+      localStorage.setItem('pdfox-provisioned-server-url', this.currentConfig.server_config.url);
     }
 
     await invoke('set_connection_mode', {

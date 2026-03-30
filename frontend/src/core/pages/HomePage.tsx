@@ -109,7 +109,7 @@ export default function HomePage() {
     (v) => v.workbenchId === navigationState.workbench
   )?.hideToolPanel ?? false;
 
-  const brandAltText = t("home.mobile.brandAlt", "Stirling PDF logo");
+  const brandAltText = t("home.mobile.brandAlt", "PDFox logo");
   const brandIconSrc = useLogoPath();
   const { wordmark } = useLogoAssets();
   const brandTextSrc = colorScheme === "dark" ? wordmark.white : wordmark.black;
@@ -204,7 +204,7 @@ export default function HomePage() {
   const baseUrl = useBaseUrl();
 
   // Update document meta when tool changes
-  const appName = config?.appNameNavbar || 'Stirling PDF';
+  const appName = config?.appNameNavbar || 'PDFox';
   useDocumentMeta({
     title: selectedTool ? `${selectedTool.name} - ${appName}` : appName,
     description: selectedTool?.description || t('app.description', 'The Free Adobe Acrobat alternative (10M+ Downloads)'),

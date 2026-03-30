@@ -39,7 +39,7 @@ export async function handleHttpError(error: any): Promise<boolean> {
       // Redirect to login with state (only show expired when a JWT existed)
       let hadStoredJwt = false;
       try {
-        hadStoredJwt = Boolean(localStorage.getItem('stirling_jwt'));
+        hadStoredJwt = Boolean(localStorage.getItem('pdfox_jwt'));
       } catch {
         // ignore storage access failures
       }

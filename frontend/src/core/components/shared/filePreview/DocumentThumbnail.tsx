@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Center, Image } from '@mantine/core';
 import { getFileTypeIcon } from '@app/components/shared/filePreview/getFileTypeIcon';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import { PrivateContent } from '@app/components/shared/PrivateContent';
 
 export interface DocumentThumbnailProps {
-  file: File | StirlingFileStub | null;
+  file: File | PDFoxFileStub | null;
   thumbnail?: string | null;
   style?: React.CSSProperties;
   onClick?: () => void;

@@ -33,7 +33,7 @@ export function usePageDocument(): PageDocumentHook {
   // Get ALL PDF files (selected or not) for document building with placeholders
   const activeFileIds = useMemo(() => {
     return allFileIds.filter(id => {
-      const stub = selectors.getStirlingFileStub(id);
+      const stub = selectors.getPDFoxFileStub(id);
       return stub?.name?.toLowerCase().endsWith('.pdf') ?? false;
     });
   }, [allFileIdsKey, activeFilesSignature, selectors]);
@@ -55,9 +55,9 @@ export function usePageDocument(): PageDocumentHook {
   const globalProcessing = state.ui.isProcessing;
 
   // Get primary file record outside useMemo to track processedFile changes
-  const primaryStirlingFileStub = primaryFileId ? selectors.getStirlingFileStub(primaryFileId) : null;
-  const processedFilePages = primaryStirlingFileStub?.processedFile?.pages;
-  const processedFileTotalPages = primaryStirlingFileStub?.processedFile?.totalPages;
+  const primaryPDFoxFileStub = primaryFileId ? selectors.getPDFoxFileStub(primaryFileId) : null;
+  const processedFilePages = primaryPDFoxFileStub?.processedFile?.pages;
+  const processedFileTotalPages = primaryPDFoxFileStub?.processedFile?.totalPages;
 
   const placeholderDocumentRef = useRef<PDFDocument | null>(null);
   const [placeholderVersion, setPlaceholderVersion] = useState(0);
@@ -69,7 +69,7 @@ export function usePageDocument(): PageDocumentHook {
       return;
     }
 
-    if (primaryStirlingFileStub?.processedFile) {
+    if (primaryPDFoxFileStub?.processedFile) {
       placeholderDocumentRef.current = null;
       setPlaceholderVersion(v => v + 1);
       return;
@@ -102,7 +102,7 @@ export function usePageDocument(): PageDocumentHook {
         if (!canceled) {
           placeholderDocumentRef.current = {
             id: `placeholder-${primaryFileId}`,
-            name: selectors.getStirlingFileStub(primaryFileId)?.name ?? file.name,
+            name: selectors.getPDFoxFileStub(primaryFileId)?.name ?? file.name,
             file,
             pages,
             totalPages,
@@ -122,7 +122,7 @@ export function usePageDocument(): PageDocumentHook {
     return () => {
       canceled = true;
     };
-  }, [primaryFileId, primaryStirlingFileStub?.processedFile, selectors]);
+  }, [primaryFileId, primaryPDFoxFileStub?.processedFile, selectors]);
 
   // Compute merged document with stable signature (prevents infinite loops)
   const currentPagesSignature = useMemo(() => {
@@ -167,14 +167,14 @@ export function usePageDocument(): PageDocumentHook {
     });
   }
 
-  if (!primaryStirlingFileStub?.processedFile && placeholderDocumentRef.current) {
+  if (!primaryPDFoxFileStub?.processedFile && placeholderDocumentRef.current) {
     return placeholderDocumentRef.current;
   }
 
   const primaryFile = primaryFileId ? selectors.getFile(primaryFileId) : null;
 
     // If we have file IDs but no file record, something is wrong - return null to show loading
-    if (!primaryStirlingFileStub) {
+    if (!primaryPDFoxFileStub) {
       console.log('🎬 PageEditor: No primary file record found, showing loading');
       return null;
     }
@@ -184,10 +184,10 @@ export function usePageDocument(): PageDocumentHook {
     const name =
       namingFileIds.length <= 1
         ? (namingFileIds[0]
-            ? selectors.getStirlingFileStub(namingFileIds[0])?.name ?? 'document.pdf'
+            ? selectors.getPDFoxFileStub(namingFileIds[0])?.name ?? 'document.pdf'
             : 'document.pdf')
         : namingFileIds
-            .map(id => (selectors.getStirlingFileStub(id)?.name ?? 'file').replace(/\.pdf$/i, ''))
+            .map(id => (selectors.getPDFoxFileStub(id)?.name ?? 'file').replace(/\.pdf$/i, ''))
             .join(' + ');
 
     // Build page insertion map from files with insertion positions
@@ -195,7 +195,7 @@ export function usePageDocument(): PageDocumentHook {
     const originalFileIds: FileId[] = [];
 
     activeFileIds.forEach(fileId => {
-      const record = selectors.getStirlingFileStub(fileId);
+      const record = selectors.getPDFoxFileStub(fileId);
       if (record?.insertAfterPageId !== undefined) {
         console.log('[usePageDocument] File has insertAfterPageId:', {
           fileId,
@@ -221,8 +221,8 @@ export function usePageDocument(): PageDocumentHook {
 
     // Helper function to create pages from a file (or placeholder if deselected)
     const createPagesFromFile = (fileId: FileId, startPageNumber: number, isSelected: boolean): PDFPage[] => {
-      const stirlingFileStub = selectors.getStirlingFileStub(fileId);
-      if (!stirlingFileStub) {
+      const pdfoxFileStub = selectors.getPDFoxFileStub(fileId);
+      if (!pdfoxFileStub) {
         return [];
       }
 
@@ -241,7 +241,7 @@ export function usePageDocument(): PageDocumentHook {
         }];
       }
 
-      const processedFile = stirlingFileStub.processedFile;
+      const processedFile = pdfoxFileStub.processedFile;
 
       if (processedFile?.pages && processedFile.pages.length > 0) {
         // Use fully processed pages with thumbnails
@@ -379,7 +379,7 @@ export function usePageDocument(): PageDocumentHook {
     activeFileIds,
     selectedActiveFileIds,
     primaryFileId,
-    primaryStirlingFileStub,
+    primaryPDFoxFileStub,
     processedFilePages,
     processedFileTotalPages,
     selectors,

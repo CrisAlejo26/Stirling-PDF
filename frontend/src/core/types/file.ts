@@ -49,7 +49,7 @@ export interface BaseFileMetadata {
 
 /**
  * Minimal file shape used by signing workflow components.
- * Both StirlingFile (extends File) and StirlingFileStub are assignable to this.
+ * Both PDFoxFile (extends File) and PDFoxFileStub are assignable to this.
  */
 export interface FileState {
   name: string;

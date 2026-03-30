@@ -31,7 +31,7 @@ import { uploadHistoryChain } from '@app/services/serverStorageUpload';
 import { fileStorage } from '@app/services/fileStorage';
 import { useFileActions } from '@app/contexts/FileContext';
 import type { FileId } from '@app/types/file';
-import type { StirlingFileStub } from '@app/types/fileContext';
+import type { PDFoxFileStub } from '@app/types/fileContext';
 import type { SignRequestSummary } from '@app/types/signingSession';
 
 import {
@@ -42,6 +42,7 @@ import {
 import { Z_INDEX_OVER_FULLSCREEN_SURFACE } from '@app/styles/zIndex';
 import { QuickAccessBarFooterExtensions } from '@app/components/quickAccessBar/QuickAccessBarFooterExtensions';
 import { useConfigButtonIcon } from '@app/hooks/useConfigButtonIcon';
+import { useAuth } from '@app/auth/UseSession';
 
 const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
   const { t } = useTranslation();
@@ -66,6 +67,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
   const { actions: navigationActions } = useNavigationActions();
   const { getToolNavigation } = useSidebarNavigation();
   const { config } = useAppConfig();
+  const { user, signOut } = useAuth();
   const licenseAlert = useLicenseAlert();
   const [configModalOpen, setConfigModalOpen] = useState(false);
   const [activeButton, setActiveButton] = useState<string>('tools');
@@ -140,7 +142,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
   const isRTL = typeof document !== 'undefined' && document.documentElement.dir === 'rtl';
   const hasSelectedFiles = selectedFiles.length > 0;
   const selectedFileStubs = useMemo(
-    () => selectedFileIds.map((id) => selectors.getStirlingFileStub(id)).filter((x): x is StirlingFileStub => Boolean(x)),
+    () => selectedFileIds.map((id) => selectors.getPDFoxFileStub(id)).filter((x): x is PDFoxFileStub => Boolean(x)),
     [selectedFileIds, selectors, state.files.byId]
   );
   const selectedAccessFileStub =
@@ -225,7 +227,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
     return absoluteWithBasePath('/share/');
   }, [config?.frontendUrl]);
 
-  const ensureStoredFile = useCallback(async (fileStub: StirlingFileStub): Promise<number> => {
+  const ensureStoredFile = useCallback(async (fileStub: PDFoxFileStub): Promise<number> => {
     const localUpdatedAt = fileStub.createdAt ?? fileStub.lastModified ?? 0;
     const isUpToDate =
       Boolean(fileStub.remoteStorageId) &&
@@ -241,7 +243,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
       remoteId
     );
     for (const stub of chain) {
-      actions.updateStirlingFileStub(stub.id, {
+      actions.updatePDFoxFileStub(stub.id, {
         remoteStorageId: storedId,
         remoteStorageUpdatedAt: updatedAt,
         remoteOwnedByCurrentUser: true,
@@ -435,7 +437,7 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
         });
         token = shareResponse.data?.token;
         if (token) {
-          actions.updateStirlingFileStub(selectedAccessFileStub.id, { remoteHasShareLinks: true });
+          actions.updatePDFoxFileStub(selectedAccessFileStub.id, { remoteHasShareLinks: true });
           await fileStorage.updateFileMetadata(selectedAccessFileStub.id, { remoteHasShareLinks: true });
         }
       }
@@ -596,10 +598,10 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
   //},
 
   // Determine if settings button should be hidden
-  // Hide when login is disabled AND showSettingsWhenNoLogin is false
+  // Hide when login is disabled AND showSettingsWhenNoLogin is false, or when user is not ADMIN
   const shouldHideSettingsButton =
-    config?.enableLogin === false &&
-    config?.showSettingsWhenNoLogin === false;
+    (config?.enableLogin === false && config?.showSettingsWhenNoLogin === false) ||
+    (user !== null && user?.role !== 'ADMIN');
 
   const bottomButtons: ButtonConfig[] = [
     {
@@ -731,6 +733,14 @@ const QuickAccessBar = forwardRef<HTMLDivElement>((_, ref) => {
 
           {/* Bottom section */}
           <Stack gap="lg" align="stretch">
+            <QuickAccessButton
+              icon={<LocalIcon icon="logout-rounded" width="1.25rem" height="1.25rem" />}
+              label={t("quickAccess.logout", "Cerrar sesión")}
+              isActive={false}
+              onClick={() => void signOut().then(() => navigate('/login', { replace: true }))}
+              ariaLabel={t("quickAccess.logout", "Cerrar sesión")}
+              dataTestId="logout-button"
+            />
             {bottomButtons.map((buttonConfig, index) => {
               // Handle help button with menu or direct action
               if (buttonConfig.id === 'help') {

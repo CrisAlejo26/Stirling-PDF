@@ -10,7 +10,7 @@ import { detectFileExtension } from '@app/utils/fileUtils';
 import FileEditorThumbnail from '@app/components/fileEditor/FileEditorThumbnail';
 import AddFileCard from '@app/components/fileEditor/AddFileCard';
 import FilePickerModal from '@app/components/shared/FilePickerModal';
-import { FileId, StirlingFile } from '@app/types/fileContext';
+import { FileId, PDFoxFile } from '@app/types/fileContext';
 import { alert } from '@app/components/toast';
 import { downloadFile } from '@app/services/downloadService';
 import { useFileEditorRightRailButtons } from '@app/components/fileEditor/fileEditorRightRailButtons';
@@ -19,7 +19,7 @@ import { useToolWorkflow } from '@app/contexts/ToolWorkflowContext';
 
 interface FileEditorProps {
   onOpenPageEditor?: () => void;
-  onMergeFiles?: (files: StirlingFile[]) => void;
+  onMergeFiles?: (files: PDFoxFile[]) => void;
   toolMode?: boolean;
   supportedExtensions?: string[];
 }
@@ -43,7 +43,7 @@ const FileEditor = ({
   const { clearAllFileErrors } = fileContextActions;
 
   // Extract needed values from state (memoized to prevent infinite loops)
-  const activeStirlingFileStubs = useMemo(() => selectors.getStirlingFileStubs(), [state.files.byId, state.files.ids]);
+  const activePDFoxFileStubs = useMemo(() => selectors.getPDFoxFileStubs(), [state.files.byId, state.files.ids]);
   const selectedFileIds = state.ui.selectedFileIds;
   const totalItems = state.files.ids.length;
   const selectedCount = selectedFileIds.length;
@@ -89,7 +89,7 @@ const FileEditor = ({
   const contextSelectedIdsRef = useRef<FileId[]>([]);
   contextSelectedIdsRef.current = contextSelectedIds;
 
-  // Use activeStirlingFileStubs directly - no conversion needed
+  // Use activePDFoxFileStubs directly - no conversion needed
   const localSelectedIds = contextSelectedIds;
 
   const handleSelectAllFiles = useCallback(() => {
@@ -146,7 +146,7 @@ const FileEditor = ({
         await addFiles(uploadedFiles, { selectFiles: true });
         // After auto-selection, enforce maxAllowed if needed
         if (Number.isFinite(maxAllowed)) {
-          const nowSelectedIds = selectors.getSelectedStirlingFileStubs().map(r => r.id);
+          const nowSelectedIds = selectors.getSelectedPDFoxFileStubs().map(r => r.id);
           if (nowSelectedIds.length > maxAllowed) {
             setSelectedFiles(nowSelectedIds.slice(-maxAllowed));
           }
@@ -163,7 +163,7 @@ const FileEditor = ({
   const toggleFile = useCallback((fileId: FileId) => {
     const currentSelectedIds = contextSelectedIdsRef.current;
 
-    const targetRecord = activeStirlingFileStubs.find(r => r.id === fileId);
+    const targetRecord = activePDFoxFileStubs.find(r => r.id === fileId);
     if (!targetRecord) return;
 
     const contextFileId = fileId; // No need to create a new ID
@@ -195,7 +195,7 @@ const FileEditor = ({
 
     // Update context (this automatically updates tool selection since they use the same action)
     setSelectedFiles(newSelection);
-  }, [setSelectedFiles, toolMode, _setStatus, activeStirlingFileStubs, selectedTool?.maxFiles]);
+  }, [setSelectedFiles, toolMode, _setStatus, activePDFoxFileStubs, selectedTool?.maxFiles]);
 
   // Enforce maxAllowed when tool changes or when an external action sets too many selected files
   useEffect(() => {
@@ -207,7 +207,7 @@ const FileEditor = ({
 
   // File reordering handler for drag and drop
   const handleReorderFiles = useCallback((sourceFileId: FileId, targetFileId: FileId, selectedFileIds: FileId[]) => {
-    const currentIds = activeStirlingFileStubs.map(r => r.id);
+    const currentIds = activePDFoxFileStubs.map(r => r.id);
 
     // Find indices
     const sourceIndex = currentIds.findIndex(id => id === sourceFileId);
@@ -259,13 +259,13 @@ const FileEditor = ({
     // Update status
     const moveCount = filesToMove.length;
     showStatus(`${moveCount > 1 ? `${moveCount} files` : 'File'} reordered`);
-  }, [activeStirlingFileStubs, reorderFiles, _setStatus]);
+  }, [activePDFoxFileStubs, reorderFiles, _setStatus]);
 
 
 
   // File operations using context
   const handleCloseFile = useCallback((fileId: FileId) => {
-    const record = activeStirlingFileStubs.find(r => r.id === fileId);
+    const record = activePDFoxFileStubs.find(r => r.id === fileId);
     const file = record ? selectors.getFile(record.id) : null;
     if (record && file) {
       // Remove file from context but keep in storage (close, don't delete)
@@ -276,10 +276,10 @@ const FileEditor = ({
       const currentSelected = selectedFileIds.filter(id => id !== contextFileId);
       setSelectedFiles(currentSelected);
     }
-  }, [activeStirlingFileStubs, selectors, removeFiles, setSelectedFiles, selectedFileIds]);
+  }, [activePDFoxFileStubs, selectors, removeFiles, setSelectedFiles, selectedFileIds]);
 
   const handleDownloadFile = useCallback(async (fileId: FileId) => {
-    const record = activeStirlingFileStubs.find(r => r.id === fileId);
+    const record = activePDFoxFileStubs.find(r => r.id === fileId);
     const file = record ? selectors.getFile(record.id) : null;
     console.log('[FileEditor] handleDownloadFile called:', { fileId, hasRecord: !!record, hasFile: !!file, localFilePath: record?.localFilePath, isDirty: record?.isDirty });
     if (record && file) {
@@ -292,7 +292,7 @@ const FileEditor = ({
       // Mark file as clean after successful save to disk
       if (result.savedPath) {
         console.log('[FileEditor] Marking file as clean:', fileId);
-        fileActions.updateStirlingFileStub(fileId, {
+        fileActions.updatePDFoxFileStub(fileId, {
           localFilePath: record.localFilePath ?? result.savedPath,
           isDirty: false
         });
@@ -300,10 +300,10 @@ const FileEditor = ({
         console.log('[FileEditor] Skipping clean mark:', { savedPath: result.savedPath, isDirty: record.isDirty });
       }
     }
-  }, [activeStirlingFileStubs, selectors, fileActions]);
+  }, [activePDFoxFileStubs, selectors, fileActions]);
 
   const handleUnzipFile = useCallback(async (fileId: FileId) => {
-    const record = activeStirlingFileStubs.find(r => r.id === fileId);
+    const record = activePDFoxFileStubs.find(r => r.id === fileId);
     const file = record ? selectors.getFile(record.id) : null;
     if (record && file) {
       try {
@@ -312,7 +312,7 @@ const FileEditor = ({
 
         if (result.success && result.extractedStubs.length > 0) {
           // Add extracted file stubs to FileContext
-          await fileActions.addStirlingFileStubs(result.extractedStubs);
+          await fileActions.addPDFoxFileStubs(result.extractedStubs);
 
           // Remove the original ZIP file
           removeFiles([fileId], false);
@@ -342,16 +342,16 @@ const FileEditor = ({
         });
       }
     }
-  }, [activeStirlingFileStubs, selectors, fileActions, removeFiles]);
+  }, [activePDFoxFileStubs, selectors, fileActions, removeFiles]);
 
   const handleViewFile = useCallback((fileId: FileId) => {
-    const record = activeStirlingFileStubs.find(r => r.id === fileId);
+    const record = activePDFoxFileStubs.find(r => r.id === fileId);
     if (record) {
       // Set the file as selected in context and switch to viewer for preview
       setSelectedFiles([fileId]);
       navActions.setWorkbench('viewer');
     }
-  }, [activeStirlingFileStubs, setSelectedFiles, navActions.setWorkbench]);
+  }, [activePDFoxFileStubs, setSelectedFiles, navActions.setWorkbench]);
 
   const handleLoadFromStorage = useCallback(async (selectedFiles: File[]) => {
     if (selectedFiles.length === 0) return;
@@ -386,7 +386,7 @@ const FileEditor = ({
         <Box p="md">
 
 
-        {activeStirlingFileStubs.length === 0 ? (
+        {activePDFoxFileStubs.length === 0 ? (
           <Center h="60vh">
             <Stack align="center" gap="md">
               <Text size="lg" c="dimmed">📁</Text>
@@ -405,20 +405,20 @@ const FileEditor = ({
             }}
           >
             {/* Add File Card - only show when files exist */}
-            {activeStirlingFileStubs.length > 0 && (
+            {activePDFoxFileStubs.length > 0 && (
               <AddFileCard
                 key="add-file-card"
                 onFileSelect={handleFileUpload}
               />
             )}
 
-            {activeStirlingFileStubs.map((record, index) => {
+            {activePDFoxFileStubs.map((record, index) => {
               return (
                 <FileEditorThumbnail
                   key={record.id}
                   file={record}
                   index={index}
-                  totalFiles={activeStirlingFileStubs.length}
+                  totalFiles={activePDFoxFileStubs.length}
                   selectedFiles={localSelectedIds}
                   selectionMode={selectionMode}
                   onToggleFile={toggleFile}

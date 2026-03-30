@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_6" data-name="Capa 6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-3 {
+        font-family: Montserrat-BlackItalic, Montserrat;
+        font-size: 237.58px;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .cls-4 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4, .cls-5, .cls-6 {
+        fill: #5ba8ff;
+      }
+
+      .cls-7 {
+        fill: #303033;
+        stroke-width: 0px;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <rect class="cls-7" y=".14" width="1079.86" height="1079.86"/>
+  <text class="cls-3" transform="translate(116.21 608.97)"><tspan class="cls-4" x="0" y="0">P</tspan><tspan class="cls-6" x="174.14" y="0">D</tspan><tspan class="cls-5" x="370.38" y="0">F</tspan><tspan class="cls-2" x="521.01" y="0">o</tspan><tspan class="cls-1" x="678.04" y="0">x</tspan></text>
+</svg>

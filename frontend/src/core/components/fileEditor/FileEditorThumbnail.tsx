@@ -15,7 +15,7 @@ import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { StirlingFileStub } from '@app/types/fileContext';
+import { PDFoxFileStub } from '@app/types/fileContext';
 import { zipFileService } from '@app/services/zipFileService';
 
 import styles from '@app/components/fileEditor/FileEditor.module.css';
@@ -35,7 +35,7 @@ import { useAppConfig } from '@app/contexts/AppConfigContext';
 
 
 interface FileEditorThumbnailProps {
-  file: StirlingFileStub;
+  file: PDFoxFileStub;
   index: number;
   totalFiles: number;
   selectedFiles: FileId[];
@@ -224,7 +224,7 @@ const FileEditorThumbnail = ({
           localPath: file.localFilePath
         });
         if (!result.cancelled && result.savedPath) {
-          fileActions.updateStirlingFileStub(file.id, {
+          fileActions.updatePDFoxFileStub(file.id, {
             localFilePath: file.localFilePath ?? result.savedPath,
             isDirty: false
           });

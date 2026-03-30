@@ -39,7 +39,7 @@ export const DEFAULT_PREFERENCES: UserPreferences = {
   pdfRenderMode: 'normal',
 };
 
-const STORAGE_KEY = 'stirlingpdf_preferences';
+const STORAGE_KEY = 'pdfoxpdf_preferences';
 
 class PreferencesService {
   private serverDefaults: Partial<UserPreferences> = {};
