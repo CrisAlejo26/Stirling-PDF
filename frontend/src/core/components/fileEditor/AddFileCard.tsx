@@ -101,7 +101,7 @@ const AddFileCard = ({
             <img
               src={colorScheme === 'dark' ? wordmark.white : wordmark.grey}
               alt="PDFox"
-              style={{ height: '2.2rem', width: 'auto' }}
+              style={{ height: '6rem', width: 'auto', maxWidth: '90%' }}
             />
           </Group>
 

@@ -152,7 +152,7 @@ const LandingPage = () => {
               <img
                 src={colorScheme === 'dark' ? wordmark.white : wordmark.grey}
                 alt="PDFox"
-                style={{ height: '2.2rem', width: 'auto' }}
+                style={{ width: '9.2rem' }}
               />
             </Group>
 

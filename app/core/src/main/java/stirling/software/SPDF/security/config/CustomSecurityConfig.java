@@ -1,6 +1,5 @@
 package stirling.software.SPDF.security.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +22,6 @@ import stirling.software.SPDF.security.service.CustomUserDetailsService;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-@ConditionalOnMissingClass(
-        "stirling.software.proprietary.security.configuration.SecurityConfiguration")
 public class CustomSecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;

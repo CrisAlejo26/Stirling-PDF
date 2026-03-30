@@ -17,8 +17,6 @@ import { config, parse } from 'dotenv';
 // npm scripts run from the directory containing package.json (frontend/)
 const root = process.cwd();
 const args = process.argv.slice(2);
-const isDesktop = args.includes('--desktop');
-const isSaas = args.includes('--saas');
 
 console.log('setup-env: see frontend/README.md#environment-variables for documentation');
 
@@ -61,19 +59,9 @@ function ensureEnvFile(envFile: string, exampleFile: string): boolean {
 let failed = false;
 failed = ensureEnvFile('.env', 'config/.env.example') || failed;
 
-if (isDesktop) {
-  failed = ensureEnvFile('.env.desktop', 'config/.env.desktop.example') || failed;
-}
-
-if (isSaas) {
-  failed = ensureEnvFile('.env.saas', 'config/.env.saas.example') || failed;
-}
-
 // Warn about any VITE_ vars set in the environment that aren't listed in any example file.
 const allExampleKeys = new Set([
   ...getExampleKeys('config/.env.example'),
-  ...getExampleKeys('config/.env.desktop.example'),
-  ...getExampleKeys('config/.env.saas.example'),
 ]);
 const unknownViteVars = Object.keys(process.env)
   .filter(k => k.startsWith('VITE_') && !allExampleKeys.has(k));

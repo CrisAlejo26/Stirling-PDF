@@ -1,6 +1,5 @@
 package stirling.software.SPDF.security.seed;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -15,8 +14,6 @@ import stirling.software.SPDF.security.service.UserService;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@ConditionalOnMissingClass(
-        "stirling.software.proprietary.security.configuration.SecurityConfiguration")
 public class AdminSeeder implements ApplicationListener<ApplicationReadyEvent> {
 
     private final UserRepository userRepository;

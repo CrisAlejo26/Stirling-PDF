@@ -2,7 +2,6 @@ package stirling.software.SPDF.security.service;
 
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,7 +17,6 @@ import stirling.software.SPDF.security.model.User;
 import stirling.software.SPDF.security.repository.UserRepository;
 
 @Service
-@ConditionalOnMissingClass("stirling.software.proprietary.security.service.UserService")
 @RequiredArgsConstructor
 public class UserService {
 

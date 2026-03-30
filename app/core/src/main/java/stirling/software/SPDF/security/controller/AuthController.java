@@ -2,7 +2,6 @@ package stirling.software.SPDF.security.controller;
 
 import java.util.Map;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,8 +29,6 @@ import stirling.software.SPDF.security.model.User;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@ConditionalOnMissingClass(
-        "stirling.software.proprietary.security.configuration.SecurityConfiguration")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;

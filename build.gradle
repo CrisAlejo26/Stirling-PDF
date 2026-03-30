@@ -86,28 +86,16 @@ allprojects {
 }
 
 def appVersionStr = project.version.toString()
-def tauriConfigPath = layout.projectDirectory.file('frontend/src-tauri/tauri.conf.json').asFile.path
 def sim1Path = layout.projectDirectory.file('frontend/src/core/testing/serverExperienceSimulations.ts').asFile.path
-def sim2Path = layout.projectDirectory.file('frontend/src/proprietary/testing/serverExperienceSimulations.ts').asFile.path
 
 tasks.register('syncAppVersion') {
     group = 'versioning'
-    description = 'Synchronizes app version across desktop and simulation configs.'
+    description = 'Synchronizes app version across simulation configs.'
 
     doLast {
         println "Synchronizing application version to ${appVersionStr}"
 
-        def tauriConfigFile = new File(tauriConfigPath)
-        if (tauriConfigFile.exists()) {
-            def parsed = new groovy.json.JsonSlurper().parse(tauriConfigFile)
-            parsed.version = appVersionStr
-            def formatted = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(parsed)) + System.lineSeparator()
-            if (tauriConfigFile.getText('UTF-8') != formatted) {
-                tauriConfigFile.write(formatted, 'UTF-8')
-            }
-        }
-
-        [new File(sim1Path), new File(sim2Path)].each { f ->
+        [new File(sim1Path)].each { f ->
             if (f.exists()) {
                 def content = f.getText('UTF-8')
                 def matcher = (content =~ /(appVersion:\s*')([^']*)(')/)
@@ -390,7 +378,6 @@ subprojects {
 
         tasks.named("forkedSpringBootRun") {
             dependsOn(":common:jar")
-            dependsOn(":proprietary:jar")
         }
 
         tasks.register("copySwaggerDoc", Copy) {
@@ -520,9 +507,6 @@ repositories {
 dependencies {
     implementation project(':stirling-pdf')
     implementation project(':common')
-    if (rootProject.ext.isSecurityDisabled()) {
-        implementation project(':proprietary')
-    }
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"

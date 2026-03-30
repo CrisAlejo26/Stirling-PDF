@@ -1,7 +1,7 @@
 services:
   stirling-pdf:
     image: stirling-pdf-custom:latest
-    container_name: stirling-pdf
+    container_name: pdfox
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -14,7 +14,7 @@ services:
       DISABLE_ADDITIONAL_FEATURES: "true"
       SECURITY_ENABLELOGIN: "false"
       SYSTEM_DEFAULTLOCALE: es-ES
-      UI_APPNAME: Stirling-PDF
+      UI_APPNAME: PDFox
       SYSTEM_MAXFILESIZE: "100"
       METRICS_ENABLED: "true"
       PUID: "1000"
@@ -28,8 +28,8 @@ services:
       retries: 5
       start_period: 60s
     networks:
-      - stirling-network
+      - fox-network
 
 networks:
-  stirling-network:
+  fox-network:
     driver: bridge

@@ -2,7 +2,6 @@ package stirling.software.SPDF.security.repository;
 
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,8 +13,6 @@ import stirling.software.SPDF.security.model.Role;
 import stirling.software.SPDF.security.model.User;
 
 @Repository
-@ConditionalOnMissingClass(
-        "stirling.software.proprietary.security.database.repository.UserRepository")
 public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByUsername(String username);

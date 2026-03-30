@@ -34,8 +34,7 @@ import stirling.software.common.model.ApplicationProperties;
 @SpringBootApplication(
         scanBasePackages = {
             "stirling.software.SPDF",
-            "stirling.software.common",
-            "stirling.software.proprietary"
+            "stirling.software.common"
         })
 public class SPDFApplication {
 
@@ -205,24 +204,8 @@ public class SPDFApplication {
             }
         }
 
-        // 2. Detect if SecurityConfiguration is present on classpath
-        if (isClassPresent(
-                "stirling.software.proprietary.security.configuration.SecurityConfiguration")) {
-            log.info("Additional features in jar");
-            return new String[] {"security"};
-        } else {
-            log.info("Without additional features in jar");
-            return new String[] {"default"};
-        }
-    }
-
-    private static boolean isClassPresent(String className) {
-        try {
-            Class.forName(className, false, SPDFApplication.class.getClassLoader());
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+        log.info("Running without additional features");
+        return new String[] {"default"};
     }
 
     public static String getStaticBaseUrl() {
